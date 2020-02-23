@@ -26,10 +26,18 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	private JFrame frame;
 	
 	// temp code
-	Rectangle piece = new Rectangle(50, 20);
+	
+	HashMap<City, Rectangle> pieces = new HashMap<City, Rectangle>();
+	
+	City a = new City("one");
+	City b = new City("two");
+	
+	Rectangle piece = new Rectangle(75, 75);
 	int lastx, lasty;
 	boolean firstTime = true;
 	boolean pressOut = false;
+	
+	
 	////
 	
 	public UI()
@@ -68,6 +76,12 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		
 		
 		frame.setVisible(true);
+		
+		/// more temp code
+		a.add(b, 5);
+		b.add(a, 5);
+		pieces.put(a, new Rectangle(70, 70));
+		pieces.put(b, new Rectangle(70, 70));
 	}
 	
 	@Override
@@ -80,14 +94,30 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		if (firstTime)
 		{
 			piece.setLocation(width/2, height/2);
+			
+			pieces.get(a).setLocation(width / 10 * 1, height / 10 * 1);
+			pieces.get(b).setLocation(width / 10 * 2, height / 10 * 2);
+			
 			firstTime = false;
 		}
 		
 		paintBackground(g2);
 		
-		g2.setColor(new Color(132, 232, 182));
+//		g2.setColor(new Color(132, 232, 182));
+		g2.setColor(Color.DARK_GRAY);
 		g2.fill(piece);
+		
+		drawCity(g2, a, pieces.get(a));
+		drawCity(g2, b, pieces.get(b));
 		//
+	}
+	
+	// another test
+	public void drawCity(Graphics2D g2, City c, Rectangle r)
+	{
+		g2.fill(r);
+		g2.drawString(c.getName(), r.x, r.y);
+		g2.drawLine(r.x, r.y, pieces.get(b).x, pieces.get(b).y);
 	}
 	
 	public void paintBackground(Graphics2D g2)
@@ -119,10 +149,10 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		lastx = piece.x - e.getX();
-		lasty = piece.y - e.getY();
+		lastx = pieces.get(a).x - e.getX();
+		lasty = pieces.get(a).y - e.getY();
 		
-		if (piece.contains(e.getX(), e.getY()))
+		if (pieces.get(a).contains(e.getX(), e.getY()))
 		{
 			System.out.println("yes");
 			updateLocation(e);
@@ -136,7 +166,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		if (piece.contains(e.getX(), e.getY()) )
+		if (pieces.get(a).contains(e.getX(), e.getY()) )
 		{
 			updateLocation(e);
 		}
@@ -148,7 +178,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	
 	public void updateLocation(MouseEvent e)
 	{
-		piece.setLocation(lastx + e.getX(), lasty + e.getY());
+		pieces.get(a).setLocation(lastx + e.getX(), lasty + e.getY());
 		/*if (piece.x + piece.width >= width)
 			piece.setLocation(width - piece.width, lasty + e.getY());
 		if (piece.y + piece.height > height)
