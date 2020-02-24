@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 public class UI extends JPanel implements MouseListener, MouseMotionListener
 {
 	private String[] titles = new String[]
-			{"This... is Requiem", "testing", "another test", "UI"};
+			{"This... is Requiem", "testing", "another test", "UI", "test 14829"};
 	private int width = 1920, height = 1080;
 	private HashMap<String, BufferedImage> images;
 	
