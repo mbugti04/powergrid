@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 public class UI extends JPanel implements MouseListener, MouseMotionListener
 {
 	private String[] titles = new String[]
-			{"the", "testing", "another test", "UI", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist", "Armenia shouldn't exist"};
+			{"This... is Requiem", "testing", "another test", "UI"};
 	private int width = 1920, height = 1080;
 	private HashMap<String, BufferedImage> images;
 	
