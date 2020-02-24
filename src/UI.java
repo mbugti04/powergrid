@@ -22,14 +22,11 @@ import javax.swing.JPanel;
 public class UI extends JPanel implements MouseListener, MouseMotionListener
 {
 	public static final int width = 1920, height = 1080;
-	private String[] titles = new String[]
-			{"This... is Requiem", "testing", "another test", "UI", "test 14829"};
-	private HashMap<String, BufferedImage> images;
 	
 	private JFrame frame;
 	
 	private String[] titles = new String[]
-			{"Stone is Breakable", "Propaganda", "D T"};
+			{"Stone is Unbreakable", "Now with updated graphics!", "test 14829"};
 	
 	private HashMap<String, BufferedImage> images;
 	private HashMap<City, Rectangle> pieces = new HashMap<City, Rectangle>();
