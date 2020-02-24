@@ -89,7 +89,6 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	{
 		Graphics2D g2 = (Graphics2D)g;
 		
-		
 		// temp code (dragging test)
 		if (firstTime)
 		{
