@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.HashSet;
 
 // this is a 'graph' class for the cities
 public class UrbanArea
@@ -18,6 +19,8 @@ public class UrbanArea
 		if (!cities.containsKey(destination))
 			addCity(destination);
 
+		// these connect both of them to each other
+		
 		cities.get(source).put(destination, cost);
 
 		cities.get(destination).put(source, cost);
@@ -58,5 +61,17 @@ public class UrbanArea
 		if (cities.get(a).containsKey(b))
 			return cities.get(a).get(b);
 		return -1;
+	}
+	
+	public HashMap<City, HashMap<City, Integer>> getCities()
+	{
+		return cities;
+	}
+	
+	public HashSet<City> getAllCities()
+	{
+		HashSet<City> temp = new HashSet<City>();
+		temp.addAll(cities.keySet());
+		return temp;
 	}
 }
