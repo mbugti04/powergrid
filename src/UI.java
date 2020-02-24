@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -10,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -18,32 +20,53 @@ import javax.swing.JPanel;
 
 public class UI extends JPanel implements MouseListener, MouseMotionListener
 {
-	private String[] titles = new String[]
-			{"This... is Requiem", "testing", "another test", "UI"};
-	private int width = 1920, height = 1080;
-	private HashMap<String, BufferedImage> images;
+	public static final int width = 1920, height = 1080;
 	
 	private JFrame frame;
 	
-	// temp code
+	private String[] titles = new String[]
+			{"Stone is Breakable", "Propaganda", "D T"};
 	
-	HashMap<City, Rectangle> pieces = new HashMap<City, Rectangle>();
+	private HashMap<String, BufferedImage> images;
+	private HashMap<City, Rectangle> pieces = new HashMap<City, Rectangle>();
+	private HashMap<City, Point> lastPoint = new HashMap<City, Point>();
+	private HashMap<City, Boolean> pressedOut = new HashMap<City, Boolean>();
 	
-	City a = new City("one");
-	City b = new City("two");
+	private ArrayList<City> allCities;
 	
-	Rectangle piece = new Rectangle(75, 75);
-	int lastx, lasty;
-	boolean firstTime = true;
-	boolean pressOut = false;
+	private UrbanArea area;
 	
+	private int lastx, lasty;
+	private boolean firstTime = true;
+	private boolean pressOut = false;
 	
-	////
 	
 	public UI()
 	{
 		super();
+		initFrame();
+		initImages();
 		
+		// temp code?
+		area = new UrbanArea();
+		
+		area.addCity(new City("Houston"));
+		area.addCity(new City("Dallas"));
+//		area.addCity(new City("Austin"));
+		
+		allCities = new ArrayList<City>();
+		allCities.addAll(area.getAllCities());
+		
+		area.addConnection(allCities.get(0), allCities.get(1), 5);
+		
+		initCities();
+		////////
+		
+		frame.setVisible(true);
+	}
+	
+	public void initFrame()
+	{
 		Dimension size = new Dimension(width, height);
 		setPreferredSize(size);
 		setSize(size);
@@ -60,28 +83,32 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		frame.pack();
 		frame.setSize(size);
 		frame.setLocationRelativeTo(null);
-//		frame.setResizable(false);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
+	}
+
+	public void initImages()
+	{
 		images = new HashMap<String, BufferedImage>();
 		try
 		{
 			images.put("water", ImageIO.read(new File("assets/water.png")));
 			images.put("map", ImageIO.read(new File("assets/us_map.png")));
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	// TODO temp code
+	public void initCities()
+	{
+		for (int i = 0; i < allCities.size(); i++)
+			pieces.put(allCities.get(i), new Rectangle(65, 65));
 		
+		for (City city : allCities)
+			pressedOut.put(city, false);
 		
-		frame.setVisible(true);
-		
-		/// more temp code
-		a.add(b, 5);
-		b.add(a, 5);
-		pieces.put(a, new Rectangle(70, 70));
-		pieces.put(b, new Rectangle(70, 70));
 	}
 	
 	@Override
@@ -92,10 +119,8 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		// temp code (dragging test)
 		if (firstTime)
 		{
-			piece.setLocation(width/2, height/2);
-			
-			pieces.get(a).setLocation(width / 10 * 1, height / 10 * 1);
-			pieces.get(b).setLocation(width / 10 * 2, height / 10 * 2);
+			for (int i = 0; i < allCities.size(); i++)
+				pieces.get(allCities.get(i)).setLocation(width / 10 * i, height / 10 * i);
 			
 			firstTime = false;
 		}
@@ -104,19 +129,20 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		
 //		g2.setColor(new Color(132, 232, 182));
 		g2.setColor(Color.DARK_GRAY);
-		g2.fill(piece);
-		
-		drawCity(g2, a, pieces.get(a));
-		drawCity(g2, b, pieces.get(b));
-		//
+		for (int i = 0; i < allCities.size(); i++)
+			drawCity(g2, allCities.get(i));
 	}
 	
 	// another test
-	public void drawCity(Graphics2D g2, City c, Rectangle r)
+	public void drawCity(Graphics2D g2, City c)
 	{
-		g2.fill(r);
-		g2.drawString(c.getName(), r.x, r.y);
-		g2.drawLine(r.x, r.y, pieces.get(b).x, pieces.get(b).y);
+		Rectangle cityRectangle = pieces.get(c);
+		g2.fill(cityRectangle);
+		g2.drawString(c.getName(), cityRectangle.x, cityRectangle.y);
+		
+		ArrayList<City> connections = new ArrayList<City>(area.getCities().get(c).keySet());
+		for (City connec: connections)
+			g2.drawLine((int)cityRectangle.getCenterX(), (int)cityRectangle.getCenterY(), (int)pieces.get(connec).getCenterX(), (int)pieces.get(connec).getCenterY());
 	}
 	
 	public void paintBackground(Graphics2D g2)
@@ -129,6 +155,8 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	public void mouseClicked(MouseEvent e)
 	{
 		System.out.println(e.getX() + ", " + e.getY());
+		
+		// if (e.get)
 	}
 
 	@Override
@@ -148,36 +176,43 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		lastx = pieces.get(a).x - e.getX();
-		lasty = pieces.get(a).y - e.getY();
-		
-		if (pieces.get(a).contains(e.getX(), e.getY()))
+		for (City city : allCities)
 		{
-			System.out.println("yes");
-			updateLocation(e);
-		}
-		else
-		{
-			pressOut = true;
+//			lastx = pieces.get(allCities.get(0)).x - e.getX();
+//			lasty = pieces.get(allCities.get(0)).y - e.getY();
+			
+			lastPoint.put(city, new Point(pieces.get(city).x - e.getX(), pieces.get(city).y - e.getY()));
+			
+			if (pieces.get(city).contains(e.getX(), e.getY()))
+			{
+				updateLocation(e, city);
+			}
+			else
+			{
+				pressedOut.put(city, true);
+			}
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		if (pieces.get(a).contains(e.getX(), e.getY()) )
+		for (City city : allCities)
 		{
-			updateLocation(e);
-		}
-		else
-		{
-			pressOut = false;
+			if (pieces.get(city).contains(e.getX(), e.getY()) )
+			{
+				updateLocation(e, city);
+			}
+			else
+			{
+				pressedOut.put(city, false);
+			}
 		}
 	}
 	
-	public void updateLocation(MouseEvent e)
+	public void updateLocation(MouseEvent e, City city)
 	{
-		pieces.get(a).setLocation(lastx + e.getX(), lasty + e.getY());
+		pieces.get(city).setLocation(lastPoint.get(city).x + e.getX(), lastPoint.get(city).y + e.getY());
 		/*if (piece.x + piece.width >= width)
 			piece.setLocation(width - piece.width, lasty + e.getY());
 		if (piece.y + piece.height > height)
@@ -188,9 +223,12 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		if (!pressOut)
+		for (City city : allCities)
 		{
-			updateLocation(e);
+			if (!pressedOut.get(city))
+			{
+				updateLocation(e, city);
+			}
 		}
 	}
 
