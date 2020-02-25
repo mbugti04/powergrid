@@ -53,12 +53,19 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		
 		area.addCity(new City("Houston"));
 		area.addCity(new City("Dallas"));
+		area.addCity(new City("Austin"));
+		area.addCity(new City("New Orleans"));
 //		area.addCity(new City("Austin"));
 		
 		allCities = new ArrayList<City>();
 		allCities.addAll(area.getAllCities());
 		
-		area.addConnection(allCities.get(0), allCities.get(1), 5);
+		System.out.println(allCities);
+		
+		area.addConnection(allCities.get(3), allCities.get(0), 5);
+		area.addConnection(allCities.get(2), allCities.get(3), 3);
+		area.addConnection(allCities.get(2), allCities.get(0), 3);
+		area.addConnection(allCities.get(1), allCities.get(3), 7);
 		
 		initCities();
 		////////

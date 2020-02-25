@@ -25,4 +25,9 @@ public class City
 	{
 		return connection;
 	}*/
+	
+	public String toString()
+	{
+		return name;
+	}
 }
