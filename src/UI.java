@@ -41,6 +41,10 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	private boolean firstTime = true;
 	private boolean pressOut = false;
 	
+	// more temp code yay
+	Button start = new Button("button test", 860, 0, 200, 50);
+	//
+	
 	
 	public UI()
 	{
@@ -139,6 +143,9 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		g2.setColor(Color.DARK_GRAY);
 		for (int i = 0; i < allCities.size(); i++)
 			drawCity(g2, allCities.get(i));
+		
+		// more temp code
+		start.drawButton(g2);
 	}
 	
 	// another test
@@ -245,6 +252,57 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	{
 		// TODO Auto-generated method stub
 		
+	}
+	
+	class Button extends Rectangle
+	{
+		String text;
+		Color buttonCol;
+		Color textCol;
+		
+		Integer fontW, fontH; // width/height of text
+		
+		public Button(String text, int x, int y, int width, int height)
+		{
+			super(x, y, width, height);
+			this.text = text;
+			buttonCol = Color.white;
+			textCol = Color.black;
+		}
+		
+		public Button(String text, int x, int y, int width, int height, Color buttonCol, Color textCol)
+		{
+			this(text, x, y, width, height);
+			this.buttonCol = buttonCol;
+			this.textCol = textCol;
+		}
+		
+		public boolean isPressed(double x, double y)
+		{
+			if (this.contains(x, y))
+				return true;
+			return false;
+		}
+		
+		public boolean isPressed(Point p)
+		{
+			return isPressed(p.getX(), p.getY());
+		}
+		
+		public void drawButton(Graphics2D g2)
+		{
+			g2.setColor(buttonCol);
+			g2.fill(this);
+			
+			g2.setColor(textCol);
+			if (fontW == null)
+				fontW = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+			if (fontH == null)
+				fontH = (int)g2.getFontMetrics().getStringBounds(text, g2).getHeight();
+			g2.drawString(text, this.x + this.width/2 + fontW/2 - fontW, this.y + this.height/2 + fontH/2);
+//			g2.drawString(text, x + fontW, y + fontH);
+			
+		}
 	}
 	
 }
