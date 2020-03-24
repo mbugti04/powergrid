@@ -52,7 +52,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		initFrame();
 		initImages();
 		
-		// temp code?
+		// temp code? //
 		area = new UrbanArea();
 		
 		area.addCity(new City("Houston"));
