@@ -37,6 +37,11 @@ public class City
 		return true;
 		return false;
 	}
+	
+	
+	
+	
+	
 	public String getName()
 	{
 		return name;
@@ -50,10 +55,29 @@ public class City
 	public int getNumOfHouses() {
 		return numOfHouses;
 	}
-	public boolean powered() {
+	public boolean isPowered() {
 		return isPowered;
 	}
 
+	public void setPowered(boolean isPowered) {
+		this.isPowered = isPowered;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCostToBuild(int costToBuild) {
+		this.costToBuild = costToBuild;
+	}
+
+	public void setAvailableSpace(int availableSpace) {
+		this.availableSpace = availableSpace;
+	}
+
+	public void setNumOfHouses(int numOfHouses) {
+		this.numOfHouses = numOfHouses;
+	}
 	
 	public String toString()
 	{
