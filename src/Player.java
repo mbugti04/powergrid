@@ -61,7 +61,7 @@ public class Player {
 		money+= 22;
 		return;
 	}
-// unfinished
+
 	}
 
 	public int getMoney() {
