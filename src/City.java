@@ -27,8 +27,18 @@ public class City
 //		connection.put(other, cost);
 	}
 	
-	public int nextCost() {
-		return 0; 
+	public int nextCost() 
+	{
+		if(numOfHouses == 0) 
+		{
+			return 10;
+		}
+		else if(numOfHouses == 1)
+		{
+			return 15;
+		}
+		else
+			return 20;
 	}
 	
 	public boolean isAvailale() {
@@ -37,10 +47,6 @@ public class City
 		return true;
 		return false;
 	}
-	
-	
-	
-	
 	
 	public String getName()
 	{
