@@ -1,8 +1,10 @@
+
 public class City
 {
 	private String name;
 	private int costToBuild;
 	private int availableSpace;
+	private int numOfHouses;
 	private boolean isPowered;
 //	private region inRegion; 
 	
@@ -15,6 +17,11 @@ public class City
 //		connection = new HashMap<City, Integer>();
 	}
 	
+	/*public HashMap<City, Integer> getConnection()
+	{
+		return connection;
+	}*/
+	
 	public void addCity(City other, int cost) // possibly returning boolean?
 	{
 //		connection.put(other, cost);
@@ -25,7 +32,10 @@ public class City
 	}
 	
 	public boolean isAvailale() {
+		int step = GameState.step;
+		if(numOfHouses < step)
 		return true;
+		return false;
 	}
 	public String getName()
 	{
@@ -37,13 +47,13 @@ public class City
 	public int getCostToBuild() {
 		return costToBuild;
 	}
+	public int getNumOfHouses() {
+		return numOfHouses;
+	}
 	public boolean powered() {
 		return isPowered;
 	}
-	/*public HashMap<City, Integer> getConnection()
-	{
-		return connection;
-	}*/
+
 	
 	public String toString()
 	{
