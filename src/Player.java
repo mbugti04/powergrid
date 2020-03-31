@@ -26,7 +26,6 @@ public class Player {
 	}
 	
 //	public boolean addResourceToStorage(Resource r) {
-//		
 //	}
 	public boolean addPowerPlant(Powerplant pp) {
 		
