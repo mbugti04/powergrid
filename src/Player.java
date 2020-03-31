@@ -29,13 +29,32 @@ public class Player {
 //		
 //	}
 	public boolean addPowerPlant(Powerplant pp) {
-		// are we going to check if the player has 3 powerplants before calling this method?
-		// bc we need to ask them which powerplant they want to discard
 		
+		Scanner input = new Scanner(System.in);
+		String ans;
+		int ppAns;
 		if(ownedPlants.size() < 3) {
 			ownedPlants.add(pp);
+			input.close();
 			return true;
 		}
+		else {
+			System.out.println("You have 3 Powerplants already. "
+					+ "Do you want to discard one? Y or N. If you choose N, the current powerplant (powerplant #"+pp.getName()+")"
+					+ " won't be yours and will still be available for purchase at the Powerplant market.");
+			ans = input.next();
+			if(ans.equals("Y")) {
+				System.out.println("Choose a Powerplant to discard");
+				for(int i = 0; i < 3; i++)
+					System.out.println("Powerplant #" + ownedPlants.get(i).getName());
+				ppAns = input.nextInt();
+				Powerplant pplt = ownedPlants.get(ppAns);
+				ownedPlants.remove(ownedPlants.get(ppAns));
+				ownedPlants.add(pp);
+				System.out.println("Removed Powerplant #" + pplt.getName()+" and added Powerplant #"+pp.getName()+" to owned Powerplants");
+			}
+		}
+		input.close();
 		return false;
 	}
 	
