@@ -62,7 +62,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 //		area.addCity(new City("Austin"));
 		
 		allCities = new ArrayList<City>();
-		allCities.addAll(area.getAllCities());
+		allCities.addAll(area.getCitySet());
 		
 		System.out.println(allCities);
 		
@@ -70,6 +70,13 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		area.addConnection(allCities.get(2), allCities.get(3), 3);
 		area.addConnection(allCities.get(2), allCities.get(0), 3);
 		area.addConnection(allCities.get(1), allCities.get(3), 7);
+		
+		area.removeCity(allCities.get(3));
+		
+		
+		// have to reinitialise allCities when removing a city
+		allCities = new ArrayList<City>();
+		allCities.addAll(area.getCitySet());
 		
 		initCities();
 		////////
@@ -155,7 +162,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		g2.fill(cityRectangle);
 		g2.drawString(c.getName(), cityRectangle.x, cityRectangle.y);
 		
-		ArrayList<City> connections = new ArrayList<City>(area.getCities().get(c).keySet());
+		ArrayList<City> connections = new ArrayList<City>(area.getGraph().get(c).keySet());
 		for (City connec: connections)
 			g2.drawLine((int)cityRectangle.getCenterX(), (int)cityRectangle.getCenterY(), (int)pieces.get(connec).getCenterX(), (int)pieces.get(connec).getCenterY());
 	}
