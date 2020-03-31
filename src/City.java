@@ -26,6 +26,11 @@ public class City
 	{
 //		connection.put(other, cost);
 	}
+	/* Vishal: Why are we having this method in the City class?
+	Do we not need to put this into the UrbanArea?
+	This method would be extremely useful in urbanArea, but not in City. 
+	As a city goes, I think the methods below are sufficient.
+	*/
 	
 	public int nextCost() 
 	{
