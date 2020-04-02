@@ -25,8 +25,35 @@ public class Player {
 		resourcesStored = new HashMap<Resource, Integer>();
 	}
 	
-//	public boolean addResourceToStorage(Resource r) {
-//	}
+	public boolean addResourceToStorage(Resource r, int count) {
+		int coalSpace = 0;
+		int oilSpace = 0;
+		int trashSpace = 0;
+		int uraniumSpace = 0;
+		int amount; 
+		for(int i = 0; i < ownedPlants.size(); i++)
+		{
+			if(ownedPlants.get(i).getResourceType() == Resource.coal || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+				coalSpace += ownedPlants.get(i).getStorageCapacity();
+			if(ownedPlants.get(i).getResourceType() == Resource.oil || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+				oilSpace += ownedPlants.get(i).getStorageCapacity();
+			if(ownedPlants.get(i).getResourceType() == Resource.trash)
+				trashSpace += ownedPlants.get(i).getStorageCapacity();	
+			if(ownedPlants.get(i).getResourceType() == Resource.uranium)
+				uraniumSpace += ownedPlants.get(i).getStorageCapacity();	
+		}
+		
+		if(r.equals(Resource.coal) && coalSpace - resourcesStored.get(Resource.coal) >= count) {
+			resourcesStored.replace(Resource.coal, resourcesStored.get(Resource.coal)+1);
+			return true;
+		}
+		if(r.equals(Resource.oil) && oilSpace - resourcesStored.get(Resource.oil) >= count) {
+			resourcesStored.replace(Resource.oil, resourcesStored.get(Resource.oil)+1);
+			return true;
+		}
+			
+		return false;
+	}
 	public boolean addPowerPlant(Powerplant pp) {
 		
 		Scanner input = new Scanner(System.in);
