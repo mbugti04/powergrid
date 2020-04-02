@@ -58,7 +58,6 @@ public class Player {
 			resourcesStored.replace(Resource.uranium, resourcesStored.get(Resource.uranium)+1);
 			return true;
 		}
-			
 		
 		return false;
 	}
