@@ -1,0 +1,28 @@
+4 players
+step 1
+coal
+3
+oil
+2
+garbage
+1
+uranium
+1
+step 2
+coal
+4
+oil
+2
+garbage
+2
+uranium
+1
+step 3
+coal
+3
+oil
+4
+garbage
+3
+uranium
+1
