@@ -30,7 +30,6 @@ public class Player {
 		int oilSpace = 0;
 		int trashSpace = 0;
 		int uraniumSpace = 0;
-		int amount; 
 		for(int i = 0; i < ownedPlants.size(); i++)
 		{
 			if(ownedPlants.get(i).getResourceType() == Resource.coal || ownedPlants.get(i).getResourceType() == Resource.hybrid)
@@ -51,7 +50,14 @@ public class Player {
 			resourcesStored.replace(Resource.oil, resourcesStored.get(Resource.oil)+1);
 			return true;
 		}
-			
+		if(r.equals(Resource.trash) && trashSpace - resourcesStored.get(Resource.trash) >= count) {
+			resourcesStored.replace(Resource.trash, resourcesStored.get(Resource.trash)+1);
+			return true;
+		}
+		if(r.equals(Resource.uranium) && uraniumSpace - resourcesStored.get(Resource.uranium) >= count) {
+			resourcesStored.replace(Resource.uranium, resourcesStored.get(Resource.uranium)+1);
+			return true;
+		}
 		
 		return false;
 	}
