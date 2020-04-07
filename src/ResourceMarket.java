@@ -1,5 +1,5 @@
 /*
- * First time setup:
+ * First time setup-
  * 24 coal, 18 oil, 6 trash, 2 uranium
  */
 import java.io.File;
