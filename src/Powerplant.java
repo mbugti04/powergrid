@@ -1,4 +1,4 @@
-
+import java.util.Comparator;
 public class Powerplant 
 {
 	private int name;
@@ -32,5 +32,12 @@ public class Powerplant
 		return storageCapacity;
 	}
 	
+	public static Comparator<Powerplant> powerNum = new Comparator<Powerplant>() {
+		public int compare(Powerplant p1, Powerplant p2) {
+			int pNum1 = p1.getName();
+			int pNum2 = p2.getName();
+			return pNum1 - pNum2;
+		}
+	};
 	
 }

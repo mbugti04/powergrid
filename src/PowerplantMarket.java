@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.LinkedList;
+import java.util.*;
 
 public class PowerplantMarket
 {
@@ -28,8 +26,7 @@ public class PowerplantMarket
 	
 	public void sort()
 	{
-		//i feel as though this method is redundant, there is no point to having
-		//a sort method when the arraylist is going to be sorted in the first place.
+		Collections.sort(plantsAvailable, Powerplant.powerNum);
 	}
 	
 	public void bid(boolean raise , Powerplant auction)
