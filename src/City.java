@@ -2,96 +2,49 @@
 public class City
 {
 	private String name;
-	private int costToBuild;
-	private int availableSpace;
-	private int numOfHouses;
-	private boolean isPowered;
-//	private region inRegion; 
-	
-	// possibly temp; just testing for graphics
-//	private HashMap<City, Integer> connection; // city and cost to get there
+	private int currentNumOfHouses;
+	private Region region;
 	
 	public City(String name)
 	{
 		this.name = name;
-//		connection = new HashMap<City, Integer>();
 	}
 	
-	/*public HashMap<City, Integer> getConnection()
-	{
-		return connection;
-	}*/
-	
-	public void addCity(City other, int cost) // possibly returning boolean?
-	{
-//		connection.put(other, cost);
-	}
-	/* Vishal: Why are we having this method in the City class?
-	Do we not need to put this into the UrbanArea?
-	This method would be extremely useful in urbanArea, but not in City. 
-	As a city goes, I think the methods below are sufficient.
-	*/
-	
+	/* Cost to build based on number of houses built.
+	 * Returns -1 if no available space.
+	 * Factors in available space. ex: it won't return 15
+	 * if game is still in step 1.
+	 */
 	public int nextCost() 
 	{
-		if(numOfHouses == 0) 
+		if (isAvailable())
 		{
-			return 10;
+			if(currentNumOfHouses == 0) 
+				return 10;
+			else if(currentNumOfHouses == 1)
+				return 15;
+			else if (currentNumOfHouses == 2)
+				return 20;
 		}
-		else if(numOfHouses == 1)
-		{
-			return 15;
-		}
-		else
-			return 20;
+		return -1;
 	}
 	
-	public boolean isAvailale() {
+	public boolean isAvailable()
+	{
 		int step = GameState.step;
-		if(numOfHouses < step)
-		return true;
+		if (currentNumOfHouses < step)
+			return true;
 		return false;
 	}
 	
-	public String getName()
+	public int availableSpace()
 	{
-		return name;
+		int step = GameState.step;
+		return step - currentNumOfHouses;
 	}
-	public int getAvailableSpace() {
-		return availableSpace;
-	}
-	public int getCostToBuild() {
-		return costToBuild;
-	}
-	public int getNumOfHouses() {
-		return numOfHouses;
-	}
-	public boolean isPowered() {
-		return isPowered;
-	}
-
-	public void setPowered(boolean isPowered) {
-		this.isPowered = isPowered;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setCostToBuild(int costToBuild) {
-		this.costToBuild = costToBuild;
-	}
-
-	public void setAvailableSpace(int availableSpace) {
-		this.availableSpace = availableSpace;
-	}
-
-	public void setNumOfHouses(int numOfHouses) {
-		this.numOfHouses = numOfHouses;
-	}
-	
+		
 	public String toString()
 	{
-		return name;
+		return name + ": " + currentNumOfHouses;
 	}
 }
