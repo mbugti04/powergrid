@@ -1,5 +1,5 @@
-import java.util.*;
-
-public class GameState {
-public static int step = 1;
+public class GameState
+{
+	public static int step;
+	public static int playerCount;
 }
