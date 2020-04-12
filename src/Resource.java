@@ -1,5 +1,5 @@
 
 public enum Resource
 {
-	coal, oil, trash, free, uranium, hybrid
+	coal, oil, trash, uranium, hybrid
 }
