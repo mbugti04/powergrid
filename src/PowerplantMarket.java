@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Queue;
+import java.util.*;
 
 public class PowerplantMarket
 {
@@ -22,16 +21,20 @@ public class PowerplantMarket
 	
 	public void restock()
 	{
-		
+		plantsAvailable.add(allPlants.remove());
 	}
 	
 	public void sort()
 	{
-		
+		Collections.sort(plantsAvailable, Powerplant.powerNum);
 	}
 	
-	public void bid()
+	public void bid(boolean raise , Powerplant auction)
 	{
-		
+		int price = auction.getName();
+		if(raise == true) 
+		{
+			price++;
+		}
 	}
 }

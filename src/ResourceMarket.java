@@ -82,6 +82,58 @@ public class ResourceMarket
 	
 	public void restock()
 	{
+		int step = GameState.step;
+		if(step == 1) {
+			stock.put(Resource.coal, stock.get(Resource.coal)+5);
+			if(stock.get(Resource.coal)>24)
+				stock.put(Resource.coal,24);
+			
+			stock.put(Resource.oil, stock.get(Resource.oil)+3);
+			if(stock.get(Resource.oil)>24)
+				stock.put(Resource.oil,24);
+			
+			stock.put(Resource.trash, stock.get(Resource.trash)+2);
+			if(stock.get(Resource.trash)>24)
+				stock.put(Resource.trash,24);
+			
+			stock.put(Resource.uranium, stock.get(Resource.uranium)+1);
+			if(stock.get(Resource.uranium)>12)
+				stock.put(Resource.uranium,12);
+		}
+		if(step == 2) {
+			stock.put(Resource.coal, stock.get(Resource.coal)+6);
+			if(stock.get(Resource.coal)>24)
+				stock.put(Resource.coal,24);
+			
+			stock.put(Resource.oil, stock.get(Resource.oil)+4);
+			if(stock.get(Resource.oil)>24)
+				stock.put(Resource.oil,24);
+			
+			stock.put(Resource.trash, stock.get(Resource.trash)+3);
+			if(stock.get(Resource.trash)>24)
+				stock.put(Resource.trash,24);
+			
+			stock.put(Resource.uranium, stock.get(Resource.uranium)+2);
+			if(stock.get(Resource.uranium)>12)
+				stock.put(Resource.uranium,12);
+		}
+		if(step == 3) {
+			stock.put(Resource.coal, stock.get(Resource.coal)+4);
+			if(stock.get(Resource.coal)>24)
+				stock.put(Resource.coal,24);
+			
+			stock.put(Resource.oil, stock.get(Resource.oil)+5);
+			if(stock.get(Resource.oil)>24)
+				stock.put(Resource.oil,24);
+			
+			stock.put(Resource.trash, stock.get(Resource.trash)+4);
+			if(stock.get(Resource.trash)>24)
+				stock.put(Resource.trash,24);
+			
+			stock.put(Resource.uranium, stock.get(Resource.uranium)+2);
+			if(stock.get(Resource.uranium)>12)
+				stock.put(Resource.uranium,12);
 		
+		}
 	}
 }
