@@ -1,4 +1,6 @@
- import java.util.*;
+ import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 public class Player {
 
 	private int money;
@@ -33,13 +35,13 @@ public class Player {
 		for(int i = 0; i < ownedPlants.size(); i++)
 		{
 			if(ownedPlants.get(i).getResourceType() == Resource.coal || ownedPlants.get(i).getResourceType() == Resource.hybrid)
-				coalSpace += ownedPlants.get(i).getStorageCapacity();
+				coalSpace += ownedPlants.get(i).storageCapacity();
 			if(ownedPlants.get(i).getResourceType() == Resource.oil || ownedPlants.get(i).getResourceType() == Resource.hybrid)
-				oilSpace += ownedPlants.get(i).getStorageCapacity();
+				oilSpace += ownedPlants.get(i).storageCapacity();
 			if(ownedPlants.get(i).getResourceType() == Resource.trash)
-				trashSpace += ownedPlants.get(i).getStorageCapacity();	
+				trashSpace += ownedPlants.get(i).storageCapacity();	
 			if(ownedPlants.get(i).getResourceType() == Resource.uranium)
-				uraniumSpace += ownedPlants.get(i).getStorageCapacity();	
+				uraniumSpace += ownedPlants.get(i).storageCapacity();	
 		}
 		
 		if(r.equals(Resource.coal) && coalSpace - resourcesStored.get(Resource.coal) >= count) {
