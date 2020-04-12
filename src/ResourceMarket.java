@@ -80,8 +80,10 @@ public class ResourceMarket
 		}
 	}
 	
+	// sorry nartney I had to change the code
 	public void restock()
 	{
+		/*
 		int step = GameState.step;
 		if(step == 1) {
 			stock.put(Resource.coal, stock.get(Resource.coal)+5);
@@ -135,5 +137,6 @@ public class ResourceMarket
 				stock.put(Resource.uranium,12);
 		
 		}
+		*/
 	}
 }
