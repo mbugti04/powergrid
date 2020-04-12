@@ -160,7 +160,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	{
 		Rectangle cityRectangle = pieces.get(c);
 		g2.fill(cityRectangle);
-		g2.drawString(c.getName(), cityRectangle.x, cityRectangle.y);
+//		g2.drawString(c.getName(), cityRectangle.x, cityRectangle.y);
 		
 		ArrayList<City> connections = new ArrayList<City>(area.getGraph().get(c).keySet());
 		for (City connec: connections)
