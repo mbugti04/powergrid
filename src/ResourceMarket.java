@@ -10,10 +10,10 @@ import java.util.Scanner;
 
 public class ResourceMarket
 {
-	private HashMap<Resource, Integer> currentStock;
-	private HashMap<Resource, ArrayList<Integer>> restockAmount;
+	public HashMap<Resource, Integer> currentStock;
+	public HashMap<Resource, ArrayList<Integer>> restockAmount;
 	
-	public ResourceMarket(int players)
+	public ResourceMarket()
 	{
 		currentStock = new HashMap<Resource, Integer>();
 		restockAmount = new HashMap<Resource, ArrayList<Integer>>();
@@ -84,7 +84,10 @@ public class ResourceMarket
 		for (int i = 0; i < Resource.values().length; i++)
 		{
 			Resource current = Resource.values()[i];
-			addToCurrentStock(current, restockAmount.get(current).get(step));
+			
+			// hybrid + free aren't in the resource market
+			if (!(current == Resource.hybrid) && !(current == Resource.free))
+				addToCurrentStock(current, restockAmount.get(current).get(step));
 		}
 	}
 	
