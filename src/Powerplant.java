@@ -5,31 +5,34 @@ public class Powerplant
 	private Resource resourceType;
 	private int amountToPower;
 	private int powerProduced;
-	private int storageCapacity;
 	
-	public Powerplant(int name, Resource resource, int amount, int power, int storage) 
+	public Powerplant(int name, Resource resource, int amount, int power) 
 	{
 		this.name = name;
 		this.resourceType = resource;
 		this.amountToPower = amount;
 		this.powerProduced = power;
-		this.storageCapacity = storage;
+	}
+	
+	public int storageCapacity()
+	{
+		return amountToPower * 2;
 	}
 
 	public int getName() {
 		return name;
 	}
+	
 	public Resource getResourceType() {
 		return resourceType;
 	}
+	
 	public int getAmountToPower() {
 		return amountToPower;
 	}
-	public int getpowerProduced() {
+	
+	public int getPowerProduced() {
 		return powerProduced;
-	}
-	public int getStorageCapacity() {
-		return storageCapacity;
 	}
 	
 	public static Comparator<Powerplant> powerNum = new Comparator<Powerplant>() {
@@ -39,5 +42,4 @@ public class Powerplant
 			return pNum1 - pNum2;
 		}
 	};
-	
 }
