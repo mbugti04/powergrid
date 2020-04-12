@@ -10,16 +10,11 @@ import java.util.Scanner;
 
 public class ResourceMarket
 {
-	int step;
-	int players;
 	private HashMap<Resource, Integer> currentStock;
 	private HashMap<Resource, ArrayList<Integer>> restockAmount;
 	
 	public ResourceMarket(int players)
 	{
-		this.step = 1;
-		this.players = players;
-		
 		currentStock = new HashMap<Resource, Integer>();
 		restockAmount = new HashMap<Resource, ArrayList<Integer>>();
 		
@@ -50,7 +45,7 @@ public class ResourceMarket
 				 * It's there to get the correct data if
 				 * the number of players changes
 				 */
-				if (scanner.nextLine().contentEquals(players + ""))
+				if (scanner.nextLine().contentEquals(GameState.playerCount + ""))
 					break;
 			}
 			
@@ -83,60 +78,21 @@ public class ResourceMarket
 	// sorry nartney I had to change the code
 	public void restock()
 	{
-		/*
-		int step = GameState.step;
-		if(step == 1) {
-			stock.put(Resource.coal, stock.get(Resource.coal)+5);
-			if(stock.get(Resource.coal)>24)
-				stock.put(Resource.coal,24);
-			
-			stock.put(Resource.oil, stock.get(Resource.oil)+3);
-			if(stock.get(Resource.oil)>24)
-				stock.put(Resource.oil,24);
-			
-			stock.put(Resource.trash, stock.get(Resource.trash)+2);
-			if(stock.get(Resource.trash)>24)
-				stock.put(Resource.trash,24);
-			
-			stock.put(Resource.uranium, stock.get(Resource.uranium)+1);
-			if(stock.get(Resource.uranium)>12)
-				stock.put(Resource.uranium,12);
-		}
-		if(step == 2) {
-			stock.put(Resource.coal, stock.get(Resource.coal)+6);
-			if(stock.get(Resource.coal)>24)
-				stock.put(Resource.coal,24);
-			
-			stock.put(Resource.oil, stock.get(Resource.oil)+4);
-			if(stock.get(Resource.oil)>24)
-				stock.put(Resource.oil,24);
-			
-			stock.put(Resource.trash, stock.get(Resource.trash)+3);
-			if(stock.get(Resource.trash)>24)
-				stock.put(Resource.trash,24);
-			
-			stock.put(Resource.uranium, stock.get(Resource.uranium)+2);
-			if(stock.get(Resource.uranium)>12)
-				stock.put(Resource.uranium,12);
-		}
-		if(step == 3) {
-			stock.put(Resource.coal, stock.get(Resource.coal)+4);
-			if(stock.get(Resource.coal)>24)
-				stock.put(Resource.coal,24);
-			
-			stock.put(Resource.oil, stock.get(Resource.oil)+5);
-			if(stock.get(Resource.oil)>24)
-				stock.put(Resource.oil,24);
-			
-			stock.put(Resource.trash, stock.get(Resource.trash)+4);
-			if(stock.get(Resource.trash)>24)
-				stock.put(Resource.trash,24);
-			
-			stock.put(Resource.uranium, stock.get(Resource.uranium)+2);
-			if(stock.get(Resource.uranium)>12)
-				stock.put(Resource.uranium,12);
+		// compensating for array index
+		int step = GameState.step - 1;
 		
+		for (int i = 0; i < Resource.values().length; i++)
+		{
+			Resource current = Resource.values()[i];
+			addToCurrentStock(current, restockAmount.get(current).get(step));
 		}
-		*/
+	}
+	
+	public void addToCurrentStock(Resource r, int amt)
+	{
+		int newAmount = currentStock.get(r) + amt;
+		if (newAmount > 24)
+			newAmount = 24;
+		currentStock.put(r, newAmount);
 	}
 }
