@@ -131,4 +131,13 @@ public class Player {
 	}
 	money += income;
 	}
+	
+	public boolean addMoney(int amount)
+	{
+		int initial = this.money;
+		if (initial - amount < 0)
+			return false;
+		this.money += amount;
+		return true;
+	}
 }
