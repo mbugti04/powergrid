@@ -10,6 +10,12 @@ import java.util.Scanner;
 
 public class ResourceMarket
 {
+	public static void main(String[] args)
+	{
+		ResourceMarket r = new ResourceMarket();
+		System.out.println(r.getPrice(Resource.uranium));
+	}
+	
 	public HashMap<Resource, Integer> currentStock;
 	public HashMap<Resource, ArrayList<Integer>> restockAmount;
 	
@@ -28,6 +34,41 @@ public class ResourceMarket
 		currentStock.put(Resource.oil, 18);
 		currentStock.put(Resource.trash, 6);
 		currentStock.put(Resource.uranium, 2);
+	}
+	
+	public boolean purchase(Player p, Resource r)
+	{
+		int resourcePrice = getPrice(r);
+		if (p.addMoney(-resourcePrice))
+		{
+			this.removeFromCurrentStock(r, 1);
+			p.addResourceToStorage(r, 1);
+			return true;
+		}
+		return false;
+	}
+	
+	/* Gets the price of resource
+	 * based on how many are in stock
+	 */
+	public int getPrice(Resource r)
+	{
+		int count = currentStock.get(r);
+		if (!r.equals(Resource.uranium))
+		{
+			return (int)(-1.0/3.0 * count + 9.0);
+		}
+		else
+		{
+			if (count <= 4)
+			{
+				return (int)(-2 * count + 18);
+			}
+			else
+			{
+				return (int)(-count + 13);
+			}
+		}
 	}
 	
 	/* This is the initial setup
@@ -91,11 +132,20 @@ public class ResourceMarket
 		}
 	}
 	
-	public void addToCurrentStock(Resource r, int amt)
+	private void addToCurrentStock(Resource r, int amt)
 	{
 		int newAmount = currentStock.get(r) + amt;
 		if (newAmount > 24)
 			newAmount = 24;
 		currentStock.put(r, newAmount);
+	}
+	
+	private boolean removeFromCurrentStock(Resource r, int amt)
+	{
+		int currentAmount = currentStock.get(r);
+		if (currentAmount - amt < 0)
+			return false;
+		currentStock.put(r, currentAmount - amt);
+		return true;
 	}
 }
