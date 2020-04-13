@@ -1,10 +1,12 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 public class GameState
 {
 	public static int step = 1;
 	public static int playerCount = 4;
 	public Scanner input;
-	public int currentPlayer, turnPhase;
+	public int currentPlayer, turnPhase; // 0=buy power plants. 1=buy resources. 2=building. bueaocracy doesnt have a turn order.
 	public PowerplantMarket plantMarket;
 	public ResourceMarket resourceMarket;
 	public UrbanArea urbanArea;
@@ -25,8 +27,10 @@ public class GameState
 	
 	public void turnOrder()
 	{
-		ArrayList<Player> reTurn = new ArrayList<Player>();
-		
+		if (this.turnPhase == 0)
+			Collections.sort(players);
+		else if (this.turnPhase == 1 || this.turnPhase == 2)
+			Collections.sort(players, Collections.reverseOrder());
 	}
 }
 
