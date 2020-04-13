@@ -136,52 +136,8 @@ public class Player implements Comparable<Player>{
 		return money;
 	}
 
-	public void setMoney(int money) {
-		this.money = money;
-	}
-
 	public int getPoweredHouses() {
 		return poweredHouses;
-	}
-
-	public void setPoweredHouses(int poweredHouses) {
-		this.poweredHouses = poweredHouses;
-	}
-
-	public boolean isHasBid() {
-		return hasBid;
-	}
-
-	public void setHasBid(boolean hasBid) {
-		this.hasBid = hasBid;
-	}
-
-	public boolean isHasBought() {
-		return hasBought;
-	}
-
-	public void setHasBought(boolean hasBought) {
-		this.hasBought = hasBought;
-	}
-
-	public ArrayList<Powerplant> getOwnedPlants() {
-		return ownedPlants;
-	}
-
-	public void setOwnedPlants(ArrayList<Powerplant> ownedPlants) {
-		this.ownedPlants = ownedPlants;
-	}
-
-	public ArrayList<City> getOwnedCities() {
-		return ownedCities;
-	}
-
-	public void setOwnedCities(ArrayList<City> ownedCities) {
-		this.ownedCities = ownedCities;
-	}
-
-	public HashMap<Resource, Integer> getResourcesStored() {
-		return resourcesStored;
 	}
 	
 	public boolean addMoney(int amount)
