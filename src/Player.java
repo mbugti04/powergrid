@@ -1,7 +1,7 @@
  import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-public class Player {
+public class Player implements Comparable<Player>{
 
 	private int money;
 	private int poweredHouses;
@@ -105,6 +105,15 @@ public class Player {
 		}
 		return false;
 	}
+	public int addPowerplants()
+	{
+		int number = 0;
+		for(int x = 0; x < ownedPlants.size(); x++)
+		{
+			number = number + ownedPlants.get(x).getName();
+		}
+		return number;
+	}
 	public void income() {
 	int income = 0;
 	int increment = 11;
@@ -186,6 +195,43 @@ public class Player {
 
 	public void setResourcesStored(HashMap<Resource, Integer> resourcesStored) {
 		this.resourcesStored = resourcesStored;
+	}
+
+	@Override
+	public int compareTo(Player other) 
+	{
+		if(this.getPoweredHouses() > other.getPoweredHouses())
+		{
+			return 1;
+		}
+		else if(this.getPoweredHouses() < other.getPoweredHouses())
+		{
+			return -1;
+		}
+		else if(this.getPoweredHouses() == other.getPoweredHouses())
+		{
+			if(this.addPowerplants() > other.addPowerplants())
+			{
+				return 1;
+			}
+			else if(this.addPowerplants() < other.addPowerplants())
+			{
+				return -1;
+			}
+			else if(this.addPowerplants() == other.addPowerplants())
+			{
+				if(this.getMoney() > other.getMoney())
+				{
+					return 1;
+				}
+				else if(this.getMoney() < other.getMoney())
+				{
+					return -1;
+				}
+			}
+		}
+		return 0;
+		
 	}
 	
 	
