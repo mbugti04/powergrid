@@ -160,6 +160,10 @@ public class Player implements Comparable<Player>{
 		return money;
 	}
 
+	public ArrayList<City> getCities() {
+		return ownedCities;
+	}
+	
 	public int getPoweredHouses() {
 		return poweredHouses;
 	}
