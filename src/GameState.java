@@ -11,7 +11,8 @@ public class GameState
 	public ResourceMarket resourceMarket;
 	public UrbanArea urbanArea;
 	public ArrayList<Player> players;
-	public boolean endGame;
+	public boolean hasEnded = false;
+	public boolean initialSetup = true;
 	
 	public GameState()
 	{
@@ -22,7 +23,31 @@ public class GameState
 		resourceMarket = new ResourceMarket();
 		urbanArea = new UrbanArea();
 		players = new ArrayList<Player>();
-		endGame = false;
+	}
+	
+	public void gameLoop()
+	{
+		while (!hasEnded)
+		{
+			if (initialSetup)
+			{
+				// select regions
+				
+				// determine initial player order
+				
+				// set up plant market, resource market
+			}
+			
+			// determine player order
+			
+			// buying powerplants
+			
+			// building houses
+			
+			// powering houses
+			
+			// getting money phase
+		}
 	}
 	
 	public void turnOrder()
