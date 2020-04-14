@@ -32,5 +32,35 @@ public class GameState
 		else if (this.turnPhase == 1 || this.turnPhase == 2)
 			Collections.sort(players, Collections.reverseOrder());
 	}
+	
+	public void bid()
+	{
+		//TODO finish the method
+	}
+	
+	public void updateStage()
+	{
+		//TODO finish the method
+	}
+	
+	public void whoWon()
+	{
+		//TODO finish the method
+	}
+	
+	public void buyResource()
+	{
+		//TODO finish the method
+	}
+	
+	public void buyCity()
+	{
+		//TODO finish the method
+	}
+	
+	public void initialiseCities()
+	{
+		//TODO finish the method
+	}
 }
 
