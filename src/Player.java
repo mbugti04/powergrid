@@ -65,14 +65,17 @@ public class Player implements Comparable<Player>{
 	}
 	public boolean addPowerPlant(Powerplant pp) {
 		
-		Scanner input = new Scanner(System.in);
+//		Scanner input = new Scanner(System.in);
 		String ans;
 		int ppAns;
-		if(ownedPlants.size() < 3) {
+		if(ownedPlants.size() < 3)
+		{
 			ownedPlants.add(pp);
-			input.close();
+//			input.close();
 			return true;
 		}
+		return false;
+		/*
 		else {
 			System.out.println("You have 3 Powerplants already. "
 					+ "Do you want to discard one? Y or N. If you choose N, the current powerplant (powerplant #"+pp.getName()+")"
@@ -91,6 +94,27 @@ public class Player implements Comparable<Player>{
 		}
 		input.close();
 		return false;
+		*/
+	}
+	
+	/* If a player were to add a powerplant
+	 * and their inventory were full,
+	 * addPowerPlant would return false
+	 * and then GameState would ask them
+	 * if they want to replace a powerplant.
+	 * If they do, then the player will see
+	 * the options to replace and
+	 * GameState will call this method
+	 * with a powerplant to replace
+	 * as input
+	 */
+	public boolean replacePowerplant(Powerplant toBeReplaced, Powerplant replacer)
+	{
+		boolean completed = false;
+		if (ownedPlants.remove(toBeReplaced))
+			completed = true;
+		ownedPlants.add(replacer);
+		return completed;
 	}
 	
 	public boolean removePowerplant(Powerplant pp) {
