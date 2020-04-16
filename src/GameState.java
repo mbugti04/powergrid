@@ -68,9 +68,18 @@ public class GameState
 		//TODO finish the method
 	}
 	
-	public void whoWon()
+	public String whoWon()
 	{
-		int w;
+		/* result stores and returns the result
+		 * at the end. It either returns 'tie'
+		 * or the index of the player that won.
+		 * It also returns the data of each player
+		 * including their powered houses,
+		 * money, and cities owned at the end.
+		 */
+		String result = "";
+		
+		int winner;
 		int index;
 		int[] powerableHouses = new int[playerCount];
 		int[] moneys = new int[playerCount];
@@ -80,21 +89,42 @@ public class GameState
 			moneys[i] = players.get(i).getMoney();
 			numCities[i] = players.get(i).getCities().size();
 		}
-		w = getMax(powerableHouses);
-		if(w == -1) {
-			w = getMax(moneys);
-			if(w == -1) {
-				w = getMax(numCities);
-				if(w == -1) {
-					System.out.println("It's a tie!");
+		winner = getMax(powerableHouses);
+		if(winner == -1) {
+			winner = getMax(moneys);
+			if(winner == -1) {
+				winner = getMax(numCities);
+				if(winner == -1) {
+//					System.out.println("It's a tie!");
+					result = "tie";
 				}
-				else System.out.println("The winner is Player #" + players.get(getIndex(numCities, w))+"!");
+				else
+//					System.out.println("The winner is Player #" + players.get(getIndex(numCities, winner))+"!");
+					result = "" + getIndex(numCities, winner);
 			}
-			else System.out.println("The winner is Player #" + players.get(getIndex(moneys, w))+"!");
+			else 
+//				System.out.println("The winner is Player #" + players.get(getIndex(moneys, winner))+"!");
+				result = "" + getIndex(moneys, winner);
 		}
-		else System.out.println("The winner is Player #" + players.get(getIndex(powerableHouses, w))+"!");
-		displayResults(powerableHouses, moneys, numCities);
+		else
+//			System.out.println("The winner is Player #" + players.get(getIndex(powerableHouses, winner))+"!");
+			result = "" + getIndex(powerableHouses, winner);
+		
+		result += "\n" + getResults(powerableHouses, moneys, numCities);
 		hasEnded = true;
+		
+		return result;
+	}
+	
+	/* returs the results formatted as such:
+	 * player powerableHouses money citiesOwned
+	 */
+	public String getResults(int[] ph, int[]m, int[] nc)
+	{
+		String res = "";
+		for(int i = 1; i <= playerCount; i++)
+			res += i + " " + ph[i - 1] + " " + m[i - 1] + " " + nc[i - 1] + "\n";
+		return res;
 	}
 	
 	public void displayResults(int[] ph, int[]m, int[] nc) {
