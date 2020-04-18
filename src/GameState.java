@@ -59,8 +59,29 @@ public class GameState
 	}
 	
 	public void bid()
-	{
-		//TODO finish the method
+	{	
+		turnOrder();
+		Scanner input = new Scanner(System.in);
+		int plant;
+		
+		ArrayList<Boolean> hasBid = new ArrayList<>();
+		for(int b = 0; b < players.size(); b++)
+			hasBid.set(b, false);
+		ArrayList<Powerplant> availablePlants;
+		availablePlants = plantMarket.getPlantsAvailable();
+		
+		//idk how this will work graphically so I'll just write it as if it was text based
+		System.out.println("It is time for bidding.");
+		for(int i = 0; i < players.size(); i++) {
+		System.out.println("Player #" + players.get(i)+ ", would you like to bid or pass?");
+		String ans = input.next();
+		if(ans.equals("bid")) {
+			System.out.println("Choose the index of the powerplant to bid on");
+			int ansPP = input.nextInt();
+			for(int j = 1; j < players.size(); j++)
+				System.out.println("Player #" + players.get(i)+", would you like to increase the bid or pass?");
+		}
+		}
 	}
 	
 	public void updateStage()
