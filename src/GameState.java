@@ -38,15 +38,15 @@ public class GameState
 				// set up plant market, resource market
 			}
 			
-			// determine player order
+			this.turnOrder();
 			
-			// buying powerplants
+			this.bid();
+			
+			this.buyResource();
 			
 			// building houses
 			
-			// powering houses
-			
-			// getting money phase
+			this.updateStage();
 		}
 	}
 	
@@ -82,11 +82,19 @@ public class GameState
 				System.out.println("Player #" + players.get(i)+", would you like to increase the bid or pass?");
 		}
 		}
+		//TODO carry out the buying procedure
 	}
 	
 	public void updateStage()
 	{
-		//TODO finish the method
+		
+		for(int x = 0; x < players.size(); x++) {
+			players.get(x).income();
+			//TODO removing resources from each player
+		}
+		resourceMarket.restock();
+		plantMarket.restock();
+		//TODO make sure that it removes the first card from the arraylist, or the last, based on stage
 	}
 	
 	public String whoWon()
