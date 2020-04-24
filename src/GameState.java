@@ -6,7 +6,7 @@ public class GameState
 	public static int step = 1;
 	public static int playerCount = 4;
 	public Scanner input;
-	public int currentPlayer, turnPhase; // 0=buy power plants. 1=buy resources. 2=building. bueaocracy doesnt have a turn order.
+	public int currentPlayer, turnPhase; // 0=buy power plants. 1=buy resources. 2=building. beaurocracy doesnt have a turn order.
 	public PowerplantMarket plantMarket;
 	public ResourceMarket resourceMarket;
 	public UrbanArea urbanArea;
@@ -155,7 +155,29 @@ public class GameState
 	
 	public void buyResource()
 	{
-		//TODO finish the method
+		Scanner input = new Scanner(System.in);
+		for(int x = 0; x < players.size();x++) {
+			System.out.println("Coal:" + resourceMarket.getPrice(Resource.coal));
+			System.out.println("Oil:" + resourceMarket.getPrice(Resource.oil));
+			System.out.println("Trash:" + resourceMarket.getPrice(Resource.trash));
+			System.out.println("Uranium:" + resourceMarket.getPrice(Resource.uranium));
+			System.out.println("What resource would you like to purchase? Please input either \"coal\", \"oil\", \"trash\", or \"uranium\"");
+			String ans = input.next();
+			if(ans == "oil") {
+				resourceMarket.purchase(players.get(x),Resource.oil); 
+			}
+			else if(ans == "coal") {
+				resourceMarket.purchase(players.get(x),Resource.coal); 
+			}
+			else if(ans == "trash") {
+				resourceMarket.purchase(players.get(x),Resource.trash); 
+			}
+			else if(ans == "uranium") {
+				resourceMarket.purchase(players.get(x),Resource.uranium); 
+			}
+			else
+				continue;
+		}
 	}
 	
 	public void buyCity()
