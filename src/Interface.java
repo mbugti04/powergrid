@@ -5,8 +5,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -15,14 +16,14 @@ import javax.swing.JPanel;
 
 public class Interface extends JPanel implements MouseListener, MouseMotionListener
 {
-	GameState state;
+	GameState state = new GameState();
 	static int width = 1920, height = 1080;
 	
-	HashMap<String, BufferedImage> images;
+	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	
 	// states
-	boolean initial = false;
-	boolean ingame = true;
+	private boolean initial = false;
+	private boolean ingame = true;
 	
 	public Interface()
 	{
@@ -36,12 +37,15 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		f.add(this);
 		f.setSize(this.getSize());
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		state = new GameState();
-		images = new HashMap<String, BufferedImage>();
 		
-		importImages();
+		mainSetup();
 		
 		f.setVisible(true);
+	}
+	
+	private void mainSetup()
+	{
+		imageSetup();
 	}
 	
 	public void paint(Graphics g)
@@ -71,6 +75,47 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 //		g2.drawImage(images.get("water.png"), 0, 0, null);
 	}
 	
+	private void imageSetup()
+	{
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream("/text/imageNames.txt")));
+			// TODO: get an actual path
+			String nextLine = reader.readLine();
+			
+			int val = 0;
+			while (nextLine != null)
+			{
+				BufferedImage img = loadImage("images/" + nextLine);
+				// TODO: store images somewhere
+				images.put(nextLine, img);
+				nextLine = reader.readLine();
+			}
+			System.out.println(images.keySet());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private BufferedImage loadImage(String path)
+	{
+		BufferedImage img = null;
+		try
+		{
+			img = ImageIO.read(getClass().getResource(path));
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		return img;
+	}
+	
+	/*
 	public void importImages()
 	{
 		File imageFiles[] = new File("assets/").listFiles();
@@ -87,7 +132,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 					e.printStackTrace();
 				}
 		}
-	}
+	}*/
 
 	@Override
 	public void mouseDragged(MouseEvent m)

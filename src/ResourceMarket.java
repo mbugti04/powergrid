@@ -2,11 +2,12 @@
  * First time setup-
  * 24 coal, 18 oil, 6 trash, 2 uranium
  */
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class ResourceMarket
 {
@@ -79,15 +80,23 @@ public class ResourceMarket
 	{
 		try
 		{
-			Scanner scanner = new Scanner(new File("src/restockData.txt"));
-			while (scanner.hasNextLine())
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream("/text/restockData.txt")));
+			String nextLine = reader.readLine();
+			
+			while (nextLine != null)
 			{
 				/* If data matches the current number of players.
 				 * It's there to get the correct data if
 				 * the number of players changes
 				 */
-				if (scanner.nextLine().contentEquals(GameState.playerCount + ""))
+				
+				if (nextLine.contentEquals(GameState.playerCount + ""))
+				{
+					nextLine = reader.readLine();
 					break;
+				}
+				nextLine = reader.readLine();
 			}
 			
 			/* goes through each resource
@@ -95,11 +104,10 @@ public class ResourceMarket
 			 * that will be restocked
 			 * at the end of each stage
 			 */
-			while (scanner.hasNext())
+			while (nextLine != null)
 			{
-				String next = scanner.nextLine();
-				String name = next.substring(0, next.indexOf(" "));
-				String[] data = next.substring(next.indexOf(" ") + 1).split(" ");
+				String name = nextLine.substring(0, nextLine.indexOf(" "));
+				String[] data = nextLine.substring(nextLine.indexOf(" ") + 1).split(" ");
 				
 				/* converts the data from string to int */
 				ArrayList<Integer> intData = new ArrayList<Integer>();
@@ -108,9 +116,14 @@ public class ResourceMarket
 				
 				restockAmount.put(Resource.valueOf(name), intData);
 				
+				nextLine = reader.readLine();
 			}
 		}
 		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
