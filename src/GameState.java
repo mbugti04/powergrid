@@ -180,7 +180,7 @@ public class GameState
 		return result;
 	}
 	
-	/* returs the results formatted as such:
+	/* returns the results formatted as such:
 	 * player powerableHouses money citiesOwned
 	 */
 	public String getResults(int[] ph, int[]m, int[] nc)
@@ -191,7 +191,8 @@ public class GameState
 		return res;
 	}
 	
-	public void displayResults(int[] ph, int[]m, int[] nc) {
+	public void displayResults(int[] ph, int[]m, int[] nc) 
+	{
 		for(int i = 1; i <= playerCount; i++)
 			System.out.println("Player #"+i+" - Powerable Houses:"+ph[i-1]+", Money: "+m[i-1]+", Number of Cities Owned:"+nc[i-1]);
 	}
@@ -199,7 +200,8 @@ public class GameState
 	public void buyResource()
 	{
 		Scanner input = new Scanner(System.in);
-		for(int x = 0; x < players.size();x++) {
+		for(int x = 0; x < players.size();x++) 
+		{
 			System.out.println("Coal:" + resourceMarket.getPrice(Resource.coal));
 			System.out.println("Oil:" + resourceMarket.getPrice(Resource.oil));
 			System.out.println("Trash:" + resourceMarket.getPrice(Resource.trash));
@@ -233,7 +235,8 @@ public class GameState
 		//TODO finish the method
 	}
 	
-	public ArrayList<Player> rotate(ArrayList<Player> list){
+	public ArrayList<Player> rotate(ArrayList<Player> list)
+	{
 		ArrayList<Player> newList = new ArrayList<Player>();
 		newList.set(0, list.get(list.size()-1));
 		for(int i = 1; i < list.size()-1; i++)
