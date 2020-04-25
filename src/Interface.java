@@ -64,10 +64,11 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		}
 		if (ingame)
 		{
-			tempDraw(g2);
+			drawMap(g2);
 		}
 	}
 	
+	// draws start button, quit button, and background
 	public void drawMainMenu(Graphics2D g2)
 	{
 		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
@@ -75,10 +76,9 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 			b.draw(g2);
 	}
 	
-	public void tempDraw(Graphics2D g2)
+	public void drawMap(Graphics2D g2)
 	{
 		g2.drawImage(images.get("map.png"), -200, -300, null);
-//		g2.drawImage(images.get("water.png"), 0, 0, null);
 	}
 	
 	private void imageSetup()
@@ -207,7 +207,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void mousePressed(MouseEvent m)
 	{
-		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
