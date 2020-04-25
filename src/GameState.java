@@ -63,10 +63,18 @@ public class GameState
 		turnOrder();
 		Scanner input = new Scanner(System.in);
 		int plant;
+		boolean bidOver = false;
 		
-		ArrayList<Boolean> hasBid = new ArrayList<>();
+		int[] stillBidding = new int[playerCount];
+		for(int sb = 0; sb < stillBidding.length; sb++)
+			stillBidding[sb] = sb;
+		
+		ArrayList<Player> order2 = new ArrayList<Player>();
+		order2 = players;
+		ArrayList<Boolean> hasBid = new ArrayList<Boolean>();
 		for(int b = 0; b < players.size(); b++)
 			hasBid.set(b, false);
+		
 		ArrayList<Powerplant> availablePlants;
 		availablePlants = plantMarket.getPlantsAvailable();
 		
@@ -75,14 +83,33 @@ public class GameState
 		for(int i = 0; i < players.size(); i++) {
 		System.out.println("Player #" + players.get(i)+ ", would you like to bid or pass?");
 		String ans = input.next();
-		if(ans.equals("bid")) {
+		if(ans.equals("pass")) {
+			order2 = rotate(order2);
+			continue;
+		}
+		if(ans.equals("bid")) 
+		{
 			System.out.println("Choose the index of the powerplant to bid on");
 			int ansPP = input.nextInt();
-			for(int j = 1; j < players.size(); j++)
-				System.out.println("Player #" + players.get(i)+", would you like to increase the bid or pass?");
-		}
+			
+			
+			
+			String ansPP2;
+			hasBid.set(0, true);
+			for(int j = 1; j < order2.size(); j++) 
+			{
+				System.out.println("Player #" + players.get(i)+
+						", would you like to increase the bid or pass on Powerplant #"+availablePlants.get(ansPP).getName()+"?");
+				ansPP2 = input.next();
+				if(ansPP2.equals("pass"))
+					continue;
+				if(ansPP2.equals("bid"))
+					hasBid.set(j, true);
+			}
+		}	
 		}
 		//TODO carry out the buying procedure
+		
 	}
 	
 	public void updateStage()
@@ -197,6 +224,17 @@ public class GameState
 	{
 		//TODO finish the method
 	}
+	
+	public ArrayList<Player> rotate(ArrayList<Player> list){
+		ArrayList<Player> newList = new ArrayList<Player>();
+		newList.set(0, list.get(list.size()-1));
+		for(int i = 1; i < list.size()-1; i++)
+		{
+			newList.set(i, list.get(i));
+		}
+		return newList;
+	}
+	
 	public int getMax(int[] x) {
 		int max = x[0];
 		boolean isTie = false;
