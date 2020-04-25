@@ -1,4 +1,44 @@
-Seattle purple 0.040 0.064
-Houston red 0.511 0.790
+Seattle/purple/0.040/0.064
+Portland/purple//
+Boise/purple//
+Billings/purple//
+Cheyenne/purple//
+Denver/purple//
+Omaha/purple//
+San Francisco/blue//
+Salt Lake City/blue//
+Las Vegas/blue//
+Santa Fe/blue//
+Los Angeles/blue//
+Phoenix/blue//
+San Diego/blue//
+Kansas City/red//
+Oklahoma City/red//
+Dallas/red//
+Houston/red/0.511/0.790
+Memphis/red//
+New Orleans/red//
+Birmingham/red//
+Fargo/yellow//
+Duluth/yellow//
+Minneapolis/yellow//
+Chicago/yellow//
+St. Louis/yellow//
+Cincinnati/yellow//
+Knoxville/yellow//
+Norfolk/green//
+Raleigh/green//
+Savannah/green//
+Atlanta/green//
+Jacksonville/green//
+Tampa/green//
+Miami/green//
+Detroit/orange//
+Pittsburgh/orange//
+Buffalo/orange//
+Washington/orange//
+Philadelphia/orange//
+New York/orange//
+Boston/orange//
 !!!connections
 Seattle=Portland 3,Boise 12,Billings 9
