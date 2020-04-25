@@ -26,6 +26,13 @@ public class GameState
 		resourceMarket = new ResourceMarket();
 		urbanArea = new UrbanArea();
 		players = new ArrayList<Player>();
+		
+		mainSetup();
+	}
+	
+	private void mainSetup()
+	{
+		initialiseCities();
 	}
 	
 	public void gameLoop()
@@ -245,15 +252,38 @@ public class GameState
 			
 			String nextLine = reader.readLine();
 			
-			while (nextLine != null)
+			while (!nextLine.equals("!!!connections"))
 			{
+				String name = nextLine.substring(0, nextLine.indexOf(" "));
+				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
 				
+				String region = nextLine.substring(0, nextLine.indexOf(" "));
+				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
+				
+				String xcoord = nextLine.substring(0, nextLine.indexOf(" "));
+				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
+				
+				String ycoord = nextLine;
+				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
+				
+				City c = new City(name, Region.valueOf(region), Double.parseDouble(xcoord), Double.parseDouble(ycoord));
+				
+				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s", name, region, xcoord, ycoord);
+				
+				urbanArea.addCity(c);
+				
+				nextLine = reader.readLine();
 			}
 		}
 		catch (IOException e)
 		{
 			
 		}
+	}
+	
+	public static void main(String[] args)
+	{
+		GameState state = new GameState();
 	}
 	
 	public ArrayList<Player> rotate(ArrayList<Player> list)

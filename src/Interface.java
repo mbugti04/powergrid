@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -65,6 +66,19 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		if (ingame)
 		{
 			drawMap(g2);
+			
+			// drawing cities TODO very temporary
+			
+			ArrayList<City> cities = new ArrayList<City>(state.urbanArea.cities.keySet());
+			
+			// 393, 190
+			for (City c: cities)
+			{
+				int x = 393 + (int)(c.getX() * 1480);
+				int y = 190 + (int)(c.getY() * 754);
+				
+				g2.fillOval(x, y, 15, 15);
+			}
 		}
 	}
 	

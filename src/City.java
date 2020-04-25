@@ -1,13 +1,17 @@
 
 public class City
 {
+	private double cityx, cityy;
 	private String name;
-	private int currentNumOfHouses;
+	private int currentNumOfHouses = 0;
 	private Region region;
 	
-	public City(String name)
+	public City(String name, Region region, double x, double y)
 	{
 		this.name = name;
+		this.region = region;
+		this.cityx = x;
+		this.cityy = y;
 	}
 	
 	/* Cost to build based on number of houses built.
@@ -42,7 +46,17 @@ public class City
 		int step = GameState.step;
 		return step - currentNumOfHouses;
 	}
-		
+	
+	public double getX()
+	{
+		return cityx;
+	}
+	
+	public double getY()
+	{
+		return cityy;
+	}
+	
 	public String toString()
 	{
 		return name + ": " + currentNumOfHouses;

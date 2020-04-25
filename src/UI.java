@@ -55,10 +55,10 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		// temp code? //
 		area = new UrbanArea();
 		
-		area.addCity(new City("Houston"));
-		area.addCity(new City("Dallas"));
-		area.addCity(new City("Austin"));
-		area.addCity(new City("New Orleans"));
+//		area.addCity(new City("Houston"));
+//		area.addCity(new City("Dallas"));
+//		area.addCity(new City("Austin"));
+//		area.addCity(new City("New Orleans"));
 //		area.addCity(new City("Austin"));
 		
 		allCities = new ArrayList<City>();

@@ -4,7 +4,7 @@ import java.util.HashSet;
 // this is a 'graph' class for the cities
 public class UrbanArea
 {
-	private HashMap<City, HashMap<City, Integer>> cities = new HashMap<>();
+	HashMap<City, HashMap<City, Integer>> cities = new HashMap<>();
 
 	public void addCity(City c)
 	{
