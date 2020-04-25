@@ -41,4 +41,8 @@ Philadelphia/orange//
 New York/orange//
 Boston/orange//
 !!!connections
-Seattle=Portland 3,Boise 12,Billings 9
+Seattle/Portland/3
+Seattle/Boise/12
+Seattle/Billings/9
+Portland/Boise/13
+Boise/Billings/12
