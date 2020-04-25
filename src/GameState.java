@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -228,9 +231,27 @@ public class GameState
 		//TODO finish the method
 	}
 	
+	/* creates the cities
+	 * and adds them to urbanArea
+	 */
 	public void initialiseCities()
 	{
-		//TODO finish the method
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream("/text/cities.txt")));
+			
+			String nextLine = reader.readLine();
+			
+			while (nextLine != null)
+			{
+				
+			}
+		}
+		catch (IOException e)
+		{
+			
+		}
 	}
 	
 	public ArrayList<Player> rotate(ArrayList<Player> list){
