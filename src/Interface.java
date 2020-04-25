@@ -21,9 +21,11 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	
+	HashMap<String, Button> mainMenuButtons = new HashMap<String, Button>();
+	
 	// states
-	private boolean initial = false;
-	private boolean ingame = true;
+	private boolean initial = true;
+	private boolean ingame = false;
 	
 	public Interface()
 	{
@@ -46,6 +48,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	private void mainSetup()
 	{
 		imageSetup();
+		mainMenuSetup();
 	}
 	
 	public void paint(Graphics g)
@@ -53,6 +56,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.clearRect(0, 0, width, height);
 		
 		if (initial)
 		{
@@ -64,9 +68,11 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		}
 	}
 	
-	public void drawMainMenu(Graphics g2)
+	public void drawMainMenu(Graphics2D g2)
 	{
-		
+		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
+		for (Button b: mainMenuButtons.values())
+			b.draw(g2);
 	}
 	
 	public void tempDraw(Graphics2D g2)
@@ -81,14 +87,12 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		{
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(getClass().getResourceAsStream("/text/imageNames.txt")));
-			// TODO: get an actual path
 			String nextLine = reader.readLine();
 			
 			int val = 0;
 			while (nextLine != null)
 			{
 				BufferedImage img = loadImage("images/" + nextLine);
-				// TODO: store images somewhere
 				images.put(nextLine, img);
 				nextLine = reader.readLine();
 			}
@@ -113,6 +117,15 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 			e.printStackTrace();
 		}
 		return img;
+	}
+	
+	private void mainMenuSetup()
+	{
+		Button start = new Button("start", width / 2 - Button.normalw / 2, height / 2, Button.normalw, Button.normalh);
+		Button quit = new Button("quit", width / 2 - Button.normalw / 2, height / 2 + Button.normalh * 2,
+				Button.normalw, Button.normalh);
+		mainMenuButtons.put(start.name, start);
+		mainMenuButtons.put(quit.name, quit);
 	}
 	
 	/*
@@ -151,8 +164,30 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void mouseClicked(MouseEvent m)
 	{
-		// TODO Auto-generated method stub
+		System.out.println(m.getX() + ", " + m.getY());
 		
+		if (initial)
+		{
+			for (Button b: mainMenuButtons.values())
+			{
+				if (b.inBounds(m))
+				{
+					b.press();
+					System.out.println("pressed " + b.name + " and it is now " + b.isPressed());
+				}
+			}
+			if (mainMenuButtons.get("start").isPressed())
+			{
+				initial = false;
+				ingame = true;
+				System.out.println("game has started");
+			}
+			if (mainMenuButtons.get("quit").isPressed())
+			{
+				System.out.println("game has ended");
+				System.exit(0);
+			}
+		}
 	}
 
 	@Override
@@ -172,7 +207,6 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void mousePressed(MouseEvent m)
 	{
-		// TODO Auto-generated method stub
 		
 	}
 
