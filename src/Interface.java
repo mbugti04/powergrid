@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -18,7 +19,9 @@ import javax.swing.JPanel;
 public class Interface extends JPanel implements MouseListener, MouseMotionListener
 {
 	GameState state = new GameState();
+	
 	static int width = 1920, height = 1080;
+	static double scale = 1;
 	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	
@@ -68,16 +71,14 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 			drawMap(g2);
 			
 			// drawing cities TODO very temporary
-			
 			ArrayList<City> cities = new ArrayList<City>(state.urbanArea.cities.keySet());
 			
-			// 393, 190
+			int citySize = 70;
+			int scaleX = scale(1480, scale), scaleY = scale(754, scale);
+			
 			for (City c: cities)
 			{
-				int x = 393 + (int)(c.getX() * 1480);
-				int y = 190 + (int)(c.getY() * 754);
-				
-				g2.fillOval(x, y, 15, 15);
+				drawCity(g2, c, scaleX, scaleY, citySize);
 			}
 		}
 	}
@@ -92,7 +93,35 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	
 	public void drawMap(Graphics2D g2)
 	{
-		g2.drawImage(images.get("map.png"), -200, -300, null);
+		BufferedImage map = images.get("map.png");
+		g2.drawImage(map, -200, -300, scale(map.getWidth(), scale), scale(map.getHeight(), scale), null); // original was -200, -300
+	}
+	
+	public int scale(int initial, double scale)
+	{
+		return (int)(initial * scale);
+	}
+	
+	public void drawCity(Graphics2D g2, City c, int sx, int sy, int size)
+	{
+		int startx = 395;
+		int starty = 190;
+		int x = startx + (int)(c.getX() * sx);
+		int y = starty + (int)(c.getY() * sy);
+		
+		g2.setColor(new Color(0, 0, 0));
+		g2.fillOval(x - size / 2, y - size / 2, size, size);
+		
+		g2.setColor(new Color(120, 120, 120));
+		g2.fillRect(x - size / 2, y + size / 4, size, size / 3);
+	}
+	
+	// TODO temp
+	public void info()
+	{
+//		System.out.println("City size: " + citySizeSlider.getValue());
+//		System.out.println("map size: " + mapSizeSlider.getValue() / 100.);
+//		System.out.println("centre: " + centre);
 	}
 	
 	private void imageSetup()
@@ -201,6 +230,10 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 				System.out.println("game has ended");
 				System.exit(0);
 			}
+		}
+		if (ingame)
+		{
+			
 		}
 	}
 
