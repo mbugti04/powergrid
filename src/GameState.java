@@ -115,7 +115,7 @@ public class GameState
 				order.remove(bidWinner);
 				bidWinner.money -= theBid;
 
-				//not done
+				//not done 
 				}
 				else 
 				{

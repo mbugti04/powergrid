@@ -186,7 +186,6 @@ public class Player implements Comparable<Player>{
 		}
 		return number;
 	}
-	
 	@Override
 	public int compareTo(Player other) 
 	{
