@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 public class Player implements Comparable<Player>{
 
-	private int money;
+	public int money;
 	private int poweredHouses;
 	
 	private boolean hasBid;
