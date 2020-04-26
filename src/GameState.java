@@ -299,22 +299,23 @@ public class GameState
 			String nextLine = reader.readLine();
 			
 			while (!nextLine.equals("!!!connections"))
+//			while (!nextLine.equals("toki wo tomare"))
 			{
-				String name = nextLine.substring(0, nextLine.indexOf(" "));
-				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
+				String name = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
 				
-				String region = nextLine.substring(0, nextLine.indexOf(" "));
-				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
+				String region = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
 				
-				String xcoord = nextLine.substring(0, nextLine.indexOf(" "));
-				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
+				String xcoord = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
 				
 				String ycoord = nextLine;
-				nextLine = nextLine.substring(nextLine.indexOf(" ") + 1);
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
 				
 				City c = new City(name, Region.valueOf(region), Double.parseDouble(xcoord), Double.parseDouble(ycoord));
 				
-				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s", name, region, xcoord, ycoord);
+				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s\n", name, region, xcoord, ycoord);
 				
 				urbanArea.addCity(c);
 				

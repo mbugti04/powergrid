@@ -1,48 +1,130 @@
-Seattle/purple/0.040/0.064
-Portland/purple//
-Boise/purple//
-Billings/purple//
-Cheyenne/purple//
-Denver/purple//
-Omaha/purple//
-San Francisco/blue//
-Salt Lake City/blue//
-Las Vegas/blue//
-Santa Fe/blue//
-Los Angeles/blue//
-Phoenix/blue//
-San Diego/blue//
-Kansas City/red//
-Oklahoma City/red//
-Dallas/red//
-Houston/red/0.511/0.790
-Memphis/red//
-New Orleans/red//
-Birmingham/red//
-Fargo/yellow//
-Duluth/yellow//
-Minneapolis/yellow//
-Chicago/yellow//
-St. Louis/yellow//
-Cincinnati/yellow//
-Knoxville/yellow//
-Norfolk/green//
-Raleigh/green//
-Savannah/green//
-Atlanta/green//
-Jacksonville/green//
-Tampa/green//
-Miami/green//
-Detroit/orange//
-Pittsburgh/orange//
-Buffalo/orange//
-Washington/orange//
-Philadelphia/orange//
-New York/orange//
-Boston/orange//
+Seattle/purple/0.056/0.061
+Portland/purple/0.031/0.179
+Boise/purple/0.153/0.265
+Billings/purple/0.296/0.179
+Cheyenne/purple/0.352/0.345
+Denver/purple/0.344/0.435
+Omaha/purple/0.494/0.371
+San Francisco/blue/0.054/0.519
+Salt Lake City/blue/0.232/0.408
+Las Vegas/blue/0.171/0.578
+Santa Fe/blue/0.328/0.609
+Los Angeles/blue/0.104/0.656
+Phoenix/blue/0.231/0.702
+San Diego/blue/0.136/0.713
+Kansas City/red/0.508/0.49
+Oklahoma City/red/0.476/0.638
+Dallas/red/0.487/0.74
+Houston/red/0.496/0.855
+Memphis/red/0.587/0.64
+New Orleans/red/0.588/0.843
+Birmingham/red/0.645/0.705
+Fargo/yellow/0.468/0.159
+Duluth/yellow/0.544/0.123
+Minneapolis/yellow/0.532/0.22
+Chicago/yellow/0.615/0.365
+St. Louis/yellow/0.586/0.505
+Cincinnati/yellow/0.69/0.466
+Knoxville/yellow/0.695/0.596
+Norfolk/green/0.826/0.599
+Raleigh/green/0.784/0.642
+Savannah/green/0.753/0.74
+Atlanta/green/0.697/0.699
+Jacksonville/green/0.74/0.836
+Tampa/green/0.723/0.938
+Miami/green/0.769/0.996
+Detroit/orange/0.7/0.312
+Pittsburgh/orange/0.773/0.406
+Buffalo/orange/0.8/0.296
+Washington/orange/0.823/0.48
+Philadelphia/orange/0.868/0.437
+New York/orange/0.889/0.373
+Boston/orange/0.927/0.294
 !!!connections
 Seattle/Portland/3
 Seattle/Boise/12
 Seattle/Billings/9
 Portland/Boise/13
+Portland/San Francisco/24
 Boise/Billings/12
+Boise/San Francisco/23
+Boise/Salt Lake City/8
+San Francisco/Salt Lake City/27
+San Francisco/Las Vegas/14
+San Francisco/Los Angeles/9
+Salt Lake City/Las Vegas/19
+Salt Lake City/Denver/21
+Los Angeles/San Diego/3
+Los Angeles/Las Vegas/9
+San Diego/Las Vegas/9
+San Diego/Phoenix/14
+Phoenix/Las Vegas/15
+Phoenix/Santa Fe/18
+Santa Fe/las Vegas/27
+Santa Fe/Salt Lake City/28
+Santa Fe/Denver/13
+Sant Fe/Kansas City/16
+Santa Fe/Oklahoma City/15
+Santa Fe/Dallas/16
+Santa Fe/Houston/20
+Billings/Cheyenne/9
+Billings/Fargo/17
+Billings/Minneapolis/18
+Cheyenne/Minneapolis/18
+Cheyenne/Omaha/14
+Cheyenne/Denver/0
+Kansas City/Denver/16
+Kansas City/Omaha/5
+Kansas City/Oklahoma City/8
+Kansas City/St. Louis/6
+Kansas City/Chicago/8
+Kansas City/Memphis/14
+Oklahoma City/Dallas/3
+Oklahoma City/Memphis/14
+Dallas/Houston/5
+Dallas/Memphis/12
+Dallas/New Orleans/12
+Fargo/Duluth/6
+Fargo/Minneapolis/6
+Duluth/Minneapolis/5
+Duluth/Detroit/15
+Duluth/Chicago/12
+Omaha/Minneapolis/8
+Omaha/Chicago/12
+Minneapolis/Chicago/8
+Chicago/Detroit/7
+Chicago/St. Louis/10
+Chicago/Cincinnati/7
+St. Louis/Cincinnati/12
+St. Louis/Memphis/7
+St. Louis/Atlanta/12
+Memphis/New Orleans/7
+Memphis/Birmingham/6
+Houston/New Orleans/8
+New Orleans/Birmingham/11
+New Orleans/Jacksonville/16
+Miami/Tampa/4
+Tampa/Jacksonville/4
+Birmingham/Jacksonville/9
+Birmingham/Atlanta/3
+Atlanta/Savannah/7
+Jacksonville/Savannah/0
+Savannah/Raleigh/7
+Atlanta/Raleigh/7
+Atlanta/Knoxville/5
+Knoxville/Raleigh/11
+Knoxville/Cincinnati/6
+Cincinnati/Detroit/4
+Cincinnati/Pittsburgh/7
+Detroit/Buffalo/7
+Detroit/Pittsburgh/6
+Raleigh/Norfolk/3
+Raleigh/Pittsburgh/7
+Norfolk/Washington D.C./5
+Pittsburgh/Washington D.C./6
+Buffalo/Pittsburgh/7
+Buffalo/New York/8
+New York/Boston/3
+New York/Philadelphia/0
+Philadelphia/Washington D.C./3
+
