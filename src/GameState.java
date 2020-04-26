@@ -80,7 +80,13 @@ public class GameState
 		ArrayList<Boolean> hasBid = new ArrayList<Boolean>(); //true = bidded or passed, false = didn't do anything yet
 		ArrayList<Player> order = new ArrayList<Player>();
 		ArrayList<Powerplant> availablePlants = plantMarket.getPlantsAvailable();
-	
+		
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream("/text/cities.txt")));
+			String nextLine = reader.readLine();
+		
 		for(int i = 0; i < playerCount; i++) 
 		{
 			hasBid.set(i, false);
@@ -89,17 +95,44 @@ public class GameState
 		
 		while(!allTrue(hasBid)) 
 		{
+			String ans;
 			for(int i = 0; i < order.size(); i++) 
 			{
 				displayPlants(availablePlants);
 				System.out.println("Player #"+i+", would you like to bid or pass? You have $"+order.get(i).getMoney());
+				ans = reader.readLine();
 				//set the isBidding boolean
+				if(ans.equals("bid")) {
+					isBidding = true;
+					bidding.set(i, true);
+				}
+				else 
+				{
+					hasBid.set(i, true);
+					bidding.set(i, false);
+					order.remove(order.get(i));	
+				}
+					
 				if(isBidding) 
 				{
-				System.out.println("Which plant?");	
+				System.out.println("Which plant? (Enter cost of plant for text based)");	
 				//set the chosenPlant variable
+				ans = reader.readLine();
+				int ansp = Integer.parseInt(ans);
+				boolean validNum = false;
+				for(Powerplant pp : availablePlants)
+					if(ansp == pp.getName())
+						validNum = true;
+				if(!validNum) 
+				{
+					System.out.println("Invalid plant, skipping player");
+					continue;
+				}
+				chosenPlant = availablePlants.get(ansp);
+				
 				System.out.println("How much are you bidding?");
 				//set the bid price
+				bid = Integer.parseInt(reader.readLine());
 					if(bid > order.get(i).getMoney())
 					{
 						System.out.println("Insufficient funds, passing player");
@@ -124,7 +157,11 @@ public class GameState
 					
 				}
 			}
-			
+		}	
+		}
+		catch (IOException e)
+		{
+				
 		}
 	
 	}
