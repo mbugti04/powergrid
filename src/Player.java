@@ -6,9 +6,6 @@ public class Player implements Comparable<Player>{
 	public int money;
 	private int poweredHouses;
 	
-	private boolean hasBid;
-	private boolean hasBought;
-	
 	private ArrayList<Powerplant> ownedPlants;
 	private ArrayList<City> ownedCities;
 	
@@ -17,9 +14,6 @@ public class Player implements Comparable<Player>{
 	public Player() {
 		money = 50;
 		poweredHouses = 0;
-		
-		hasBid = false;
-		hasBought = false;
 		
 		ownedPlants = new ArrayList<Powerplant>();
 		ownedCities = new ArrayList<City>();
@@ -66,8 +60,6 @@ public class Player implements Comparable<Player>{
 	public boolean addPowerPlant(Powerplant pp) {
 		
 //		Scanner input = new Scanner(System.in);
-		String ans;
-		int ppAns;
 		if(ownedPlants.size() < 3)
 		{
 			ownedPlants.add(pp);
@@ -220,5 +212,8 @@ public class Player implements Comparable<Player>{
 			}
 		}
 		return 0;
+	}
+	public HashMap<Resource, Integer> getResources() {
+		return resourcesStored;
 	}
 }
