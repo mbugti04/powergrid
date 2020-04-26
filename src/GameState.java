@@ -16,6 +16,7 @@ public class GameState
 	public ArrayList<Player> players;
 	public boolean hasEnded = false;
 	public boolean initialSetup = true;
+	public int theBid = 0;
 	
 	public GameState()
 	{
@@ -67,67 +68,112 @@ public class GameState
 		else if (this.turnPhase == 1 || this.turnPhase == 2)
 			Collections.sort(players, Collections.reverseOrder());
 	}
-	
-	public void bid()
-	{	
+	public void bid() 
+	{
 		turnOrder();
-		Player actualBuyer;
-		Scanner input = new Scanner(System.in);
-		int plant;
-		boolean bidOver = false;
-		
-		int[] stillBidding = new int[playerCount];
-		for(int sb = 0; sb < stillBidding.length; sb++)
-			stillBidding[sb] = sb;
-		
-		ArrayList<Player> order2 = new ArrayList<Player>();
-		order2 = players;
-		ArrayList<Boolean> hasBid = new ArrayList<Boolean>();
-		for(int b = 0; b < players.size(); b++)
-			hasBid.set(b, false);
-		
-		ArrayList<Powerplant> availablePlants;
-		availablePlants = plantMarket.getPlantsAvailable();
-		
-		//idk how this will work graphically so I'll just write it as if it was text based
-		System.out.println("It is time for bidding.");
-		for(int i = 0; i < players.size(); i++) {
-		System.out.println("Player #" + i + ", would you like to bid or pass? You currently have " + players.get(i).getMoney()+"$");
-		String ans = input.next();
-		if(ans.equals("pass")) {
-			order2 = rotate(order2);
-			continue;
-		}
-		if(ans.equals("bid")) 
+		Powerplant chosenPlant = null;
+		Player initialBidder;
+		Player bidWinner;
+		int bid = 0;
+		boolean isBidding = false;
+		ArrayList<Boolean> bidding = new ArrayList<Boolean>(); //true = bidding, false = passing
+		ArrayList<Boolean> hasBid = new ArrayList<Boolean>(); //true = bidded or passed, false = didn't do anything yet
+		ArrayList<Player> order = new ArrayList<Player>();
+		ArrayList<Powerplant> availablePlants = plantMarket.getPlantsAvailable();
+	
+		for(int i = 0; i < playerCount; i++) 
 		{
-			System.out.println("Choose the index of the powerplant to bid on");
-			int ansPP = input.nextInt();
-			
-			System.out.println("How much money would you like to bid?");
-			int ansMon = input.nextInt();
-			
-			if(players.get(i).getMoney() < ansMon)
-			{
-				System.out.println("Insufficient funds, passing Player #"+i);
-				continue;
-			}
-			
-			String ansPP2;
-			hasBid.set(0, true);
-			for(int j = 1; j < order2.size(); j++) 
-			{
-				System.out.println("Player #" + players.get(i)+
-						", would you like to increase the bid or pass on Powerplant #"+availablePlants.get(ansPP).getName()+"?");
-				ansPP2 = input.next();
-				if(ansPP2.equals("pass"))
-					continue;
-				if(ansPP2.equals("bid"))
-					hasBid.set(j, true);
-			}
-		}	
+			hasBid.set(i, false);
+			order.set(i, players.get(i));
 		}
-		//TODO carry out the buying procedure
 		
+		while(!allTrue(hasBid)) 
+		{
+			for(int i = 0; i < order.size(); i++) 
+			{
+				displayPlants(availablePlants);
+				System.out.println("Player #"+i+", would you like to bid or pass? You have $"+order.get(i).getMoney());
+				//set the isBidding boolean
+				if(isBidding) 
+				{
+				System.out.println("Which plant?");	
+				//set the chosenPlant variable
+				System.out.println("How much are you bidding?");
+				//set the bid price
+					if(bid > order.get(i).getMoney())
+					{
+						System.out.println("Insufficient funds, passing player");
+						continue;
+					}
+				initialBidder = order.get(i);
+				bidWinner = bidSM(order, initialBidder, bid, chosenPlant);
+				System.out.println(bidWinner+" has won the bid and gained powerplant " + chosenPlant.getName());
+				
+				bidding.set(order.indexOf(bidWinner), true);
+				hasBid.set(order.indexOf(bidWinner), true);
+				availablePlants.remove(chosenPlant);
+				order.remove(bidWinner);
+				bidWinner.money -= theBid;
+
+				//not done 
+				}
+				else 
+				{
+					bidding.set(i, false);
+					hasBid.set(i, true);
+					
+				}
+			}
+			
+		}
+	
+	}
+	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sum-method 
+	{
+		ArrayList<Player> theEverShrinkingListOfBidders = new ArrayList<Player>();
+		Player winner = null;
+		Player temp = order.get(0);
+		order.set(0, ib);
+		order.set(order.indexOf(ib), temp);
+		
+		int unconfirmedBid = 0;
+		boolean response = false; //true = increasing bid, false = passing
+		
+		int i = 1;
+		while(theEverShrinkingListOfBidders.size() != 1) 
+		{
+			System.out.println("Player #"+i+", would you like to increase the bid of $"
+					+bid+"for powerplant "+plant.getName()+"? You have $"+theEverShrinkingListOfBidders.get(i).getMoney());
+			//set response
+			if(!response) 
+			{
+				theEverShrinkingListOfBidders.remove(theEverShrinkingListOfBidders.get(i));
+			}
+			else
+			{
+				System.out.println("How much would you like to bid");
+				//set unconfirmedBid
+				if(theEverShrinkingListOfBidders.get(i).getMoney() < unconfirmedBid) 
+				{
+					System.out.println("Infsufficient funds, you are unable to bid on this plant");
+					theEverShrinkingListOfBidders.remove(theEverShrinkingListOfBidders.get(i));
+					i++;
+					continue;
+				}
+				else if(unconfirmedBid <= bid)
+				{
+					System.out.println("Your bid has to be higher than the previous player's bid. You've been skipped.");
+					i++;
+					continue;
+				}
+				System.out.println("You bid $"+unconfirmedBid);
+				bid = unconfirmedBid;
+			}
+			i++;
+		}
+		theBid = bid;
+		winner = theEverShrinkingListOfBidders.get(0);
+		return winner;	
 	}
 	
 	public void updateStage()
@@ -287,15 +333,20 @@ public class GameState
 		GameState state = new GameState();
 	}
 	
-	public ArrayList<Player> rotate(ArrayList<Player> list)
-	{
-		ArrayList<Player> newList = new ArrayList<Player>();
-		newList.set(0, list.get(list.size()-1));
-		for(int i = 1; i < list.size()-1; i++)
+	public void displayPlants(ArrayList<Powerplant> plants) {
+		for(Powerplant i : plants) 
 		{
-			newList.set(i, list.get(i));
+			if(i.getResourceType() != Resource.free)
+			System.out.println("Cost:" +i.getName()+". This plant requires "+i.getAmountToPower()+" "+i.getResourceType()+" to produce "+ i.getPowerProduced()+"power.");
+			else  System.out.println("Cost:" +i.getName()+". This plant produces "+ i.getPowerProduced()+" power without resources.");
 		}
-		return newList;
+	}
+	
+	public boolean allTrue(ArrayList<Boolean> bool) {
+		for(Boolean i: bool)
+			if(!i)
+				return false;
+		return true;
 	}
 	
 	public int getMax(int[] x) {
