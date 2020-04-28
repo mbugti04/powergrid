@@ -352,7 +352,7 @@ public class GameState
 				
 				City c = new City(name, Region.valueOf(region), Double.parseDouble(xcoord), Double.parseDouble(ycoord));
 				
-				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s\n", name, region, xcoord, ycoord);
+//				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s\n", name, region, xcoord, ycoord);
 				
 				urbanArea.addCity(c);
 				
@@ -363,11 +363,6 @@ public class GameState
 		{
 			
 		}
-	}
-	
-	public static void main(String[] args)
-	{
-		GameState state = new GameState();
 	}
 	
 	public void displayPlants(ArrayList<Powerplant> plants) {

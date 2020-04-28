@@ -19,7 +19,7 @@ public class Runner
 		while (true)
 		{
 			f.repaint();
-			f.info();
+//			f.info();
 			try
 			{
 				Thread.sleep(1000/30);

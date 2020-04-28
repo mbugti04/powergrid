@@ -91,12 +91,7 @@ public class UrbanArea
 		return -1;
 	}
 	
-	public HashMap<City, HashMap<City, Integer>> getGraph()
-	{
-		return cities;
-	}
-	
-	public HashSet<City> getCitySet()
+	public HashSet<City> getAllCities()
 	{
 		HashSet<City> temp = new HashSet<City>();
 		temp.addAll(cities.keySet());

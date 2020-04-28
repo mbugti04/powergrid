@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -18,18 +17,24 @@ import javax.swing.JPanel;
 
 public class Interface extends JPanel implements MouseListener, MouseMotionListener
 {
-	GameState state = new GameState();
-	
 	static int width = 1920, height = 1080;
-	static double scale = 1;
 	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	
-	HashMap<String, Button> mainMenuButtons = new HashMap<String, Button>();
+	/* String tells the state that the buttons is used for
+	 * like initial, ingame, bidding, etc.
+	 * It's there for each of the booleans.
+	 * The ArrayList of buttons is tied to that state
+	 */
+	HashMap<String, ArrayList<Button>> buttons = new HashMap<String, ArrayList<Button>>();
 	
 	// states
 	private boolean initial = true;
 	private boolean ingame = false;
+	
+	// gamestate things
+	GameState state = new GameState();
+	ArrayList<City> cities = new ArrayList<City>(state.urbanArea.getAllCities());
 	
 	public Interface()
 	{
@@ -68,17 +73,9 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		}
 		if (ingame)
 		{
-			drawMap(g2);
-			
-			// drawing cities TODO very temporary
-			ArrayList<City> cities = new ArrayList<City>(state.urbanArea.cities.keySet());
-			
-			int citySize = 70;
-			int scaleX = scale(1480, scale), scaleY = scale(754, scale);
-			
 			for (City c: cities)
 			{
-				drawCity(g2, c, scaleX, scaleY, citySize);
+				drawCity(g2, c);
 			}
 		}
 	}
@@ -87,14 +84,14 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	public void drawMainMenu(Graphics2D g2)
 	{
 		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
-		for (Button b: mainMenuButtons.values())
+		for (Button b: buttons.get("initial"))
 			b.draw(g2);
 	}
 	
 	public void drawMap(Graphics2D g2)
 	{
 		BufferedImage map = images.get("map.png");
-		g2.drawImage(map, -200, -300, scale(map.getWidth(), scale), scale(map.getHeight(), scale), null); // original was -200, -300
+		g2.drawImage(map, 0, 0, null);
 	}
 	
 	public int scale(int initial, double scale)
@@ -102,10 +99,9 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		return (int)(initial * scale);
 	}
 	
-	public void drawCity(Graphics2D g2, City c, int sx, int sy, int size)
+	public void drawCity(Graphics2D g2, City c)
 	{
-		int startx = 395;
-		int starty = 190;
+		/*
 		int x = startx + (int)(c.getX() * sx);
 		int y = starty + (int)(c.getY() * sy);
 		
@@ -114,6 +110,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		
 		g2.setColor(new Color(120, 120, 120));
 		g2.fillRect(x - size / 2, y + size / 4, size, size / 3);
+		*/
 	}
 	
 	// TODO temp
@@ -135,6 +132,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 			int val = 0;
 			while (nextLine != null)
 			{
+				System.out.println(nextLine);
 				BufferedImage img = loadImage("images/" + nextLine);
 				images.put(nextLine, img);
 				nextLine = reader.readLine();
@@ -164,31 +162,12 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	
 	private void mainMenuSetup()
 	{
-		Button start = new Button("start", width / 2 - Button.normalw / 2, height / 2, Button.normalw, Button.normalh);
-		Button quit = new Button("quit", width / 2 - Button.normalw / 2, height / 2 + Button.normalh * 2,
-				Button.normalw, Button.normalh);
-		mainMenuButtons.put(start.name, start);
-		mainMenuButtons.put(quit.name, quit);
-	}
-	
-	/*
-	public void importImages()
-	{
-		File imageFiles[] = new File("assets/").listFiles();
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("start", width / 2 - Button.normalw / 2, height / 2, Button.normalw, Button.normalh));
+		temp.add(new Button("quit", width / 2 - Button.normalw / 2, height / 2 + Button.normalh * 2, Button.normalw, Button.normalh));
 		
-		for (int i = 0; i < imageFiles.length; i++)
-		{
-				String name = imageFiles[i].getName();
-				try
-				{
-					images.put(name, ImageIO.read(imageFiles[i]));
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-		}
-	}*/
+		buttons.put("initial", temp);
+	}
 
 	@Override
 	public void mouseDragged(MouseEvent m)
@@ -211,24 +190,24 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		
 		if (initial)
 		{
-			for (Button b: mainMenuButtons.values())
+			for (Button b: buttons.get("initial"))
 			{
 				if (b.inBounds(m))
 				{
 					b.press();
 					System.out.println("pressed " + b.name + " and it is now " + b.isPressed());
 				}
-			}
-			if (mainMenuButtons.get("start").isPressed())
-			{
-				initial = false;
-				ingame = true;
-				System.out.println("game has started");
-			}
-			if (mainMenuButtons.get("quit").isPressed())
-			{
-				System.out.println("game has ended");
-				System.exit(0);
+				if (b.isPressed() && b.name.equals("start"))
+				{
+					initial = false;
+					ingame = true;
+					System.out.println("game has started");
+				}
+				if (b.isPressed() && b.name.equals("quit"))
+				{
+					System.out.println("game has ended");
+					System.exit(0);
+				}
 			}
 		}
 		if (ingame)
