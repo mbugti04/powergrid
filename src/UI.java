@@ -1,3 +1,4 @@
+/*
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -62,7 +63,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 //		area.addCity(new City("Austin"));
 		
 		allCities = new ArrayList<City>();
-		allCities.addAll(area.getCitySet());
+		allCities.addAll(area.getAllCities());
 		
 		System.out.println(allCities);
 		
@@ -76,7 +77,7 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 		
 		// have to reinitialise allCities when removing a city
 		allCities = new ArrayList<City>();
-		allCities.addAll(area.getCitySet());
+		allCities.addAll(area.getAllCities());
 		
 		initCities();
 		////////
@@ -235,10 +236,10 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	public void updateLocation(MouseEvent e, City city)
 	{
 		pieces.get(city).setLocation(lastPoint.get(city).x + e.getX(), lastPoint.get(city).y + e.getY());
-		/*if (piece.x + piece.width >= width)
-			piece.setLocation(width - piece.width, lasty + e.getY());
-		if (piece.y + piece.height > height)
-			piece.setLocation(lastx + e.getX(), height - piece.height);*/
+//		if (piece.x + piece.width >= width)
+//			piece.setLocation(width - piece.width, lasty + e.getY());
+//		if (piece.y + piece.height > height)
+//			piece.setLocation(lastx + e.getX(), height - piece.height);
 		repaint();
 	}
 
@@ -313,3 +314,4 @@ public class UI extends JPanel implements MouseListener, MouseMotionListener
 	}
 	
 }
+*/
