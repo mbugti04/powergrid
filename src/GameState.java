@@ -3,12 +3,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
+import java.util.HashMap;
 public class GameState
 {
 	public static int step = 1;
 	public static int playerCount = 4;
-	public Scanner input;
 	public int currentPlayer, turnPhase; // 0=buy power plants. 1=buy resources. 2=building. beaurocracy doesnt have a turn order.
 	public PowerplantMarket plantMarket;
 	public ResourceMarket resourceMarket;
@@ -18,9 +17,9 @@ public class GameState
 	public boolean initialSetup = true;
 	public int theBid = 0;
 	
+	
 	public GameState()
 	{
-		input = new Scanner(System.in);
 		currentPlayer = 0;
 		turnPhase = 0;
 		plantMarket = new PowerplantMarket();
@@ -77,23 +76,21 @@ public class GameState
 		int bid = 0;
 		boolean isBidding = false;
 		ArrayList<Boolean> bidding = new ArrayList<Boolean>(); //true = bidding, false = passing
-		ArrayList<Boolean> hasBid = new ArrayList<Boolean>(); //true = bidded or passed, false = didn't do anything yet
+		ArrayList<Boolean> hasBidOrPassed = new ArrayList<Boolean>(); //true = bidded or passed, false = didn't do anything yet
 		ArrayList<Player> order = new ArrayList<Player>();
 		ArrayList<Powerplant> availablePlants = plantMarket.getPlantsAvailable();
-		
 		try
 		{
 			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(getClass().getResourceAsStream("/text/cities.txt")));
-			String nextLine = reader.readLine();
+					new InputStreamReader(System.in));
 		
 		for(int i = 0; i < playerCount; i++) 
 		{
-			hasBid.set(i, false);
+			hasBidOrPassed.set(i, false);
 			order.set(i, players.get(i));
 		}
 		
-		while(!allTrue(hasBid)) 
+		while(!allTrue(hasBidOrPassed)) 
 		{
 			String ans;
 			for(int i = 0; i < order.size(); i++) 
@@ -108,7 +105,7 @@ public class GameState
 				}
 				else 
 				{
-					hasBid.set(i, true);
+					hasBidOrPassed.set(i, true);
 					bidding.set(i, false);
 					order.remove(order.get(i));	
 				}
@@ -143,7 +140,7 @@ public class GameState
 				System.out.println(bidWinner+" has won the bid and gained powerplant " + chosenPlant.getName());
 				
 				bidding.set(order.indexOf(bidWinner), true);
-				hasBid.set(order.indexOf(bidWinner), true);
+				hasBidOrPassed.set(order.indexOf(bidWinner), true);
 				availablePlants.remove(chosenPlant);
 				order.remove(bidWinner);
 				bidWinner.money -= theBid;
@@ -153,7 +150,7 @@ public class GameState
 				else 
 				{
 					bidding.set(i, false);
-					hasBid.set(i, true);
+					hasBidOrPassed.set(i, true);
 					
 				}
 			}
@@ -175,13 +172,22 @@ public class GameState
 		
 		int unconfirmedBid = 0;
 		boolean response = false; //true = increasing bid, false = passing
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(System.in));
 		
 		int i = 1;
+		String ans;
 		while(theEverShrinkingListOfBidders.size() != 1) 
 		{
 			System.out.println("Player #"+i+", would you like to increase the bid of $"
-					+bid+"for powerplant "+plant.getName()+"? You have $"+theEverShrinkingListOfBidders.get(i).getMoney());
+					+bid+"for powerplant "+plant.getName()+"?(type 'increase bid' or 'pass') You have $"+theEverShrinkingListOfBidders.get(i).getMoney());
 			//set response
+			ans = reader.readLine();
+			if(ans.equals("increase bid"))
+				response = true;
+			
 			if(!response) 
 			{
 				theEverShrinkingListOfBidders.remove(theEverShrinkingListOfBidders.get(i));
@@ -190,6 +196,8 @@ public class GameState
 			{
 				System.out.println("How much would you like to bid");
 				//set unconfirmedBid
+				unconfirmedBid = Integer.parseInt(reader.readLine());
+				
 				if(theEverShrinkingListOfBidders.get(i).getMoney() < unconfirmedBid) 
 				{
 					System.out.println("Infsufficient funds, you are unable to bid on this plant");
@@ -212,13 +220,22 @@ public class GameState
 		winner = theEverShrinkingListOfBidders.get(0);
 		return winner;	
 	}
+	catch (IOException e) {}
+		return winner;
+	}
 	
 	public void updateStage()
 	{
+		ArrayList<Resource> resourcesUsed = new ArrayList<Resource>();
+		HashMap<Player, HashMap<Resource, Integer>> allPlayersResources = new HashMap<Player, HashMap<Resource, Integer>>();
+		HashMap<Player, Integer> allPlayersHouses = new HashMap<Player, Integer>();;
 		
 		for(int x = 0; x < players.size(); x++) {
+			allPlayersResources.put(players.get(x), players.get(x).getResources());
+//			allPlayersHouses.put(players.get(x), );
 			players.get(x).income();
 			//TODO removing resources from each player
+			
 		}
 		resourceMarket.restock();
 		plantMarket.restock();
@@ -237,7 +254,6 @@ public class GameState
 		String result = "";
 		
 		int winner;
-		int index;
 		int[] powerableHouses = new int[playerCount];
 		int[] moneys = new int[playerCount];
 		int[] numCities = new int[playerCount];
@@ -292,7 +308,10 @@ public class GameState
 	
 	public void buyResource()
 	{
-		Scanner input = new Scanner(System.in);
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(System.in));
 		for(int x = 0; x < players.size();x++) 
 		{
 			System.out.println("Coal:" + resourceMarket.getPrice(Resource.coal));
@@ -300,7 +319,7 @@ public class GameState
 			System.out.println("Trash:" + resourceMarket.getPrice(Resource.trash));
 			System.out.println("Uranium:" + resourceMarket.getPrice(Resource.uranium));
 			System.out.println("What resource would you like to purchase? Please input either \"coal\", \"oil\", \"trash\", or \"uranium\"");
-			String ans = input.next();
+			String ans = reader.readLine();
 			if(ans == "oil") {
 				resourceMarket.purchase(players.get(x),Resource.oil); 
 			}
@@ -315,7 +334,8 @@ public class GameState
 			}
 			else
 				continue;
-		}
+		}}
+		catch(IOException e) {}
 	}
 	
 	public void buyCity()
