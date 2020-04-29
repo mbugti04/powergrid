@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -18,7 +19,9 @@ import javax.swing.JPanel;
 public class Interface extends JPanel implements MouseListener, MouseMotionListener
 {
 	static int width = 1920, height = 1080;
-	
+	static int startx = 260, starty = 135;
+	static int citySize = 70;
+	static int sx = 1653, sy = 876;
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	
 	/* String tells the state that the buttons is used for
@@ -73,6 +76,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		}
 		if (ingame)
 		{
+			drawMap(g2);
 			for (City c: cities)
 			{
 				drawCity(g2, c);
@@ -90,35 +94,19 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	
 	public void drawMap(Graphics2D g2)
 	{
-		BufferedImage map = images.get("map.png");
-		g2.drawImage(map, 0, 0, null);
-	}
-	
-	public int scale(int initial, double scale)
-	{
-		return (int)(initial * scale);
+		g2.drawImage(images.get("map.png"), 0, 0, null);
 	}
 	
 	public void drawCity(Graphics2D g2, City c)
 	{
-		/*
 		int x = startx + (int)(c.getX() * sx);
 		int y = starty + (int)(c.getY() * sy);
 		
 		g2.setColor(new Color(0, 0, 0));
-		g2.fillOval(x - size / 2, y - size / 2, size, size);
+		g2.fillOval(x - citySize / 2, y - citySize / 2, citySize, citySize);
 		
 		g2.setColor(new Color(120, 120, 120));
-		g2.fillRect(x - size / 2, y + size / 4, size, size / 3);
-		*/
-	}
-	
-	// TODO temp
-	public void info()
-	{
-//		System.out.println("City size: " + citySizeSlider.getValue());
-//		System.out.println("map size: " + mapSizeSlider.getValue() / 100.);
-//		System.out.println("centre: " + centre);
+		g2.fillRect(x - citySize / 2, y + citySize / 4, citySize, citySize / 3);
 	}
 	
 	private void imageSetup()
@@ -129,10 +117,8 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 					new InputStreamReader(getClass().getResourceAsStream("/text/imageNames.txt")));
 			String nextLine = reader.readLine();
 			
-			int val = 0;
 			while (nextLine != null)
 			{
-				System.out.println(nextLine);
 				BufferedImage img = loadImage("images/" + nextLine);
 				images.put(nextLine, img);
 				nextLine = reader.readLine();
