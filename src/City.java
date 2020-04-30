@@ -57,6 +57,11 @@ public class City
 		return cityy;
 	}
 	
+	public Region getRegion()
+	{
+		return region;
+	}
+	
 	public String toString()
 	{
 		return name + ": " + currentNumOfHouses;
