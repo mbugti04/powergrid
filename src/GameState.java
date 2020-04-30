@@ -2,21 +2,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 public class GameState
 {
 	public static int step = 1;
 	public static int playerCount = 4;
-	public int currentPlayer, turnPhase; // 0=buy power plants. 1=buy resources. 2=building. beaurocracy doesnt have a turn order.
+	
+	public int theBid = 0;
+	public int currentPlayer;
+	public int turnPhase; // 0=buy power plants. 1=buy resources. 2=building. beaurocracy doesnt have a turn order.
+	
 	public PowerplantMarket plantMarket;
 	public ResourceMarket resourceMarket;
 	public UrbanArea urbanArea;
 	public ArrayList<Player> players;
+	
 	public boolean hasEnded = false;
 	public boolean initialSetup = true;
-	public int theBid = 0;
-	
 	
 	public GameState()
 	{
@@ -28,11 +32,6 @@ public class GameState
 		players = new ArrayList<Player>();
 		
 		mainSetup();
-	}
-	
-	private void mainSetup()
-	{
-		initialiseCities();
 	}
 	
 	public void gameLoop()
@@ -58,6 +57,77 @@ public class GameState
 			
 			this.updateStage();
 		}
+	}
+	
+	
+	
+	
+	
+	// -------------------- SETUP METHODS --------------------
+	private void mainSetup()
+	{
+		initialiseCities();
+	}
+	
+	public void initialiseCities()
+	{
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream("/text/cities.txt")));
+			
+			String nextLine = reader.readLine();
+			
+			while (!nextLine.equals("----------connections----------"))
+			{
+				String name = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
+				
+				String region = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
+				
+				String xcoord = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
+				
+				String ycoord = nextLine;
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
+				
+				City c = new City(name, Region.valueOf(region), Double.parseDouble(xcoord), Double.parseDouble(ycoord));
+				
+//				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s\n", name, region, xcoord, ycoord);
+				
+				urbanArea.addCity(c);
+				
+				nextLine = reader.readLine();
+			}
+		}
+		catch (IOException e)
+		{
+			
+		}
+	}
+	// -------------------------------------------------------
+	
+	/* adds or removes a region inside the list of regions
+	 * that will be playable in-game
+	 */
+	public void toggleRegion(String str)
+	{
+		Region r = Region.valueOf(str.toLowerCase());
+		urbanArea.toggleRegion(r);
+	}
+	public void removeRegions()
+	{
+		ArrayList<Region> allRegions = new ArrayList<Region>(Arrays.asList(Region.values()));
+		allRegions.removeAll(urbanArea.getActiveRegions());
+		for (Region toRemove: allRegions)
+		{
+			urbanArea.removeRegion(toRemove);
+		}
+	}
+	public ArrayList<Region> getActiveRegions()
+	{
+		return urbanArea.getActiveRegions();
 	}
 	
 	public void turnOrder()
@@ -346,44 +416,7 @@ public class GameState
 	/* creates the cities
 	 * and adds them to urbanArea
 	 */
-	public void initialiseCities()
-	{
-		try
-		{
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(getClass().getResourceAsStream("/text/cities.txt")));
-			
-			String nextLine = reader.readLine();
-			
-			while (!nextLine.equals("!!!connections"))
-//			while (!nextLine.equals("toki wo tomare"))
-			{
-				String name = nextLine.substring(0, nextLine.indexOf("/"));
-				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
-				
-				String region = nextLine.substring(0, nextLine.indexOf("/"));
-				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
-				
-				String xcoord = nextLine.substring(0, nextLine.indexOf("/"));
-				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
-				
-				String ycoord = nextLine;
-				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
-				
-				City c = new City(name, Region.valueOf(region), Double.parseDouble(xcoord), Double.parseDouble(ycoord));
-				
-//				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s\n", name, region, xcoord, ycoord);
-				
-				urbanArea.addCity(c);
-				
-				nextLine = reader.readLine();
-			}
-		}
-		catch (IOException e)
-		{
-			
-		}
-	}
+	
 	
 	public void displayPlants(ArrayList<Powerplant> plants) {
 		for(Powerplant i : plants) 
