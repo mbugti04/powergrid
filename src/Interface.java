@@ -1,6 +1,9 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,8 +25,8 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	static int startx = 260, starty = 135;
 	static int citySize = 70;
 	static int sx = 1653, sy = 876;
-	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	
+	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	/* String tells the state that the buttons is used for
 	 * like initial, ingame, bidding, etc.
 	 * It's there for each of the booleans.
@@ -31,13 +34,18 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	 */
 	HashMap<String, ArrayList<Button>> buttons = new HashMap<String, ArrayList<Button>>();
 	
+	Font defont = new Font("Calibri", Font.PLAIN, 16);
+	Font titlefont = new Font("Calibri", Font.BOLD, 32);
+	
 	// states
-	private boolean initial = true;
-	private boolean ingame = false;
+	private boolean
+	initial = true,
+	regionSelect = false,
+	ingame = false;
 	
 	// gamestate things
 	GameState state = new GameState();
-	ArrayList<City> cities = new ArrayList<City>(state.urbanArea.getAllCities());
+	ArrayList<City> cities;
 	
 	public Interface()
 	{
@@ -57,22 +65,84 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		f.setVisible(true);
 	}
 	
+	
+	
+	
+	
+	// -------------------- SETUP METHODS --------------------
 	private void mainSetup()
 	{
 		imageSetup();
 		mainMenuSetup();
+		regionSelectSetup();
 	}
 	
+	private void imageSetup()
+	{
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream("/text/imageNames.txt")));
+			String nextLine = reader.readLine();
+			
+			while (nextLine != null)
+			{
+				BufferedImage img = ImageIO.read(getClass().getResource("images/" + nextLine));
+				images.put(nextLine, img);
+				nextLine = reader.readLine();
+			}
+			System.out.println(images.keySet());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void mainMenuSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("start", width / 2 - Button.normalw / 2, height / 2, Button.normalw, Button.normalh));
+		temp.add(new Button("quit", width / 2 - Button.normalw / 2, height / 2 + Button.normalh * 2, Button.normalw, Button.normalh));
+		
+		buttons.put("initial", temp);
+	}
+	
+	private void regionSelectSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("PURPLE", 485, 245, Button.normalw, Button.normalh));
+		temp.add(new Button("BLUE", 525, 575, Button.normalw, Button.normalh));
+		temp.add(new Button("YELLOW", 1100, 300, Button.normalw, Button.normalh));
+		temp.add(new Button("RED", 1055, 670, Button.normalw, Button.normalh));
+		temp.add(new Button("ORANGE", 1580, 410, Button.normalw, Button.normalh));
+		temp.add(new Button("GREEN", 1460, 720, Button.normalw, Button.normalh));
+		temp.add(new Button("CONTINUE", 1645, 955, Button.normalw, Button.normalh));
+		
+		buttons.put("regionSelect", temp);
+	}
+	// -----------------------------------------------------
+	
+	
+	
+	
+	// -------------------- DRAW METHODS --------------------
 	public void paintComponent(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.clearRect(0, 0, width, height);
+		g2.setFont(new Font("Calibri", Font.PLAIN, 12));
 		
 		if (initial)
 		{
 			drawMainMenu(g2);
+		}
+		if (regionSelect)
+		{
+			drawRegionSelect(g2);
 		}
 		if (ingame)
 		{
@@ -92,6 +162,16 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 			b.draw(g2);
 	}
 	
+	public void drawRegionSelect(Graphics2D g2)
+	{
+		drawMap(g2);
+		for (Button b: buttons.get("regionSelect"))
+			b.draw(g2);
+		g2.setFont(defont);
+		drawCentredString(g2, "Select 4 Regions to Continue", new Rectangle(0, 0, width, height / 8), titlefont);
+		
+	}
+	
 	public void drawMap(Graphics2D g2)
 	{
 		g2.drawImage(images.get("map.png"), 0, 0, null);
@@ -108,66 +188,26 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		g2.setColor(new Color(120, 120, 120));
 		g2.fillRect(x - citySize / 2, y + citySize / 4, citySize, citySize / 3);
 	}
-	
-	private void imageSetup()
+	public void drawCentredString(Graphics2D g2, String text, Rectangle rect, Font font)
 	{
-		try
-		{
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(getClass().getResourceAsStream("/text/imageNames.txt")));
-			String nextLine = reader.readLine();
-			
-			while (nextLine != null)
-			{
-				BufferedImage img = loadImage("images/" + nextLine);
-				images.put(nextLine, img);
-				nextLine = reader.readLine();
-			}
-			System.out.println(images.keySet());
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
+		FontMetrics metrics = g2.getFontMetrics(font);
+		int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+		int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+		g2.setFont(font);
+		g2.drawString(text, x, y);
 	}
+	// ------------------------------------------------------
 	
-	private BufferedImage loadImage(String path)
-	{
-		BufferedImage img = null;
-		try
-		{
-			img = ImageIO.read(getClass().getResource(path));
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		return img;
-	}
 	
-	private void mainMenuSetup()
-	{
-		ArrayList<Button> temp = new ArrayList<Button>();
-		temp.add(new Button("start", width / 2 - Button.normalw / 2, height / 2, Button.normalw, Button.normalh));
-		temp.add(new Button("quit", width / 2 - Button.normalw / 2, height / 2 + Button.normalh * 2, Button.normalw, Button.normalh));
-		
-		buttons.put("initial", temp);
-	}
+	
+	
+	
+	// -------------------- MOUSE METHODS -------------------
+	@Override
+	public void mouseDragged(MouseEvent m) {}
 
 	@Override
-	public void mouseDragged(MouseEvent m)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent m)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseMoved(MouseEvent m) {}
 
 	@Override
 	public void mouseClicked(MouseEvent m)
@@ -186,13 +226,42 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 				if (b.isPressed() && b.name.equals("start"))
 				{
 					initial = false;
-					ingame = true;
-					System.out.println("game has started");
+					regionSelect = true;
 				}
 				if (b.isPressed() && b.name.equals("quit"))
 				{
 					System.out.println("game has ended");
 					System.exit(0);
+				}
+			}
+		}
+		if (regionSelect)
+		{
+			for (Button b: buttons.get("regionSelect"))
+			{
+				if (b.inBounds(m))
+				{
+					if (b.name.equals("CONTINUE"))
+					{
+						if (state.getActiveRegions().size() == 4)
+						{
+							b.press();
+							state.removeRegions();
+							
+							regionSelect = false;
+							ingame = true;
+							
+							System.out.println("active regions: " + state.getActiveRegions());
+
+							cities = new ArrayList<City>(state.urbanArea.getListOfAllCities());
+						}
+					}
+					else
+					{
+						b.press();
+						state.toggleRegion(b.name);
+						System.out.println("toggled " + b.name + " and active regions: " + state.getActiveRegions());
+					}
 				}
 			}
 		}
@@ -203,30 +272,15 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent m)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent m) {}
 
 	@Override
-	public void mouseExited(MouseEvent m)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent m) {}
 
 	@Override
-	public void mousePressed(MouseEvent m)
-	{
-		// TODO Auto-generated method stub
-	}
+	public void mousePressed(MouseEvent m) {}
 
 	@Override
-	public void mouseReleased(MouseEvent m)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void mouseReleased(MouseEvent m) {}
+	// -------------------------------------------------------
 }
