@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
@@ -32,6 +33,7 @@ class Button
 	
 	void draw(Graphics2D g2)
 	{
+		g2.setFont(new Font("Calibri", Font.PLAIN, 16));
 		if (!on)
 			g2.setColor(Color.DARK_GRAY);
 		else
