@@ -5,6 +5,7 @@ public class Player implements Comparable<Player>{
 
 	public int money;
 	private int poweredHouses;
+	public int ownedHouses;
 	
 	private ArrayList<Powerplant> ownedPlants;
 	private ArrayList<City> ownedCities;
@@ -14,6 +15,7 @@ public class Player implements Comparable<Player>{
 	public Player() {
 		money = 50;
 		poweredHouses = 0;
+		ownedHouses = 0;
 		
 		ownedPlants = new ArrayList<Powerplant>();
 		ownedCities = new ArrayList<City>();
@@ -57,6 +59,32 @@ public class Player implements Comparable<Player>{
 		
 		return false;
 	}
+	public void calcPowerableHouses() {
+		int powerable = 0;
+		int amount = 0;
+		int amountStored = 0;
+		int used = 0;
+		Resource type;
+		
+		for(int pp = 0; pp < ownedPlants.size(); pp++) 
+		{
+			type = ownedPlants.get(pp).getResourceType();
+			amount = ownedPlants.get(pp).getAmountToPower();
+			amountStored = resourcesStored.get(type);
+			
+			powerable = amountStored / amount;
+			used = powerable * (amount - (amountStored % amount));
+			
+			resourcesStored.replace(type, amountStored - used);
+			
+			if(powerable >= ownedHouses)
+				poweredHouses = ownedHouses;
+			else poweredHouses = powerable;
+			
+		}
+	}
+	
+	
 	public boolean addPowerPlant(Powerplant pp) {
 		
 //		Scanner input = new Scanner(System.in);
