@@ -12,6 +12,7 @@ public class Player implements Comparable<Player>{
 	
 	private HashMap<Resource, Integer> resourcesStored;
 	
+	
 	public Player() {
 		money = 50;
 		poweredHouses = 0;
