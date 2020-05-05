@@ -174,7 +174,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	
 	public void drawMap(Graphics2D g2)
 	{
-		g2.drawImage(images.get("map.png"), 0, 0, null);
+		g2.drawImage(images.get("map.png"), 0, 0, 1920, 1080, null);
 	}
 	
 	public void drawCity(Graphics2D g2, City c)
