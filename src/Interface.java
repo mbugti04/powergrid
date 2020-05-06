@@ -211,27 +211,8 @@ public class Interface extends JPanel implements MouseListener
 				
 				g2.drawLine(starting.x, starting.y, ending.x, ending.y);
 				
-				int startx = 0, starty = 0, endx = 0, endy = 0;
-				if (starting.x < ending.x)
-				{
-					startx = starting.x;
-					endx = ending.x;
-				}
-				startx = ending.x;
-				endx = starting.x;
-				
-				if (starting.y < ending.y)
-				{
-					starty = starting.y;
-					endy = ending.y;
-				}
-				starty = ending.y;
-				endy = starting.y;
-				
-				int w = endx - startx;
-				int h = endy - starty;
-				Rectangle r = new Rectangle(startx, starty, w, h);
-				
+				Rectangle r = new Rectangle(starting);
+				r.add(ending);
 				drawCentredString(g2, cities.get(other).toString(), r, defont);
 			}
 		}
