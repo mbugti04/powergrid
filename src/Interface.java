@@ -210,10 +210,12 @@ public class Interface extends JPanel implements MouseListener
 			{
 				Point ending = new Point(startx + (int)(other.getX() * sx), starty + (int)(other.getY() * sy));
 				
+				// draws connection line
 				g2.setColor(new Color(128, 128, 128));
 				g2.setStroke(new BasicStroke(20));
 				g2.drawLine(starting.x, starting.y, ending.x, ending.y);
 				
+				// uses this rectangle for centring the cost
 				g2.setColor(new Color(255, 255, 255));
 				Rectangle r = new Rectangle(starting);
 				r.add(ending);
@@ -314,4 +316,5 @@ public class Interface extends JPanel implements MouseListener
 	@Override
 	public void mouseReleased(MouseEvent m) {}
 	// -------------------------------------------------------
+	// hey
 }
