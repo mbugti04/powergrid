@@ -94,16 +94,42 @@ public class GameState
 				
 				City c = new City(name, Region.valueOf(region), Double.parseDouble(xcoord), Double.parseDouble(ycoord));
 				
-//				System.out.printf("name:%s, region:%s, xcoord:%s, ycoord:%s\n", name, region, xcoord, ycoord);
-				
 				urbanArea.addCity(c);
+				
+				nextLine = reader.readLine();
+			}
+			
+			nextLine = reader.readLine();
+			while (nextLine != null)
+			{
+				String firstCity = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
+				
+				String connectorCity = nextLine.substring(0, nextLine.indexOf("/"));
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
+				
+				String connectionCost = nextLine;
+				nextLine = nextLine.substring(nextLine.indexOf("/") + 1);
+				
+				City first = null, second = null;
+				for (City key: urbanArea.cities.keySet())
+				{
+					if (key.getName().equals(firstCity))
+						first = key;
+					if (key.getName().equals(connectorCity))
+						second = key;
+					if (first != null && second != null)
+						break;
+				}
+				
+				urbanArea.addConnection(first, second, Integer.parseInt(connectionCost));
 				
 				nextLine = reader.readLine();
 			}
 		}
 		catch (IOException e)
 		{
-			
+			e.printStackTrace();
 		}
 	}
 	// -------------------------------------------------------
