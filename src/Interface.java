@@ -24,10 +24,10 @@ public class Interface extends JPanel implements MouseListener
 {
 	static int width = 1920, height = 1080;
 	static int startx = 260, starty = 135;
-	static int citySize = 70;
+	static int cityScale = 70;
 	/* the position where the map starts
 	 * the cities will be relative to this position */
-	static int sx = 1653, sy = 876;
+	static int mapx = 1653, mapy = 876;
 	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	/* String tells the state that the buttons is used for
@@ -37,8 +37,9 @@ public class Interface extends JPanel implements MouseListener
 	 */
 	HashMap<String, ArrayList<Button>> buttons = new HashMap<String, ArrayList<Button>>();
 	
-	Font defont = new Font("Calibri", Font.PLAIN, 16);
+	Font defaultfont = new Font("Calibri", Font.PLAIN, 16);
 	Font titlefont = new Font("Calibri", Font.BOLD, 32);
+	Font subtitlefont = new Font("Calibri", Font.BOLD, 20);
 	Font cityfont = new Font("Calibri", Font.PLAIN, 11);
 	
 	// states
@@ -72,7 +73,7 @@ public class Interface extends JPanel implements MouseListener
 	
 	
 	
-	// -------------------- SETUP METHODS --------------------
+	// ---------------------------------------- SETUP METHODS ----------------------------------------
 	private void mainSetup()
 	{
 		imageSetup();
@@ -125,19 +126,20 @@ public class Interface extends JPanel implements MouseListener
 		
 		buttons.put("regionSelect", temp);
 	}
-	// -----------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	
 	
 	
 	
-	// -------------------- DRAW METHODS --------------------
+	// ---------------------------------------- DRAW METHODS ----------------------------------------
 	public void paintComponent(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.clearRect(0, 0, width, height);
-		g2.setFont(new Font("Calibri", Font.PLAIN, 12));
+		g2.setFont(defaultfont);
+		g2.setStroke(new BasicStroke(1));
 		
 		if (initial)
 		{
@@ -155,6 +157,8 @@ public class Interface extends JPanel implements MouseListener
 			{
 				drawCity(g2, c);
 			}
+			drawCurrentStep(g2);
+			drawTurnOrder(g2);
 		}
 	}
 	
@@ -171,9 +175,8 @@ public class Interface extends JPanel implements MouseListener
 		drawMap(g2);
 		for (Button b: buttons.get("regionSelect"))
 			b.draw(g2);
-		g2.setFont(defont);
+		g2.setFont(defaultfont);
 		drawCentredString(g2, "Select 4 Regions to Continue", new Rectangle(0, 0, width, height / 8), titlefont);
-		
 	}
 	
 	public void drawMap(Graphics2D g2)
@@ -183,16 +186,16 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawCity(Graphics2D g2, City c)
 	{
-		int x = startx + (int)(c.getX() * sx);
-		int y = starty + (int)(c.getY() * sy);
+		int x = startx + (int)(c.getX() * mapx);
+		int y = starty + (int)(c.getY() * mapy);
 		
 		// circle
 		g2.setColor(new Color(36, 22, 84));
-		g2.fillOval(x - citySize / 2, y - citySize / 2, citySize, citySize);
+		g2.fillOval(x - cityScale / 2, y - cityScale / 2, cityScale, cityScale);
 		
 		// text box
 		g2.setColor(new Color(22, 26, 107));
-		Rectangle rect = new Rectangle(x - citySize / 2, y + citySize / 5, citySize, citySize / 3);
+		Rectangle rect = new Rectangle(x - cityScale / 2, y + cityScale / 5, cityScale, cityScale / 3);
 		g2.fill(rect);
 		g2.setColor(Color.white);
 		drawCentredString(g2, c.getName(), rect, cityfont);
@@ -203,12 +206,12 @@ public class Interface extends JPanel implements MouseListener
 	{
 		for (City initial: cities)
 		{
-			Point starting = new Point(startx + (int)(initial.getX() * sx), starty + (int)(initial.getY() * sy));
+			Point starting = new Point(startx + (int)(initial.getX() * mapx), starty + (int)(initial.getY() * mapy));
 			
 			HashMap<City, Integer> cities = state.urbanArea.cities.get(initial); 
 			for (City other: cities.keySet()) // TODO make it more efficient
 			{
-				Point ending = new Point(startx + (int)(other.getX() * sx), starty + (int)(other.getY() * sy));
+				Point ending = new Point(startx + (int)(other.getX() * mapx), starty + (int)(other.getY() * mapy));
 				
 				// draws connection line
 				g2.setColor(new Color(128, 128, 128));
@@ -222,8 +225,49 @@ public class Interface extends JPanel implements MouseListener
 				
 				// doesn't draw the cost if the cost is 0
 				if (cities.get(other) != 0)
-					drawCentredString(g2, cities.get(other).toString(), r, defont);
+					drawCentredString(g2, cities.get(other).toString(), r, defaultfont);
 			}
+		}
+	}
+	
+	public void drawCurrentStep(Graphics2D g2)
+	{
+		g2.setStroke(new BasicStroke(1));
+		
+		Point starting = new Point(1800, 20);
+		int width = 100, height = 40;
+		
+		for (int i = 1; i <= 3; i++)
+		{
+			if (i == state.step)
+				g2.setColor(new Color(60, 220, 170));
+			else
+				g2.setColor(new Color(45, 150, 120));
+			
+			Rectangle rect = new Rectangle(starting.x, starting.y +  height * (i - 1), width, height);
+			g2.fill(rect);
+			
+			g2.setColor(Color.white);
+			drawCentredString(g2, "Step " + i, rect, defaultfont);
+		}
+	}
+	
+	public void drawTurnOrder(Graphics2D g2)
+	{
+		g2.setStroke(new BasicStroke(1));
+		
+		drawCentredString(g2, "Turn Order", new Rectangle(10, 10, 290, 40), subtitlefont);
+		drawCentredString(g2, "Click on player for more info", new Rectangle(10, 40, 290, 20), defaultfont);
+		Point starting = new Point(10, 65);
+		int width = 60, height = 60;
+		
+		g2.setColor(new Color(255, 255, 255, 100));
+		g2.fillRect(starting.x, starting.y, 290, 80);
+		
+		for (int i = 1; i <= 4; i++)
+		{
+			Rectangle rect = new Rectangle(10 * i + starting.x + width * (i - 1), 10 + starting.y, width, height);
+			g2.fill(rect);
 		}
 	}
 	
@@ -235,13 +279,13 @@ public class Interface extends JPanel implements MouseListener
 		g2.setFont(font);
 		g2.drawString(text, x, y);
 	}
-	// ------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
 	
 	
 	
 	
 	
-	// -------------------- MOUSE METHODS -------------------
+	// ---------------------------------------- MOUSE METHODS ---------------------------------------
 	@Override
 	public void mouseClicked(MouseEvent m) {}
 
@@ -315,6 +359,5 @@ public class Interface extends JPanel implements MouseListener
 
 	@Override
 	public void mouseReleased(MouseEvent m) {}
-	// -------------------------------------------------------
-	// hey
+	// ----------------------------------------------------------------------------------------------------
 }
