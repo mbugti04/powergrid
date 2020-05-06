@@ -120,10 +120,10 @@ Detroit/Buffalo/7
 Detroit/Pittsburgh/6
 Raleigh/Norfolk/3
 Raleigh/Pittsburgh/7
-Norfolk/Washington D.C./5
-Pittsburgh/Washington D.C./6
+Norfolk/Washington/5
+Pittsburgh/Washington/6
 Buffalo/Pittsburgh/7
 Buffalo/New York/8
 New York/Boston/3
 New York/Philadelphia/0
-Philadelphia/Washington D.C./3
+Philadelphia/Washington/3
