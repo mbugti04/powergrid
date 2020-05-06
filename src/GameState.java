@@ -360,6 +360,12 @@ public class GameState
 		}
 		resourceMarket.restock();
 		plantMarket.restock();
+		if(step == 1 || step == 2)
+		{
+			plantMarket.getPlantsAvailable().remove(plantMarket.getPlantsAvailable().size()-1);
+		}
+		else
+			plantMarket.getPlantsAvailable().remove(0);
 		//TODO make sure that it removes the first card from the arraylist, or the last, based on stage
 	}
 	
