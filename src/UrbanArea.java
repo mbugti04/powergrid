@@ -15,17 +15,18 @@ public class UrbanArea
 
 	public void addConnection(City source, City destination, int cost)
 	{
-		if (!cities.containsKey(source))
-			addCity(source);
-
-		if (!cities.containsKey(destination))
-			addCity(destination);
+//		if (!cities.containsKey(source))
+//			addCity(source);
+//
+//		if (!cities.containsKey(destination))
+//			addCity(destination);
 
 		// these connect both of them to each other
 		
-		cities.get(source).put(destination, cost);
+		if (source != null && destination != null)
+			cities.get(source).put(destination, cost);
 
-		cities.get(destination).put(source, cost);
+//		cities.get(destination).put(source, cost);
 	}
 	
 	// needed for limiting regions
