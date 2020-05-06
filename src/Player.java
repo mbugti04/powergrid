@@ -188,6 +188,9 @@ public class Player implements Comparable<Player>{
 	public int getPoweredHouses() {
 		return poweredHouses;
 	}
+	public void addCity(City c) {
+		ownedCities.add(c);
+	}
 	
 	public boolean addMoney(int amount)
 	{
