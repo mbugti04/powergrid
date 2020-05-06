@@ -71,6 +71,7 @@ public class GameState
 	
 	public void initialiseCities()
 	{
+		// comment
 		try
 		{
 			BufferedReader reader = new BufferedReader(
