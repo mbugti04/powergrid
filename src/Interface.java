@@ -3,11 +3,11 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,11 +19,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Interface extends JPanel implements MouseListener, MouseMotionListener
+public class Interface extends JPanel implements MouseListener
 {
 	static int width = 1920, height = 1080;
 	static int startx = 260, starty = 135;
 	static int citySize = 70;
+	/* the position where the map starts
+	 * the cities will be relative to this position */
 	static int sx = 1653, sy = 876;
 	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
@@ -36,6 +38,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	
 	Font defont = new Font("Calibri", Font.PLAIN, 16);
 	Font titlefont = new Font("Calibri", Font.BOLD, 32);
+	Font cityfont = new Font("Calibri", Font.PLAIN, 11);
 	
 	// states
 	private boolean
@@ -52,7 +55,6 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		super();
 		setSize(width, height);
 		addMouseListener(this);
-		addMouseMotionListener(this);
 		
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -147,6 +149,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		if (ingame)
 		{
 			drawMap(g2);
+			drawCityConnections(g2);
 			for (City c: cities)
 			{
 				drawCity(g2, c);
@@ -182,12 +185,58 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		int x = startx + (int)(c.getX() * sx);
 		int y = starty + (int)(c.getY() * sy);
 		
-		g2.setColor(new Color(0, 0, 0));
+		// circle
+		g2.setColor(new Color(36, 22, 84));
 		g2.fillOval(x - citySize / 2, y - citySize / 2, citySize, citySize);
 		
-		g2.setColor(new Color(120, 120, 120));
-		g2.fillRect(x - citySize / 2, y + citySize / 4, citySize, citySize / 3);
+		// text box
+		g2.setColor(new Color(22, 26, 107));
+		Rectangle rect = new Rectangle(x - citySize / 2, y + citySize / 5, citySize, citySize / 3);
+		g2.fill(rect);
+		g2.setColor(Color.white);
+		drawCentredString(g2, c.getName(), rect, cityfont);
+		// houses built in the city
 	}
+	
+	public void drawCityConnections(Graphics2D g2)
+	{
+		for (City initial: cities)
+		{
+			Point starting = new Point(startx + (int)(initial.getX() * sx), starty + (int)(initial.getY() * sy));
+			
+			HashMap<City, Integer> cities = state.urbanArea.cities.get(initial); 
+			for (City other: cities.keySet()) // TODO make it more efficient
+			{
+				Point ending = new Point(startx + (int)(other.getX() * sx), starty + (int)(other.getY() * sy));
+				
+				g2.drawLine(starting.x, starting.y, ending.x, ending.y);
+				
+				int startx = 0, starty = 0, endx = 0, endy = 0;
+				if (starting.x < ending.x)
+				{
+					startx = starting.x;
+					endx = ending.x;
+				}
+				startx = ending.x;
+				endx = starting.x;
+				
+				if (starting.y < ending.y)
+				{
+					starty = starting.y;
+					endy = ending.y;
+				}
+				starty = ending.y;
+				endy = starting.y;
+				
+				int w = endx - startx;
+				int h = endy - starty;
+				Rectangle r = new Rectangle(startx, starty, w, h);
+				
+				drawCentredString(g2, cities.get(other).toString(), r, defont);
+			}
+		}
+	}
+	
 	public void drawCentredString(Graphics2D g2, String text, Rectangle rect, Font font)
 	{
 		FontMetrics metrics = g2.getFontMetrics(font);
@@ -204,13 +253,16 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	
 	// -------------------- MOUSE METHODS -------------------
 	@Override
-	public void mouseDragged(MouseEvent m) {}
+	public void mouseClicked(MouseEvent m) {}
 
 	@Override
-	public void mouseMoved(MouseEvent m) {}
+	public void mouseEntered(MouseEvent m) {}
 
 	@Override
-	public void mouseClicked(MouseEvent m)
+	public void mouseExited(MouseEvent m) {}
+
+	@Override
+	public void mousePressed(MouseEvent m)
 	{
 		System.out.println(m.getX() + ", " + m.getY());
 		
@@ -270,15 +322,6 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 			
 		}
 	}
-
-	@Override
-	public void mouseEntered(MouseEvent m) {}
-
-	@Override
-	public void mouseExited(MouseEvent m) {}
-
-	@Override
-	public void mousePressed(MouseEvent m) {}
 
 	@Override
 	public void mouseReleased(MouseEvent m) {}
