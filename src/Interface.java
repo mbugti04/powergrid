@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -209,11 +210,17 @@ public class Interface extends JPanel implements MouseListener
 			{
 				Point ending = new Point(startx + (int)(other.getX() * sx), starty + (int)(other.getY() * sy));
 				
+				g2.setColor(new Color(128, 128, 128));
+				g2.setStroke(new BasicStroke(20));
 				g2.drawLine(starting.x, starting.y, ending.x, ending.y);
 				
+				g2.setColor(new Color(255, 255, 255));
 				Rectangle r = new Rectangle(starting);
 				r.add(ending);
-				drawCentredString(g2, cities.get(other).toString(), r, defont);
+				
+				// doesn't draw the cost if the cost is 0
+				if (cities.get(other) != 0)
+					drawCentredString(g2, cities.get(other).toString(), r, defont);
 			}
 		}
 	}
