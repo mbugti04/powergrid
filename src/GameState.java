@@ -11,12 +11,12 @@ public class GameState
 	public static int playerCount = 4;
 	
 	public int theBid = 0;
-	public int currentPlayer;
-	public int turnPhase; // 0=buy power plants. 1=buy resources. 2=building. beaurocracy doesnt have a turn order.
+	public int currentPlayer = 0;
+	public int turnPhase = 0; // 0=buy power plants. 1=buy resources. 2=building. beaurocracy doesnt have a turn order.
 	
-	public PowerplantMarket plantMarket;
-	public ResourceMarket resourceMarket;
-	public UrbanArea urbanArea;
+	public PowerplantMarket plantMarket = new PowerplantMarket();
+	public ResourceMarket resourceMarket = new ResourceMarket();
+	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
 	
 	public boolean hasEnded = false;
@@ -24,13 +24,6 @@ public class GameState
 	
 	public GameState()
 	{
-		currentPlayer = 0;
-		turnPhase = 0;
-		plantMarket = new PowerplantMarket();
-		resourceMarket = new ResourceMarket();
-		urbanArea = new UrbanArea();
-		players = new ArrayList<Player>();
-		
 		mainSetup();
 	}
 	
@@ -42,7 +35,8 @@ public class GameState
 			{
 				// select regions
 				
-				// determine initial player order
+				// determine initial player order which is random
+				
 				
 				// set up plant market, resource market
 			}
@@ -67,6 +61,10 @@ public class GameState
 	private void mainSetup()
 	{
 		initialiseCities();
+		initialisePlayers();
+		initialiseTurnOrder();
+		initialisePlantMarket();
+		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
@@ -133,6 +131,31 @@ public class GameState
 			e.printStackTrace();
 		}
 	}
+	
+	public void initialisePlayers()
+	{
+		players = new ArrayList<Player>();
+		for (int i = 0; i < playerCount; i++)
+		{
+			players.add(new Player());
+		}
+	}
+	
+	public void initialiseTurnOrder()
+	{
+		Collections.shuffle(players);
+	}
+	
+	public void initialisePlantMarket()
+	{
+		
+	}
+	
+	public void initialiseResourceMarket()
+	{
+		
+	}
+	
 	// -------------------------------------------------------
 	
 	/* adds or removes a region inside the list of regions
