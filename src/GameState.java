@@ -346,15 +346,16 @@ public class GameState
 	
 	public void updateStage()
 	{
-		ArrayList<Resource> resourcesUsed = new ArrayList<Resource>();
+
 		HashMap<Player, HashMap<Resource, Integer>> allPlayersResources = new HashMap<Player, HashMap<Resource, Integer>>();
+		
 		HashMap<Player, Integer> allPlayersHouses = new HashMap<Player, Integer>();;
 		
 		for(int x = 0; x < players.size(); x++) {
 			allPlayersResources.put(players.get(x), players.get(x).getResources());
-//			allPlayersHouses.put(players.get(x), );
+			players.get(x).calcPowerableHouses();
+			allPlayersHouses.put(players.get(x), players.get(x).ownedHouses);
 			players.get(x).income();
-			//TODO removing resources from each player
 			
 		}
 		resourceMarket.restock();
