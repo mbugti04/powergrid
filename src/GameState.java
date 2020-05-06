@@ -434,8 +434,49 @@ public class GameState
 		catch(IOException e) {}
 	}
 	
-	public void buyCity()
+	public void buyCity(City cit)
 	{
+		ArrayList<Player> order = new ArrayList<Player>();
+		for(Player p : players)
+			order.add(p);
+		Collections.reverse(order);
+		City pickedCity = cit;
+		int cost = 0;
+		//TODO the actual proccess of picking the city
+		
+		for(Player i : order) 
+		{
+			if(i.getCities().size() == 0) //if this is the player's first city
+				if(i.money < 10)
+					return; //no money
+				else 
+				{
+					i.money -= 10;
+					i.addCity(pickedCity);
+					i.ownedHouses++;
+					//money spent, city bought.
+					return;
+				}
+			else //if player has at least 1 city
+			{
+				for(City c : i.getCities()) 
+				{
+					if(urbanArea.hasConnection(pickedCity, c) != -1) 
+					{
+						if(i.money < pickedCity.nextCost())
+							return; //no money
+						cost += urbanArea.hasConnection(pickedCity, c);
+						cost += pickedCity.nextCost();
+						i.addCity(pickedCity);
+						i.ownedHouses++;
+					}
+				}
+				//TODO calculate the shortest path from the closest of the player's cities to the city that the player picked
+			}
+			i.money -= cost;
+		}
+		
+		
 		//TODO finish the method
 	}
 	
