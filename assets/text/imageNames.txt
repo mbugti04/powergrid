@@ -1,2 +1,7 @@
 mainMenu.png
 map.png
+red.png
+blue.png
+green.png
+yellow.png
+arrow.png
