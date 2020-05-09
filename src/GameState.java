@@ -134,10 +134,14 @@ public class GameState
 	
 	public void initialisePlayers()
 	{
+		ArrayList<String> colours = new ArrayList<String>();
+		colours.addAll(Arrays.asList("red", "blue", "green", "yellow"));
+		Collections.shuffle(colours);
+		
 		players = new ArrayList<Player>();
 		for (int i = 0; i < playerCount; i++)
 		{
-			players.add(new Player());
+			players.add(new Player(colours.remove(0)));
 		}
 	}
 	
@@ -553,6 +557,11 @@ public class GameState
 				break;
 		}
 		return ind;
+	}
+	
+	public ArrayList<Player> getPlayerList()
+	{
+		return players;
 	}
 }
 
