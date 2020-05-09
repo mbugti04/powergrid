@@ -268,6 +268,13 @@ public class Interface extends JPanel implements MouseListener
 		{
 			Rectangle rect = new Rectangle(10 * i + starting.x + width * (i - 1), 10 + starting.y, width, height);
 			g2.fill(rect);
+			
+			g2.drawImage(images.get(state.getPlayerList().get(i - 1).colour + ".png"), 10 * i + starting.x + width * (i - 1), 10 + starting.y, null);
+			
+			if (i - 1 == state.currentPlayer)
+			{
+				g2.drawImage(images.get("arrow.png"), 10 * i + starting.x + width * (i - 1), 60 + starting.y, null);
+			}
 		}
 	}
 	
