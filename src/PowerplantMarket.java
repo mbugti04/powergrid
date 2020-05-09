@@ -18,7 +18,14 @@ public class PowerplantMarket
 	{
 		return allPlants;
 	}
-	
+	public void shuffle() 
+	{
+		ArrayList<Powerplant> plants = new ArrayList<Powerplant>();
+		plants.addAll(allPlants);
+		Collections.shuffle(plants);
+		allPlants.clear();
+		allPlants.addAll(plants);
+	}
 	public void restock()
 	{
 		plantsAvailable.add(allPlants.remove());
