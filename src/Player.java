@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 public class Player implements Comparable<Player>{
 
+	public String colour;
 	public int money;
 	private int poweredHouses;
 	public int ownedHouses;
@@ -13,10 +14,11 @@ public class Player implements Comparable<Player>{
 	private HashMap<Resource, Integer> resourcesStored;
 	
 	
-	public Player() {
+	public Player(String colour) {
 		money = 50;
 		poweredHouses = 0;
 		ownedHouses = 0;
+		this.colour = colour;
 		
 		ownedPlants = new ArrayList<Powerplant>();
 		ownedCities = new ArrayList<City>();
