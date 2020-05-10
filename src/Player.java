@@ -69,6 +69,33 @@ public class Player implements Comparable<Player>{
 		
 		return false;
 	}
+	
+	public int getSpace(Resource r)
+	{
+		int coalSpace = 0;
+		int oilSpace = 0;
+		int trashSpace = 0;
+		int uraniumSpace = 0;
+		for(int i = 0; i < ownedPlants.size(); i++)
+		{
+			if(ownedPlants.get(i).getResourceType() == Resource.coal || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+				coalSpace += ownedPlants.get(i).storageCapacity();
+			if(ownedPlants.get(i).getResourceType() == Resource.oil || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+				oilSpace += ownedPlants.get(i).storageCapacity();
+			if(ownedPlants.get(i).getResourceType() == Resource.trash)
+				trashSpace += ownedPlants.get(i).storageCapacity();	
+			if(ownedPlants.get(i).getResourceType() == Resource.uranium)
+				uraniumSpace += ownedPlants.get(i).storageCapacity();	
+		}
+		
+		if (r.equals(Resource.coal))
+			return coalSpace;
+		if (r.equals(Resource.oil))
+			return oilSpace;
+		if (r.equals(Resource.trash))
+			return trashSpace;
+		return uraniumSpace;
+	}
 	public void calcPowerableHouses() {
 		int powerable = 0;
 		int amount = 0;

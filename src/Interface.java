@@ -30,6 +30,8 @@ public class Interface extends JPanel implements MouseListener
 	 * the cities will be relative to this position */
 	static int mapx = 1653, mapy = 876;
 	
+	boolean oyjosuke = true;
+	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	HashMap<String, BufferedImage> plantimg = new HashMap<String, BufferedImage>(); // plant image
 	/* String tells the state that the buttons is used for
@@ -447,9 +449,20 @@ public class Interface extends JPanel implements MouseListener
 		{
 			if (numpow-- > 0)
 			{
-				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), posx, posy + 10 * i + 150 * i, 150, 150, null);
+				g2.drawImage(plantimg.get(current.ownedPlants.get(i).getName() + ".png"), posx, posy + 10 * i + 150 * i, 150, 150, null);
 			}
-			g2.fillRect(posx, posy + 10 * i + 150 * i, 150, 150);
+			else
+			{
+				g2.fillRect(posx, posy + 10 * i + 150 * i, 150, 150);
+			}
+		}
+		
+		g2.setColor(Color.white);
+		int g = 0, w = 200, h = 30;
+		drawAString(g2, "Resources Stored:", new Point(195, 925), titlefont);
+		for (Resource r: current.getResources().keySet())
+		{
+			drawAString(g2, r + ": " + current.getResources().get(r) + "/" + current.getSpace(r), new Point(195, 955 + h * g++), titlefont);
 		}
 		
 		g2.setColor(Color.white);
@@ -588,10 +601,11 @@ public class Interface extends JPanel implements MouseListener
 				}
 			}
 		}
-		
 		if (buyresource)
 		{
 			Player current = state.players.get(state.currentPlayer);
+			if (current.ownedPlants.size() < 1)
+				current.addPowerPlant(state.plantMarket.plantsAvailable.get(0));
 			for (Button b: buttons.get("buyresource"))
 			{
 				if (b.inBounds(m))
