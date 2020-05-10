@@ -38,6 +38,7 @@ public class Interface extends JPanel implements MouseListener
 	HashMap<String, ArrayList<Button>> buttons = new HashMap<String, ArrayList<Button>>();
 	
 	Font defaultfont = new Font("Calibri", Font.PLAIN, 16);
+	Font bigfont = new Font("Calibri", Font.BOLD, 48);
 	Font titlefont = new Font("Calibri", Font.BOLD, 32);
 	Font subtitlefont = new Font("Calibri", Font.BOLD, 20);
 	Font cityfont = new Font("Calibri", Font.PLAIN, 11);
@@ -46,7 +47,8 @@ public class Interface extends JPanel implements MouseListener
 	private boolean
 	initial = true,
 	regionSelect = false,
-	ingame = false;
+	ingame = false,
+	bidding = false;
 	
 	// gamestate things
 	GameState state = new GameState();
@@ -79,6 +81,7 @@ public class Interface extends JPanel implements MouseListener
 		imageSetup();
 		mainMenuSetup();
 		regionSelectSetup();
+		biddingSetup();
 	}
 	
 	private void imageSetup()
@@ -126,6 +129,15 @@ public class Interface extends JPanel implements MouseListener
 		
 		buttons.put("regionSelect", temp);
 	}
+	
+	private void biddingSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("BID", 625, 825, Button.normalw, Button.normalh, new Color(0, 200, 0)));
+		temp.add(new Button("PASS", 1050, 825, Button.normalw, Button.normalh, new Color(200, 0, 0)));
+		
+		buttons.put("bidding", temp);
+	}
 	// ----------------------------------------------------------------------------------------------------
 	
 	
@@ -149,6 +161,18 @@ public class Interface extends JPanel implements MouseListener
 		{
 			drawRegionSelect(g2);
 		}
+		if (bidding)
+		{
+			drawMap(g2);
+			drawCityConnections(g2);
+			for (City c: cities)
+			{
+				drawCity(g2, c);
+			}
+			drawCurrentStep(g2);
+			drawTurnOrder(g2);
+			drawBidding(g2);
+		}
 		if (ingame)
 		{
 			drawMap(g2);
@@ -157,6 +181,7 @@ public class Interface extends JPanel implements MouseListener
 			{
 				drawCity(g2, c);
 			}
+			drawBidding(g2);
 			drawCurrentStep(g2);
 			drawTurnOrder(g2);
 		}
@@ -278,6 +303,22 @@ public class Interface extends JPanel implements MouseListener
 		}
 	}
 	
+	public void drawBidding(Graphics2D g2)
+	{
+		g2.setColor(new Color(255, 255, 255, 230));
+		int edges = 150;
+		g2.fillRect(edges, edges, width - edges * 2, 800);
+		
+		g2.setColor(new Color(0, 0, 0));
+		Rectangle title = new Rectangle(edges, edges, width - edges * 2, edges / 2);
+		drawCentredString(g2, "Bidding", title, bigfont);
+		
+		for (Button b: buttons.get("bidding"))
+			b.draw(g2);
+		
+		
+	}
+	
 	public void drawCentredString(Graphics2D g2, String text, Rectangle rect, Font font)
 	{
 		FontMetrics metrics = g2.getFontMetrics(font);
@@ -342,7 +383,8 @@ public class Interface extends JPanel implements MouseListener
 							state.removeRegions();
 							
 							regionSelect = false;
-							ingame = true;
+//							ingame = true;
+							bidding = true;
 							
 							System.out.println("active regions: " + state.getActiveRegions());
 
@@ -358,7 +400,7 @@ public class Interface extends JPanel implements MouseListener
 				}
 			}
 		}
-		if (ingame)
+		if (bidding)
 		{
 			
 		}
