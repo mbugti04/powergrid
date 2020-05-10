@@ -42,6 +42,13 @@ public class PowerplantMarket
 		Collections.sort(plantsAvailable, Powerplant.powerNum);
 	}
 	
+	public void removePlant(Powerplant p)
+	{
+		plantsAvailable.remove(p);
+		restock();
+		sort();
+	}
+	
 	public void bid(boolean raise , Powerplant auction)
 	{
 		int price = auction.getName();

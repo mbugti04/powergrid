@@ -238,6 +238,7 @@ public class GameState
 	
 	public int nextTurnPhase()
 	{
+//		turnOrder(); // TODO is this needed
 		turnPhase+= 1;
 		if (turnPhase == 4)
 			turnPhase = 0;
@@ -286,7 +287,7 @@ public class GameState
 	public int currentbid = 0;
 	public Player currentBidPlayer = null;
 	public ArrayList<Player> nonBidders = new ArrayList<Player>();
-	public ArrayList<Player> permanantNonBidders = new ArrayList<Player>();
+	public ArrayList<Player> permanentNonBidders = new ArrayList<Player>();
 	public boolean biddingend;
 
 	public void newBidPhase()
@@ -295,10 +296,16 @@ public class GameState
 		currentbid = 0;
 		currentBidPlayer = null;
 		nonBidders = new ArrayList<Player>();
-		permanantNonBidders = new ArrayList<Player>();
+		permanentNonBidders = new ArrayList<Player>();
 	}
 	public void refreshBidPhase()
 	{
+		if (permanentNonBidders.size() == playerCount)
+		{
+			nextTurnPhase();
+			newBidPhase();
+			nextPlayer();
+		}
 		chosenPlant = null;
 		currentbid = 0;
 		currentBidPlayer = null;
@@ -311,7 +318,6 @@ public class GameState
 	
 	public void bid()
 	{
-		turnOrder();
 		Collections.sort(plantMarket.plantsAvailable);
 		
 		if (chosenPlant != null)
@@ -344,35 +350,29 @@ public class GameState
 	public void playerPassedBidPhase() 
 	{
 		if (currentBidPlayer == null)
-			permanantNonBidders.add(players.get(currentPlayer));
+			permanentNonBidders.add(players.get(currentPlayer));
 		nonBidders.add(players.get(currentPlayer));
 		nextBidder();
 	}
 	
 	public void nextBidder()
 	{
-		if (permanantNonBidders.size() == playerCount)
+		
+		do
 		{
-			nextTurnPhase();
-			newBidPhase();
 			nextPlayer();
 		}
-		else
-		{
-			while (nonBidders.contains(players.get(currentPlayer)))
-			{
-				nextPlayer();
-			}
-		}
-		if (nonBidders.size() == playerCount - 1 && chosenPlant != null && currentBidPlayer != null)
+		while (nonBidders.contains(players.get(currentPlayer)) || permanentNonBidders.contains(players.get(currentPlayer)));
+		
+		if ((nonBidders.size() + permanentNonBidders.size() == playerCount - 1 ) && chosenPlant != null && currentBidPlayer != null)
 		{
 			bidWinner();
-			newBidPhase();
 			nextPlayer();
 		}
 		
 		System.out.println(turnPhase);
 		System.out.println(nonBidders);
+		System.out.println(permanentNonBidders);
 		
 	}
 	
@@ -380,7 +380,9 @@ public class GameState
 	{
 		getCurrentPlayer().addMoney(-currentbid);
 		getCurrentPlayer().addPowerPlant(chosenPlant);
-		newBidPhase();
+		plantMarket.removePlant(chosenPlant);
+		permanentNonBidders.add(getCurrentPlayer());
+		refreshBidPhase();
 	}
 	
 	public Player getCurrentPlayer()

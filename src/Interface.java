@@ -608,17 +608,18 @@ public class Interface extends JPanel implements MouseListener
 		}
 		if (bidding)
 		{
-			for (int i = 0; i < 4; i++)
-			{
-				int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
-				int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
-				Rectangle r = new Rectangle(xcoord, ycoord, 150, 150);
-				if (contains(r, m))
+			if (state.chosenPlant == null)
+				for (int i = 0; i < 4; i++)
 				{
-//					System.out.println("selected plant " + state.plantMarket.plantsAvailable.get(i).getName());
-					state.choosePlant(state.plantMarket.plantsAvailable.get(i));
+					int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
+					int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
+					Rectangle r = new Rectangle(xcoord, ycoord, 150, 150);
+					if (contains(r, m))
+					{
+	//					System.out.println("selected plant " + state.plantMarket.plantsAvailable.get(i).getName());
+						state.choosePlant(state.plantMarket.plantsAvailable.get(i));
+					}
 				}
-			}
 			for (Button b: buttons.get("bidding"))
 			{
 				if (b.inBounds(m))
