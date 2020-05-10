@@ -1,4 +1,3 @@
-Name Resource Amount Houses (Free is 0 for Amount)
 4 coal 2 1
 8 coal 3 2
 10 coal 2 2
