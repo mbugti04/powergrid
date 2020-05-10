@@ -8,11 +8,13 @@ public class PowerplantMarket
 	
 	public ArrayList<Powerplant> plantsAvailable;
 	public Queue<Powerplant> allPlants;
+	public ArrayList<Powerplant> allPlantsAL;
 	
 	public PowerplantMarket()
 	{
 		plantsAvailable = new ArrayList<Powerplant>();
 		allPlants = new LinkedList<Powerplant>();
+		allPlantsAL = new ArrayList<Powerplant>();
 	}
 	
 	public ArrayList<Powerplant> getPlantsAvailable()
