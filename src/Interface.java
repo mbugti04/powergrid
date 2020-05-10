@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -71,6 +72,12 @@ public class Interface extends JPanel implements MouseListener
 		f.add(this);
 		f.setSize(this.getSize());
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		f.setUndecorated(true);
+		try {
+			f.setIconImage(ImageIO.read(new File("assets/images/icon.png")));
+		} catch (IOException e) {
+			System.out.println("Could not load icon!");
+		}
 		
 		mainSetup();
 		
