@@ -1,4 +1,5 @@
  import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 public class Player implements Comparable<Player>{
@@ -24,6 +25,11 @@ public class Player implements Comparable<Player>{
 		ownedCities = new ArrayList<City>();
 		
 		resourcesStored = new HashMap<Resource, Integer>();
+		ArrayList<Resource> valid = new ArrayList<Resource>(Arrays.asList(Resource.coal, Resource.oil, Resource.uranium, Resource.trash));
+		for (Resource r: valid)
+		{
+			resourcesStored.put(r, 0);
+		}
 	}
 	
 	public boolean addResourceToStorage(Resource r, int count) {
@@ -43,6 +49,7 @@ public class Player implements Comparable<Player>{
 				uraniumSpace += ownedPlants.get(i).storageCapacity();	
 		}
 		
+		System.out.println(String.format("coal:%d, oil:%d, trash:%d, uranium:%d", coalSpace, oilSpace, trashSpace, uraniumSpace));
 		if(r.equals(Resource.coal) && coalSpace - resourcesStored.get(Resource.coal) >= count) {
 			resourcesStored.replace(Resource.coal, resourcesStored.get(Resource.coal)+1);
 			return true;

@@ -10,13 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ResourceMarket
-{
-	public static void main(String[] args)
-	{
-		ResourceMarket r = new ResourceMarket();
-		System.out.println(r.getPrice(Resource.uranium));
-	}
-	
+{	
 	public HashMap<Resource, Integer> currentStock;
 	public HashMap<Resource, ArrayList<Integer>> restockAmount;
 	
@@ -43,7 +37,8 @@ public class ResourceMarket
 		if (p.addMoney(-resourcePrice))
 		{
 			this.removeFromCurrentStock(r, 1);
-			p.addResourceToStorage(r, 1);
+			if (!p.addResourceToStorage(r, 1))
+				this.addToCurrentStock(r, 1);
 			return true;
 		}
 		return false;

@@ -588,6 +588,7 @@ public class Interface extends JPanel implements MouseListener
 				}
 			}
 		}
+		
 		if (buyresource)
 		{
 			Player current = state.players.get(state.currentPlayer);
