@@ -5,7 +5,12 @@ public class Powerplant implements Comparable
 	private Resource resourceType;
 	private int amountToPower;
 	private int powerProduced;
+	private boolean isStep3 = false;
 	
+	public Powerplant(String step3) 
+	{
+		isStep3 = true;
+	}
 	public Powerplant(int name, Resource resource, int amount, int power) 
 	{
 		this.name = name;
@@ -13,6 +18,7 @@ public class Powerplant implements Comparable
 		this.amountToPower = amount;
 		this.powerProduced = power;
 	}
+
 	
 	public int storageCapacity()
 	{
@@ -33,6 +39,10 @@ public class Powerplant implements Comparable
 	
 	public int getPowerProduced() {
 		return powerProduced;
+	}
+	
+	public boolean isStep3() {
+		return isStep3;
 	}
 	
 	public static Comparator<Powerplant> powerNum = new Comparator<Powerplant>() {
