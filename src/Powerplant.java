@@ -1,5 +1,5 @@
 import java.util.Comparator;
-public class Powerplant 
+public class Powerplant implements Comparable
 {
 	private int name;
 	private Resource resourceType;
@@ -42,4 +42,11 @@ public class Powerplant
 			return pNum1 - pNum2;
 		}
 	};
+
+	@Override
+	public int compareTo(Object other)
+	{
+		Powerplant o = (Powerplant) other;
+		return this.name - o.name;
+	}
 }

@@ -372,11 +372,12 @@ public class Interface extends JPanel implements MouseListener
 			g2.fillRect(170, 400 + 10 * i + 150 * i, 150, 150);
 		}
 		
+		// other plants
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
 		for (int i = 0; i < 8; i++)
 		{
-			int xcoord = 400 + 10 * (i % 4) + 150 * (i % 4);
-			int ycoord = 400 + 10 * (i / 4) + 150 * (i / 4);
+			int xcoord = 615 + 10 * (i % 4) + 150 * (i % 4);
+			int ycoord = 280 + 10 * (i / 4) + 150 * (i / 4);
 			g2.drawImage(plantimg.get(allPlants.get(i).getName() + ".png"), xcoord, ycoord, 150, 150, null);
 		}
 		

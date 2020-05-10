@@ -207,14 +207,15 @@ public class GameState
 			ArrayList<Powerplant> plants = new ArrayList<Powerplant>();
 			for(int i = 0; i < plantMarket.allPlantsAL.size(); i++) 
 			{
-				if(plantMarket.allPlantsAL.get(i).getName() >= 3 || plantMarket.allPlantsAL.get(i).getName() <= 10 || plantMarket.allPlantsAL.get(i).getName() == 13) 
+				if(plantMarket.allPlantsAL.get(i).getName() >= 3 && plantMarket.allPlantsAL.get(i).getName() <= 10 || plantMarket.allPlantsAL.get(i).getName() == 13) 
 				{
 					plants.add(plantMarket.allPlantsAL.get(i));
 				}
 			}
 			
+			Collections.sort(plants);
 			for(Powerplant i : plants)
-			plantMarket.plantsAvailable.add(i);
+				plantMarket.plantsAvailable.add(i);
 			
 			plantMarket.allPlants.add(plantMarket.plantsAvailable.remove(plantMarket.plantsAvailable.size()-1));
 			Collections.shuffle(plantMarket.allPlantsAL);
