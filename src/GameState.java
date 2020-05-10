@@ -378,6 +378,10 @@ public class GameState
 		else
 			plantMarket.getPlantsAvailable().remove(0);
 		//TODO make sure that it removes the first card from the arraylist, or the last, based on stage
+		if(plantMarket.getPlantsAvailable().size() < 8)
+		{
+			plantMarket.restock();
+		}
 	}
 	
 	public String whoWon()
