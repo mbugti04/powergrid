@@ -24,7 +24,10 @@ public class UrbanArea
 		// these connect both of them to each other
 		
 		if (source != null && destination != null)
+		{
 			cities.get(source).put(destination, cost);
+			cities.get(destination).put(source, cost);
+		}
 
 //		cities.get(destination).put(source, cost);
 	}
