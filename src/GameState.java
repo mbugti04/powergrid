@@ -347,6 +347,7 @@ public class GameState
 		
 		nextPlayer();
 	}
+	
 	public void bidPhaseEnded() 
 	{
 		bidOrder.clear();

@@ -6,7 +6,6 @@ public class Runner
 		runGame();
 //		bidTest();
 	}
-	
 	public static void bidTest()
 	{
 		GameState e = new GameState();
