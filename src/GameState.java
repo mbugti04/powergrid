@@ -154,7 +154,6 @@ public class GameState
 			Resource resource = null;
 			int amount = 0;
 			int power = 0;
-			
 			int index = 0;
 			
 			while(!(line.equals("end"))) 
