@@ -54,11 +54,11 @@ public class Interface extends JPanel implements MouseListener
 	ingame = false,
 	bidding = false,
 	buyresource = false,
+	buycity = false,
 	nextTurn = false;
 	
 	// gamestate things
 	GameState state = new GameState();
-	ArrayList<City> cities;
 	
 	public Interface()
 	{
@@ -212,7 +212,7 @@ public class Interface extends JPanel implements MouseListener
 		{
 			drawMap(g2);
 			drawCityConnections(g2);
-			for (City c: cities)
+			for (City c: state.urbanArea.cities.keySet())
 			{
 				drawCity(g2, c);
 			}
@@ -224,7 +224,7 @@ public class Interface extends JPanel implements MouseListener
 		{
 			drawMap(g2);
 			drawCityConnections(g2);
-			for (City c: cities)
+			for (City c: state.urbanArea.cities.keySet())
 			{
 				drawCity(g2, c);
 			}
@@ -292,7 +292,7 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawCityConnections(Graphics2D g2)
 	{
-		for (City initial: cities)
+		for (City initial: state.urbanArea.cities.keySet())
 		{
 			Point starting = new Point(startx + (int)(initial.getX() * mapx), starty + (int)(initial.getY() * mapy));
 			
@@ -532,7 +532,7 @@ public class Interface extends JPanel implements MouseListener
 	@Override
 	public void mousePressed(MouseEvent m)
 	{
-		System.out.println(m.getX() + ", " + m.getY());
+//		System.out.println(m.getX() + ", " + m.getY());
 		
 		if (initial)
 		{
@@ -578,8 +578,6 @@ public class Interface extends JPanel implements MouseListener
 							System.out.println("turnphase: " + state.turnPhase);
 							
 							System.out.println("active regions: " + state.getActiveRegions());
-
-							cities = new ArrayList<City>(state.urbanArea.getListOfAllCities());
 						}
 					}
 					else
@@ -610,11 +608,11 @@ public class Interface extends JPanel implements MouseListener
 				{
 					if (b.name.equals("BID"))
 					{
-						
+						state.bid();
 					}
 					if (b.name.equals("PASS"))
 					{
-						
+						state.playerPassedBidPhase();
 					}
 				}
 			}
@@ -622,8 +620,6 @@ public class Interface extends JPanel implements MouseListener
 		if (buyresource)
 		{
 			Player current = state.players.get(state.currentPlayer);
-//			if (current.ownedPlants.size() < 1)
-//				current.addPowerPlant(state.plantMarket.plantsAvailable.get(0));
 			for (Button b: buttons.get("buyresource"))
 			{
 				if (b.inBounds(m))
@@ -640,9 +636,23 @@ public class Interface extends JPanel implements MouseListener
 			}
 		}
 		
-		if (nextTurn)
+		if (buycity)
 		{
 			
+		}
+		
+		if (!regionSelect)
+		{
+			if (state.turnPhase == 0)
+			{
+				bidding = true;
+				buyresource = false;
+			}
+			if (state.turnPhase == 1)
+			{
+				bidding = false;
+				buyresource = true;
+			}
 		}
 	}
 	

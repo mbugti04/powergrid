@@ -303,7 +303,6 @@ public class GameState
 		currentbid = 0;
 		currentBidPlayer = null;
 		nonBidders = new ArrayList<Player>();
-		
 	}
 	public void choosePlant(Powerplant chosenPlant)
 	{
@@ -314,7 +313,6 @@ public class GameState
 	{
 		turnOrder();
 		Collections.sort(plantMarket.plantsAvailable);
-		
 		
 		if (currentBidPlayer == null)
 		{
@@ -348,6 +346,11 @@ public class GameState
 	
 	public void nextBidder()
 	{
+		if (nonBidders.size() == playerCount)
+		{
+			nextTurnPhase();
+			newBidPhase();
+		}
 		while (nonBidders.contains(players.get(currentPlayer)))
 		{
 			nextPlayer();
@@ -356,6 +359,10 @@ public class GameState
 		{
 			bidWinner();
 		}
+		
+		System.out.println(turnPhase);
+		System.out.println(nonBidders);
+		
 	}
 	
 	public void bidWinner()
@@ -419,7 +426,7 @@ public class GameState
 			}
 			syncBidOrders();
 			nextPlayer();
->>>>>>> branch 'master' of https://github.com/malgantual/powergrid.git
+
 //		}
 //		catch(IOException e) {}
 		
@@ -457,12 +464,12 @@ public class GameState
 		for(Player p : players)
 			bidOrderC.add(p.colour);
 	}
-<<<<<<< HEAD
+
 	
 	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sub-method 
-=======
+
 	public Player bidSM(ArrayList<Player> order, Player ib, Powerplant plant)// bid sub-method 
->>>>>>> branch 'master' of https://github.com/malgantual/powergrid.git
+
 	{
 		ArrayList<Player> theEverShrinkingListOfBidders = new ArrayList<Player>();
 		theEverShrinkingListOfBidders.addAll(order);
