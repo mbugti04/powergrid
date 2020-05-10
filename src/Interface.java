@@ -65,8 +65,7 @@ public class Interface extends JPanel implements MouseListener
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.add(this);
 		f.setSize(this.getSize());
-//		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//		f.pack();
+		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		mainSetup();
 		
@@ -353,9 +352,14 @@ public class Interface extends JPanel implements MouseListener
 		drawAString(g2, "Power Plants:", new Point(170, 380), titlefont);
 		
 		int numpow = current.ownedPlants.size();
+		g2.setColor(new Color(100, 100, 100));
 		for (int i = 0; i < 3; i++)
 		{
-			
+			if (numpow-- > 0)
+			{
+				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), 170, 400 + 10 * i + 150 * i, 150, 150, null);
+			}
+			g2.fillRect(170, 400 + 10 * i + 0 * i, 150, 150);
 		}
 		
 	}
