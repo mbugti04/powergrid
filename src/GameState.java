@@ -245,6 +245,14 @@ public class GameState2
 			turnPhase = 0;
 		return turnPhase;
 	}
+	
+	public int nextPlayer()
+	{
+		currentPlayer++;
+		if (currentPlayer > playerCount - 1)
+			currentPlayer = 0;
+		return currentPlayer;
+	}
 	/* adds or removes a region inside the list of regions
 	 * that will be playable in-game
 	 */

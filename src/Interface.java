@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -50,7 +51,8 @@ public class Interface extends JPanel implements MouseListener
 	regionSelect = false,
 	ingame = false,
 	bidding = false,
-	buyresource = false;;
+	buyresource = false,
+	nextTurn = false;
 	
 	// gamestate things
 	GameState state = new GameState();
@@ -85,6 +87,7 @@ public class Interface extends JPanel implements MouseListener
 		regionSelectSetup();
 		biddingSetup();
 		buyresourceSetup();
+		nextTurnSetup();
 	}
 	
 	private void imageSetup()
@@ -174,6 +177,12 @@ public class Interface extends JPanel implements MouseListener
 		
 		buttons.put("buyresource", temp);
 	}
+	private void nextTurnSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("Next Turn", 1680, 950, Button.normalw, Button.normalh));		
+		buttons.put("nextTurn", temp);
+	}
 	// ----------------------------------------------------------------------------------------------------
 	
 	
@@ -221,7 +230,9 @@ public class Interface extends JPanel implements MouseListener
 			drawTurnOrder(g2);
 			drawMarket(g2);
 			drawOwnPlants(g2);
-			drawPhase(g2);			
+			drawPhase(g2);
+			
+			drawNextTurn(g2);
 		}
 //		if (ingame)
 //		{
@@ -409,6 +420,21 @@ public class Interface extends JPanel implements MouseListener
 	{
 		for (Button b: buttons.get("buyresource"))
 			b.draw(g2);
+		
+		int sx = 10, sy = 175, w = 120;
+		
+		ArrayList<Resource> res = new ArrayList<Resource>(Arrays.asList(Resource.oil, Resource.coal, Resource.uranium, Resource.trash));
+		ResourceMarket r = state.resourceMarket;
+		ArrayList<Integer> costs = new ArrayList<Integer>(Arrays.asList(r.getPrice(res.get(0)), r.getPrice(res.get(1)),
+				r.getPrice(res.get(2)), r.getPrice(res.get(3))));
+		ArrayList<Integer> counts = new ArrayList<Integer>(Arrays.asList(r.currentStock.get(res.get(0)), r.currentStock.get(res.get(1)),
+				r.currentStock.get(res.get(2)), r.currentStock.get(res.get(3))));
+		for (int i = 0; i < 4; i++)
+		{
+			drawCentredString(g2, "Buy " + res.get(i), new Rectangle(10 + (i % 2) * w + 10 * (i % 2), 175 + (i / 2) * w + 10 * (i / 2), w, w / 3), defaultfont);
+			drawCentredString(g2, "Cost: " + costs.get(i), new Rectangle(10 + (i % 2) * w + 10 * (i % 2), 190 + (i / 2) * w + 10 * (i / 2), w, w / 3), defaultfont);
+			drawCentredString(g2, "Remaining: " + counts.get(i), new Rectangle(10 + (i % 2) * w + 10 * (i % 2), 250 + (i / 2) * w + 10 * (i / 2), w, w / 3), defaultfont);
+		}
 	}
 	
 	public void drawOwnPlants(Graphics2D g2)
@@ -446,6 +472,12 @@ public class Interface extends JPanel implements MouseListener
 			statement = "Powering Cities";
 		drawCentredString(g2, "Phase " + (state.turnPhase + 1) + ": " + statement, new Rectangle(0, 0, 1920, 130), bigfont);
 		drawCentredString(g2, "Player " + state.players.get(state.currentPlayer).colour + " turn", new Rectangle(0, 40, 1920, 130), titlefont);
+	}
+	
+	public void drawNextTurn(Graphics2D g2)
+	{
+		for (Button b: buttons.get("nextTurn"))
+			b.draw(g2);
 	}
 	
 	public void drawCentredString(Graphics2D g2, String text, Rectangle rect, Font font)
@@ -522,6 +554,7 @@ public class Interface extends JPanel implements MouseListener
 //							bidding = true;
 							buyresource = true; // TODO change this: temporary testing
 							state.nextTurnPhase(); // TODO also temporary
+							nextTurn = true; // TODO also temp
 							System.out.println("turnphase: " + state.turnPhase);
 							
 							System.out.println("active regions: " + state.getActiveRegions());
@@ -555,7 +588,27 @@ public class Interface extends JPanel implements MouseListener
 				}
 			}
 		}
+		
 		if (buyresource)
+		{
+			Player current = state.players.get(state.currentPlayer);
+			for (Button b: buttons.get("buyresource"))
+			{
+				if (b.inBounds(m))
+				{
+					state.resourceMarket.purchase(current, Resource.valueOf(b.name));
+				}
+			}
+			for (Button b: buttons.get("nextTurn"))
+			{
+				if (b.inBounds(m))
+				{
+					state.nextPlayer();
+				}
+			}
+		}
+		
+		if (nextTurn)
 		{
 			
 		}
