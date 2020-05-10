@@ -305,6 +305,7 @@ public class GameState
 			nextTurnPhase();
 			newBidPhase();
 			nextPlayer();
+			return;
 		}
 		chosenPlant = null;
 		currentbid = 0;
@@ -357,7 +358,13 @@ public class GameState
 	
 	public void nextBidder()
 	{
-		
+		if (permanentNonBidders.size() == playerCount)
+		{
+			nextTurnPhase();
+			newBidPhase();
+			nextPlayer();
+			return;
+		}
 		do
 		{
 			nextPlayer();
