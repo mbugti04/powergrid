@@ -9,7 +9,7 @@
 42 coal 2 6
 3 oil 2 1
 7 oil 3 2
-9 oil 1 
+9 oil 1 1
 16 oil 2 3
 26 oil 2 5
 32 oil 3 6

@@ -160,6 +160,15 @@ public class Interface extends JPanel implements MouseListener
 		
 		buttons.put("bidding", temp);
 	}
+	
+	private void resourceSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("BID", 625, 825, Button.normalw, Button.normalh, new Color(0, 200, 0)));
+		temp.add(new Button("PASS", 1050, 825, Button.normalw, Button.normalh, new Color(200, 0, 0)));
+		
+		buttons.put("bidding", temp);
+	}
 	// ----------------------------------------------------------------------------------------------------
 	
 	
@@ -223,7 +232,7 @@ public class Interface extends JPanel implements MouseListener
 		for (Button b: buttons.get("regionSelect"))
 			b.draw(g2);
 		g2.setFont(defaultfont);
-		drawCentredString(g2, "Select 4 Regions to Continue", new Rectangle(0, 0, width, height / 8), titlefont);
+		drawCentredString(g2, "Select 4 Regions that are ADJACENT to Continue", new Rectangle(0, 0, width, height / 8), titlefont);
 	}
 	
 	public void drawMap(Graphics2D g2)
@@ -360,7 +369,7 @@ public class Interface extends JPanel implements MouseListener
 			{
 				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), 170, 400 + 10 * i + 150 * i, 150, 150, null);
 			}
-			g2.fillRect(170, 400 + 10 * i + 0 * i, 150, 150);
+			g2.fillRect(170, 400 + 10 * i + 150 * i, 150, 150);
 		}
 		
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
@@ -368,7 +377,7 @@ public class Interface extends JPanel implements MouseListener
 		{
 			int xcoord = 400 + 10 * (i % 4) + 150 * (i % 4);
 			int ycoord = 400 + 10 * (i / 4) + 150 * (i / 4);
-			g2.drawImage(plantimg.get(current.ownedPlants.get(0)), xcoord, ycoord, 150, 150, null);
+			g2.drawImage(plantimg.get(allPlants.get(i).getName() + ".png"), xcoord, ycoord, 150, 150, null);
 		}
 		
 	}
@@ -437,7 +446,7 @@ public class Interface extends JPanel implements MouseListener
 				{
 					if (b.name.equals("CONTINUE"))
 					{
-						if (state.getActiveRegions().size() == 4)
+						if (state.getActiveRegions().size() == 4 && areAdjacent(state.getActiveRegions()))
 						{
 							b.press();
 							state.removeRegions();
@@ -462,8 +471,28 @@ public class Interface extends JPanel implements MouseListener
 		}
 		if (bidding)
 		{
-			
+			for (Button b: buttons.get("bidding"))
+			{
+				if (b.inBounds(m))
+				{
+					if (b.name.equals("BID"))
+					{
+						
+					}
+					if (b.name.equals("PASS"))
+					{
+						
+					}
+				}
+			}
 		}
+	}
+	
+	public boolean areAdjacent(ArrayList<Region> r)
+	{
+		if (r.contains(Region.purple) && r.contains(Region.blue) && r.contains(Region.orange) && r.contains(Region.green))
+			return false;
+		return true;
 	}
 
 	@Override
