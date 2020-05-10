@@ -64,7 +64,6 @@ public class GameState
 		initialisePlayers();
 		initialiseTurnOrder();
 		initialisePlantMarket();
-		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
