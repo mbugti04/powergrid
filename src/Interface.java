@@ -30,6 +30,7 @@ public class Interface extends JPanel implements MouseListener
 	static int mapx = 1653, mapy = 876;
 	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
+	HashMap<String, BufferedImage> plantimg = new HashMap<String, BufferedImage>(); // plant image
 	/* String tells the state that the buttons is used for
 	 * like initial, ingame, bidding, etc.
 	 * It's there for each of the booleans.
@@ -104,6 +105,20 @@ public class Interface extends JPanel implements MouseListener
 		{
 			e.printStackTrace();
 		}
+//		try
+//		{
+//			while (nextLine != null)
+//			{
+//				BufferedImage img = ImageIO.read(getClass().getResource("images/" + nextLine));
+//				images.put(nextLine, img);
+//				nextLine = reader.readLine();
+//			}
+//			System.out.println(images.keySet());
+//		}
+//		catch (IOException e)
+//		{
+//			e.printStackTrace();
+//		}
 		
 	}
 	
@@ -316,6 +331,12 @@ public class Interface extends JPanel implements MouseListener
 		for (Button b: buttons.get("bidding"))
 			b.draw(g2);
 		
+		g2.setColor(Color.black);
+		Player current = state.players.get(state.currentPlayer);
+		drawAString(g2, "Player " + current.colour, new Point(170, 185), titlefont);
+		drawAString(g2, "Money:", new Point(170, 220), titlefont);
+		g2.setColor(Color.green);
+		drawAString(g2, "$" + current.getMoney(), new Point(170, 280), bigfont);
 		
 	}
 	
@@ -326,6 +347,12 @@ public class Interface extends JPanel implements MouseListener
 		int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 		g2.setFont(font);
 		g2.drawString(text, x, y);
+	}
+	
+	public void drawAString(Graphics2D g2, String text, Point p, Font font)
+	{
+		g2.setFont(font);
+		g2.drawString(text, p.x, p.y);
 	}
 	// ----------------------------------------------------------------------------------------------------
 	
