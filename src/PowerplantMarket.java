@@ -31,7 +31,6 @@ public class PowerplantMarket
 	{
 		plantsAvailable.add(allPlants.remove());
 	}
-	
 	public void sort()
 	{
 		Collections.sort(plantsAvailable, Powerplant.powerNum);

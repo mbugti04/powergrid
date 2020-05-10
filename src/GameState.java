@@ -226,7 +226,6 @@ public class GameState
 				line = reader.readLine();
 			}
 			plantMarket.shuffle();
-			
 		}
 		catch(IOException e) {}
 	}
