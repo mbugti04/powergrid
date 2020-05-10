@@ -31,7 +31,7 @@ public class Interface extends JPanel implements MouseListener
 	 * the cities will be relative to this position */
 	static int mapx = 1653, mapy = 876;
 	
-	boolean oyjosuke = true;
+	int timesNextTurnWasPressed = 0;
 	
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	HashMap<String, BufferedImage> plantimg = new HashMap<String, BufferedImage>(); // plant image
@@ -203,8 +203,8 @@ public class Interface extends JPanel implements MouseListener
 			int y = starty + (int)(c.getY() * mapy);
 			
             temp.add(new Button(c.getName(), x - cityScale / 2, y - cityScale / 2, cityScale, cityScale));
-            buttons.put("buycity", temp);
         }
+		buttons.put("buycity", temp);
 		temp.add(new Button("Buy City", 1645, 955, Button.normalw, Button.normalh));
 		buttons.put("buycity", temp);
 	}
@@ -254,6 +254,22 @@ public class Interface extends JPanel implements MouseListener
 			drawCurrentStep(g2);
 			drawTurnOrder(g2);
 			drawMarket(g2);
+			drawOwnPlants(g2);
+			drawPhase(g2);
+			
+			drawNextTurn(g2);
+		}
+		if (buycity)
+		{
+			drawMap(g2);
+			drawCityConnections(g2);
+			for (City c: state.urbanArea.cities.keySet())
+			{
+				drawCity(g2, c);
+			}
+			drawCurrentStep(g2);
+			drawTurnOrder(g2);
+//			drawMarket(g2);
 			drawOwnPlants(g2);
 			drawPhase(g2);
 			
@@ -666,6 +682,12 @@ public class Interface extends JPanel implements MouseListener
 				if (b.inBounds(m))
 				{
 					state.nextPlayer();
+					timesNextTurnWasPressed++;
+					if (timesNextTurnWasPressed >= state.playerCount)
+					{
+						timesNextTurnWasPressed = 0;
+						state.nextTurnPhase();
+					}
 				}
 			}
 		}
@@ -694,11 +716,19 @@ public class Interface extends JPanel implements MouseListener
 			{
 				bidding = true;
 				buyresource = false;
+				buycity = false;
 			}
 			if (state.turnPhase == 1)
 			{
 				bidding = false;
 				buyresource = true;
+				buycity = false;
+			}
+			if (state.turnPhase == 2)
+			{
+				bidding = false;
+				buyresource = false;
+				buycity = true;
 			}
 		}
 	}
