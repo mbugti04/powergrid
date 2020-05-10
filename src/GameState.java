@@ -10,7 +10,7 @@ public class GameState
 	public static int step = 1;
 	public static int playerCount = 4;
 	
-	public int theBid = 0;
+	public int bid = 0;
 	public int currentPlayer = 0;
 	public int turnPhase = 0; // 0=buy power plants. 1=buy resources. 2=building. 3=powering. 4=bureaucracy.
 	
@@ -27,6 +27,8 @@ public class GameState
 	
 	public Player bidWinner;
 	
+	public Powerplant chosenPlant = null;
+	
 	public GameState()
 	{
 		mainSetup();
@@ -39,6 +41,7 @@ public class GameState
 		initialisePlayers();
 		initialiseTurnOrder();
 		initialisePlantMarket();
+		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
@@ -234,6 +237,11 @@ public class GameState
 		catch(IOException e) {}
 	}
 	
+	public void initialiseResourceMarket()
+	{
+		
+	}
+	
 	// -------------------------------------------------------
 	
 	public int nextTurnPhase()
@@ -287,8 +295,6 @@ public class GameState
 		turnOrder();
 		syncBidOrders();		
 		Collections.sort(plantMarket.plantsAvailable);
-		Powerplant chosenPlant = null;
-		int bid = 0;
 		
 //		try 
 //		{
@@ -309,8 +315,9 @@ public class GameState
 			else 
 			{
 				bid = chosenPlant.getName();
-				bidWinner = bidSM(bidOrder, bidOrder.get(currentPlayer), bid, chosenPlant);
-				
+				bidWinner = bidSM(bidOrder, bidOrder.get(currentPlayer), chosenPlant);
+				bidWinner.money -= bid;
+				bidWinner.ownedPlants.add(chosenPlant);
 			}
 			syncBidOrders();
 			nextPlayer();
@@ -350,7 +357,7 @@ public class GameState
 		for(Player p : players)
 			bidOrderC.add(p.colour);
 	}
-	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sub-method 
+	public Player bidSM(ArrayList<Player> order, Player ib, Powerplant plant)// bid sub-method 
 	{
 		ArrayList<Player> theEverShrinkingListOfBidders = new ArrayList<Player>();
 		theEverShrinkingListOfBidders.addAll(order);
@@ -405,9 +412,8 @@ public class GameState
 			}
 			i++;
 		}
-		theBid = bid;
 		winner = theEverShrinkingListOfBidders.get(0);
-		bidOrder.remove(winner.colour);
+		bidOrder.remove(winner);
 		return winner;	
 	}
 	catch (IOException e) {}
@@ -441,7 +447,6 @@ public class GameState
 		{
 			plantMarket.restock();
 		}
-		turnPhase = 0;
 	}
 	
 	public String whoWon()
