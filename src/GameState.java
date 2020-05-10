@@ -18,15 +18,10 @@ public class GameState
 	public ResourceMarket resourceMarket = new ResourceMarket();
 	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
-	public ArrayList<Player> alreadyBid = new ArrayList<Player>();
-	
-	public ArrayList<Player> bidOrder;
-	public ArrayList<String> bidOrderC;
 	
 	public boolean hasEnded = false;
 	public boolean initialSetup = true;
 	
-	public Player bidWinner;
 	
 //	public Powerplant chosenPlant = null;
 	
@@ -121,10 +116,6 @@ public class GameState
 		{
 			players.add(new Player(colours.remove(0)));
 		}
-		bidOrder = new ArrayList<Player>();
-		bidOrderC = new ArrayList<String>();
-		for(Player p : players)
-			bidOrderC.add(p.colour);
 	}
 	
 	public void initialiseTurnOrder()
@@ -295,9 +286,18 @@ public class GameState
 	public int currentbid = 0;
 	public Player currentBidPlayer = null;
 	public ArrayList<Player> nonBidders = new ArrayList<Player>();
+	public ArrayList<Player> permanantNonBidders = new ArrayList<Player>();
 	public boolean biddingend;
 
 	public void newBidPhase()
+	{
+		chosenPlant = null;
+		currentbid = 0;
+		currentBidPlayer = null;
+		nonBidders = new ArrayList<Player>();
+		permanantNonBidders = new ArrayList<Player>();
+	}
+	public void refreshBidPhase()
 	{
 		chosenPlant = null;
 		currentbid = 0;
@@ -314,50 +314,61 @@ public class GameState
 		turnOrder();
 		Collections.sort(plantMarket.plantsAvailable);
 		
-		if (currentBidPlayer == null)
+		if (chosenPlant != null)
 		{
-			if(players.get(currentPlayer).money < chosenPlant.getName())
+			if (currentBidPlayer == null)
 			{
-				chosenPlant = null;
+				if(players.get(currentPlayer).money < chosenPlant.getName())
+				{
+					chosenPlant = null;
+				}
+				else 
+				{
+					currentbid = chosenPlant.getName();	
+					currentBidPlayer = players.get(currentPlayer);
+					nextBidder();
+				}
 			}
-			else 
+			else
 			{
-				currentbid = chosenPlant.getName();	
-				currentBidPlayer = players.get(currentPlayer);
+				if (players.get(currentPlayer).money > currentbid)
+				{
+					currentBidPlayer = players.get(currentPlayer);
+					currentbid = currentbid + 1;
+					nextBidder();
+				}
 			}
 		}
-		else
-		{
-			if (players.get(currentPlayer).money > currentbid)
-			{
-				currentBidPlayer = players.get(currentPlayer);
-				currentbid = currentbid + 1;
-			}
-		}
-		
-		nextBidder();
 	}
 	
 	public void playerPassedBidPhase() 
 	{
+		if (currentBidPlayer == null)
+			permanantNonBidders.add(players.get(currentPlayer));
 		nonBidders.add(players.get(currentPlayer));
 		nextBidder();
 	}
 	
 	public void nextBidder()
 	{
-		if (nonBidders.size() == playerCount)
+		if (permanantNonBidders.size() == playerCount)
 		{
 			nextTurnPhase();
 			newBidPhase();
-		}
-		while (nonBidders.contains(players.get(currentPlayer)))
-		{
 			nextPlayer();
 		}
-		if (nonBidders.size() == playerCount - 1)
+		else
+		{
+			while (nonBidders.contains(players.get(currentPlayer)))
+			{
+				nextPlayer();
+			}
+		}
+		if (nonBidders.size() == playerCount - 1 && chosenPlant != null && currentBidPlayer != null)
 		{
 			bidWinner();
+			newBidPhase();
+			nextPlayer();
 		}
 		
 		System.out.println(turnPhase);

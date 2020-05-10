@@ -429,6 +429,16 @@ public class Interface extends JPanel implements MouseListener
 		g2.setColor(Color.black);
 		drawCentredString(g2, "Current Player: Player " + current.colour, new Rectangle(625, 575, 635, 50), titlefont);
 		
+		if (state.currentbid == 0 || state.chosenPlant == null || state.currentBidPlayer == null)
+			drawCentredString(g2, "No Bid Currently", new Rectangle(625, 615, 635, 50), titlefont);
+		else
+		{
+			drawCentredString(g2, "Player " + state.currentBidPlayer.colour + " has bid $" + state.currentbid + " on plant " + state.chosenPlant.getName(),
+					new Rectangle(625, 615, 635, 50), titlefont);
+			drawCentredString(g2, "Bid $" + (state.currentbid + 1) + " on plant " + state.chosenPlant.getName() + "?",
+					new Rectangle(625, 655, 635, 50), titlefont);
+		}
+		
 	}
 	
 	public void drawMarket(Graphics2D g2)
@@ -539,7 +549,7 @@ public class Interface extends JPanel implements MouseListener
 	@Override
 	public void mousePressed(MouseEvent m)
 	{
-//		System.out.println(m.getX() + ", " + m.getY());
+		System.out.println(m.getX() + ", " + m.getY());
 		
 		if (initial)
 		{
