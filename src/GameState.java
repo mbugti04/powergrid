@@ -28,27 +28,6 @@ public class GameState
 		mainSetup();
 	}
 	
-	public void gameLoop()
-	{
-		while (!hasEnded)
-		{
-			
-			this.turnOrder();
-			
-			this.bid();
-			
-			this.buyResource();
-			
-			// building houses
-			
-			this.updateStage();
-		}
-	}
-	
-	
-	
-	
-	
 	// -------------------- SETUP METHODS --------------------
 	private void mainSetup()
 	{
