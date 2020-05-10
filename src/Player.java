@@ -8,8 +8,8 @@ public class Player implements Comparable<Player>{
 	private int poweredHouses;
 	public int ownedHouses;
 	
-	private ArrayList<Powerplant> ownedPlants;
-	private ArrayList<City> ownedCities;
+	public ArrayList<Powerplant> ownedPlants;
+	public ArrayList<City> ownedCities;
 	
 	private HashMap<Resource, Integer> resourcesStored;
 	

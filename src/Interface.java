@@ -65,7 +65,8 @@ public class Interface extends JPanel implements MouseListener
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.add(this);
 		f.setSize(this.getSize());
-		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		f.pack();
 		
 		mainSetup();
 		
@@ -105,25 +106,27 @@ public class Interface extends JPanel implements MouseListener
 		{
 			e.printStackTrace();
 		}
-//		try
-//		{
-//			for (int i = 3; i <= 40; i++)
-//			{
-//				BufferedImage img = ImageIO.read(getClass().getResource("powerplants/" + i + ".png"));
-//				plantimg.put(i + ".png", img);
-//			}
-//			for (int i = 42; i <= 50; i += 2)
-//			{
-//				BufferedImage img = ImageIO.read(getClass().getResource("powerplants/" + i + ".png"));
-//				plantimg.put(i + ".png", img);
-//			}
-//			BufferedImage img = ImageIO.read(getClass().getResource("powerplants/step3.png"));
-//			plantimg.put("step.png", img);
-//		}
-//		catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
+		try
+		{
+			for (int i = 3; i <= 40; i++)
+			{
+				BufferedImage img = ImageIO.read(getClass().getResource("powerplants/" + i + ".png"));
+				plantimg.put(i + ".png", img);
+			}
+			for (int i = 42; i <= 50; i += 2)
+			{
+				if (i == 48)
+					i += 2;
+				BufferedImage img = ImageIO.read(getClass().getResource("powerplants/" + i + ".png"));
+				plantimg.put(i + ".png", img);
+			}
+			BufferedImage img = ImageIO.read(getClass().getResource("powerplants/step3.png"));
+			plantimg.put("step.png", img);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -336,12 +339,24 @@ public class Interface extends JPanel implements MouseListener
 		for (Button b: buttons.get("bidding"))
 			b.draw(g2);
 		
+		// money
 		g2.setColor(Color.black);
 		Player current = state.players.get(state.currentPlayer);
 		drawAString(g2, "Player " + current.colour, new Point(170, 185), titlefont);
 		drawAString(g2, "Money:", new Point(170, 220), titlefont);
 		g2.setColor(Color.green);
 		drawAString(g2, "$" + current.getMoney(), new Point(170, 280), bigfont);
+		
+		// power plants
+		g2.setColor(Color.black);
+		drawAString(g2, "Player " + current.colour, new Point(170, 340), titlefont);
+		drawAString(g2, "Power Plants:", new Point(170, 380), titlefont);
+		
+		int numpow = current.ownedPlants.size();
+		for (int i = 0; i < 3; i++)
+		{
+			
+		}
 		
 	}
 	
