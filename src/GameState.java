@@ -220,6 +220,7 @@ public class GameState
 					}
 					
 				}
+//				System.out.println(name + ", " + resource + ", " + amount + ", " + power);
 				plantMarket.allPlants.add(new Powerplant(name, resource, amount, power));
 				
 				line = reader.readLine();

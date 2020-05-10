@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class PowerplantMarket
 {
@@ -9,6 +12,7 @@ public class PowerplantMarket
 	public PowerplantMarket()
 	{
 		plantsAvailable = new ArrayList<Powerplant>();
+		allPlants = new LinkedList<Powerplant>();
 	}
 	
 	public ArrayList<Powerplant> getPlantsAvailable()
