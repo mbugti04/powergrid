@@ -351,6 +351,7 @@ public class Interface extends JPanel implements MouseListener
 		drawAString(g2, "Player " + current.colour, new Point(170, 340), titlefont);
 		drawAString(g2, "Power Plants:", new Point(170, 380), titlefont);
 		
+		// own plants
 		int numpow = current.ownedPlants.size();
 		g2.setColor(new Color(100, 100, 100));
 		for (int i = 0; i < 3; i++)
@@ -360,6 +361,14 @@ public class Interface extends JPanel implements MouseListener
 				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), 170, 400 + 10 * i + 150 * i, 150, 150, null);
 			}
 			g2.fillRect(170, 400 + 10 * i + 0 * i, 150, 150);
+		}
+		
+		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
+		for (int i = 0; i < 8; i++)
+		{
+			int xcoord = 400 + 10 * (i % 4) + 150 * (i % 4);
+			int ycoord = 400 + 10 * (i / 4) + 150 * (i / 4);
+			g2.drawImage(plantimg.get(current.ownedPlants.get(0)), xcoord, ycoord, 150, 150, null);
 		}
 		
 	}
