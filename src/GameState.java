@@ -10,7 +10,7 @@ public class GameState
 	public static int step = 1;
 	public static int playerCount = 4;
 	
-	public int theBid = 0;
+	public int bid = 0;
 	public int currentPlayer = 0;
 	public int turnPhase = 0; // 0=buy power plants. 1=buy resources. 2=building. 3=powering. 4=bureaucracy.
 	
@@ -28,6 +28,8 @@ public class GameState
 	
 	public Player bidWinner;
 	
+//	public Powerplant chosenPlant = null;
+	
 	public GameState()
 	{
 		mainSetup();
@@ -40,6 +42,7 @@ public class GameState
 		initialisePlayers();
 		initialiseTurnOrder();
 		initialisePlantMarket();
+		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
@@ -235,6 +238,11 @@ public class GameState
 		catch(IOException e) {}
 	}
 	
+	public void initialiseResourceMarket()
+	{
+		
+	}
+	
 	// -------------------------------------------------------
 	
 	public int nextTurnPhase()
@@ -379,6 +387,7 @@ public class GameState
 //			String choice = reader.readLine();
 //			
 //			//the user picks the pp, we use the index of the pp
+
 		
 		if(bidOrder.get(currentPlayer).money < chosenPlant.getName()) //player doesnt have enough money to bid
 		{
@@ -393,6 +402,24 @@ public class GameState
 		
 		syncBidOrders();
 		nextPlayer();
+
+			chosenPlant = plantChosen;	
+			
+			if(bidOrder.get(currentPlayer).money < chosenPlant.getName()) //player doesnt have enough money to bid
+			{
+				chosenPlant = null;
+				//return; not sure what to do here
+			}
+			else 
+			{
+				bid = chosenPlant.getName();
+				bidWinner = bidSM(bidOrder, bidOrder.get(currentPlayer), chosenPlant);
+				bidWinner.money -= bid;
+				bidWinner.ownedPlants.add(chosenPlant);
+			}
+			syncBidOrders();
+			nextPlayer();
+>>>>>>> branch 'master' of https://github.com/malgantual/powergrid.git
 //		}
 //		catch(IOException e) {}
 		
@@ -430,8 +457,12 @@ public class GameState
 		for(Player p : players)
 			bidOrderC.add(p.colour);
 	}
+<<<<<<< HEAD
 	
 	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sub-method 
+=======
+	public Player bidSM(ArrayList<Player> order, Player ib, Powerplant plant)// bid sub-method 
+>>>>>>> branch 'master' of https://github.com/malgantual/powergrid.git
 	{
 		ArrayList<Player> theEverShrinkingListOfBidders = new ArrayList<Player>();
 		theEverShrinkingListOfBidders.addAll(order);
@@ -486,9 +517,8 @@ public class GameState
 			}
 			i++;
 		}
-		theBid = bid;
 		winner = theEverShrinkingListOfBidders.get(0);
-		bidOrder.remove(winner.colour);
+		bidOrder.remove(winner);
 		return winner;	
 	}
 	catch (IOException e) {}
@@ -522,7 +552,6 @@ public class GameState
 		{
 			plantMarket.restock();
 		}
-		turnPhase = 0;
 	}
 	
 	public String whoWon()
