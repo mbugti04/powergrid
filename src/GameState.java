@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-public class GameState2
+public class GameState
 {
 	public static int step = 1;
 	public static int playerCount = 4;
@@ -24,7 +24,7 @@ public class GameState2
 	public boolean hasEnded = false;
 	public boolean initialSetup = true;
 	
-	public GameState2()
+	public GameState()
 	{
 		mainSetup();
 	}
@@ -246,13 +246,13 @@ public class GameState2
 		return turnPhase;
 	}
 	
-	public int nextPlayer()
-	{
-		currentPlayer++;
-		if (currentPlayer > playerCount - 1)
-			currentPlayer = 0;
-		return currentPlayer;
-	}
+//	public int nextPlayer()
+//	{
+//		currentPlayer++;
+//		if (currentPlayer > playerCount - 1)
+//			currentPlayer = 0;
+//		return currentPlayer;
+//	}
 	/* adds or removes a region inside the list of regions
 	 * that will be playable in-game
 	 */
