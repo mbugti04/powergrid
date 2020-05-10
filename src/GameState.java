@@ -364,7 +364,10 @@ public class GameState
 		}
 		else
 			plantMarket.getPlantsAvailable().remove(0);
-		//TODO I think you still have to add in the extra cards later
+		if(plantMarket.getPlantsAvailable().size() < 8)
+		{
+			plantMarket.restock();
+		}
 	}
 	
 	public String whoWon()
