@@ -192,6 +192,17 @@ public class Interface extends JPanel implements MouseListener
 		temp.add(new Button("Next Turn", 1680, 950, Button.normalw, Button.normalh));		
 		buttons.put("nextTurn", temp);
 	}
+	
+	private void buyCitySetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		for (City c: state.urbanArea.cities.keySet())
+        {
+			int x = startx + (int)(c.getX() * mapx);
+			int y = starty + (int)(c.getY() * mapy);
+            temp.add(new Button(c.getName(), x - cityScale / 2, y - cityScale / 2, cityScale, cityScale));
+        }
+	}
 	// ----------------------------------------------------------------------------------------------------
 	
 	
@@ -645,7 +656,20 @@ public class Interface extends JPanel implements MouseListener
 		
 		if (buycity)
 		{
-			
+			Player current = state.players.get(state.currentPlayer);
+			for(Button b: buttons.get("buycity")) 
+			{
+				if(b.inBounds(m))
+				{
+					for (City c: state.urbanArea.cities.keySet())
+					{
+						if(c.getName() == b.name)
+						{
+							state.buyCity(c);
+						}
+					}
+				}
+			}
 		}
 		
 		if (!regionSelect)
