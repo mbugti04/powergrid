@@ -64,7 +64,6 @@ public class GameState
 		initialisePlayers();
 		initialiseTurnOrder();
 		initialisePlantMarket();
-		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
@@ -151,11 +150,6 @@ public class GameState
 	}
 	
 	public void initialisePlantMarket()
-	{
-		
-	}
-	
-	public void initialiseResourceMarket()
 	{
 		
 	}
@@ -370,7 +364,7 @@ public class GameState
 		}
 		else
 			plantMarket.getPlantsAvailable().remove(0);
-		//TODO make sure that it removes the first card from the arraylist, or the last, based on stage
+		//TODO I think you still have to add in the extra cards later
 	}
 	
 	public String whoWon()
