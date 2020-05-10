@@ -201,8 +201,12 @@ public class Interface extends JPanel implements MouseListener
         {
 			int x = startx + (int)(c.getX() * mapx);
 			int y = starty + (int)(c.getY() * mapy);
+			
             temp.add(new Button(c.getName(), x - cityScale / 2, y - cityScale / 2, cityScale, cityScale));
+            buttons.put("buycity", temp);
         }
+		temp.add(new Button("Buy City", 1645, 955, Button.normalw, Button.normalh));
+		buttons.put("buycity", temp);
 	}
 	// ----------------------------------------------------------------------------------------------------
 	
@@ -441,6 +445,16 @@ public class Interface extends JPanel implements MouseListener
 		g2.setColor(Color.black);
 		drawCentredString(g2, "Current Player: Player " + current.colour, new Rectangle(625, 575, 635, 50), titlefont);
 		
+		if (state.currentbid == 0 || state.chosenPlant == null || state.currentBidPlayer == null)
+			drawCentredString(g2, "No Bid Currently", new Rectangle(625, 615, 635, 50), titlefont);
+		else
+		{
+			drawCentredString(g2, "Player " + state.currentBidPlayer.colour + " has bid $" + state.currentbid + " on plant " + state.chosenPlant.getName(),
+					new Rectangle(625, 615, 635, 50), titlefont);
+			drawCentredString(g2, "Bid $" + (state.currentbid + 1) + " on plant " + state.chosenPlant.getName() + "?",
+					new Rectangle(625, 655, 635, 50), titlefont);
+		}
+		
 	}
 	
 	public void drawMarket(Graphics2D g2)
@@ -551,7 +565,7 @@ public class Interface extends JPanel implements MouseListener
 	@Override
 	public void mousePressed(MouseEvent m)
 	{
-//		System.out.println(m.getX() + ", " + m.getY());
+		System.out.println(m.getX() + ", " + m.getY());
 		
 		if (initial)
 		{
@@ -610,17 +624,18 @@ public class Interface extends JPanel implements MouseListener
 		}
 		if (bidding)
 		{
-			for (int i = 0; i < 4; i++)
-			{
-				int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
-				int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
-				Rectangle r = new Rectangle(xcoord, ycoord, 150, 150);
-				if (contains(r, m))
+			if (state.chosenPlant == null)
+				for (int i = 0; i < 4; i++)
 				{
-//					System.out.println("selected plant " + state.plantMarket.plantsAvailable.get(i).getName());
-					state.choosePlant(state.plantMarket.plantsAvailable.get(i));
+					int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
+					int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
+					Rectangle r = new Rectangle(xcoord, ycoord, 150, 150);
+					if (contains(r, m))
+					{
+	//					System.out.println("selected plant " + state.plantMarket.plantsAvailable.get(i).getName());
+						state.choosePlant(state.plantMarket.plantsAvailable.get(i));
+					}
 				}
-			}
 			for (Button b: buttons.get("bidding"))
 			{
 				if (b.inBounds(m))
