@@ -624,7 +624,7 @@ public class Interface extends JPanel implements MouseListener
 		}
 		if (bidding)
 		{
-			if (state.chosenPlant == null)
+			if (state.currentBidPlayer == null)
 				for (int i = 0; i < 4; i++)
 				{
 					int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
