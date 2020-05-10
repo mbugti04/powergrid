@@ -107,13 +107,18 @@ public class Interface extends JPanel implements MouseListener
 		}
 //		try
 //		{
-//			while (nextLine != null)
+//			for (int i = 3; i <= 40; i++)
 //			{
-//				BufferedImage img = ImageIO.read(getClass().getResource("images/" + nextLine));
-//				images.put(nextLine, img);
-//				nextLine = reader.readLine();
+//				BufferedImage img = ImageIO.read(getClass().getResource("powerplants/" + i + ".png"));
+//				plantimg.put(i + ".png", img);
 //			}
-//			System.out.println(images.keySet());
+//			for (int i = 42; i <= 50; i += 2)
+//			{
+//				BufferedImage img = ImageIO.read(getClass().getResource("powerplants/" + i + ".png"));
+//				plantimg.put(i + ".png", img);
+//			}
+//			BufferedImage img = ImageIO.read(getClass().getResource("powerplants/step3.png"));
+//			plantimg.put("step.png", img);
 //		}
 //		catch (IOException e)
 //		{
