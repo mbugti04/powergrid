@@ -19,10 +19,13 @@ public class GameState
 	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
 	public ArrayList<Player> alreadyBid = new ArrayList<Player>();
-	public ArrayList<String> bidOrder;
+	public ArrayList<Player> bidOrder;
+	public ArrayList<String> bidOrderC;
 	
 	public boolean hasEnded = false;
 	public boolean initialSetup = true;
+	
+	public Player bidWinner;
 	
 	public GameState()
 	{
@@ -115,9 +118,10 @@ public class GameState
 		{
 			players.add(new Player(colours.remove(0)));
 		}
-		bidOrder = new ArrayList<String>();
+		bidOrder = new ArrayList<Player>();
+		bidOrderC = new ArrayList<String>();
 		for(Player p : players)
-		bidOrder.add(p.colour);
+		bidOrderC.add(p.colour);
 	}
 	
 	public void initialiseTurnOrder()
@@ -284,30 +288,26 @@ public class GameState
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void bid2()
-	{
-		turnOrder();		
+	public void bid(Powerplant plantChosen)
+	{	
+		turnOrder();
+		syncBidOrders();		
 		Collections.sort(plantMarket.plantsAvailable);
 		Powerplant chosenPlant = null;
-		Player bidWinner;
 		int bid = 0;
 		
-		try 
-		{
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(System.in));
+//		try 
+//		{
+//			BufferedReader reader = new BufferedReader(
+//					new InputStreamReader(System.in));
+//			
+//			//TODO? prompt which plant the user would like to bid on
+//			String choice = reader.readLine();
+//			
+//			//the user picks the pp, we use the index of the pp
+			chosenPlant = plantChosen;	
 			
-			//TODO? prompt which plant the user would like to bid on
-			String choice = reader.readLine();
-			
-			//the user picks the pp, we use the index of the pp
-			chosenPlant = plantMarket.plantsAvailable.get(Integer.parseInt(choice));
-			
-			Player current;
-			for(Player p : players)
-				if(p.colour.equals(bidOrder.get(currentPlayer)))
-					current = p;
-			if(current.money < chosenPlant.getName()) //player doesnt have enough money to bid
+			if(bidOrder.get(currentPlayer).money < chosenPlant.getName()) //player doesnt have enough money to bid
 			{
 				chosenPlant = null;
 				//return; not sure what to do here
@@ -317,118 +317,43 @@ public class GameState
 				bid = chosenPlant.getName();
 				bidWinner = bidSM(bidOrder, bidOrder.get(currentPlayer), bid, chosenPlant);
 				
-				
 			}
+			syncBidOrders();
 			nextPlayer();
-		}
-		catch(IOException e) {}
+//		}
+//		catch(IOException e) {}
 		
 	}
-	
-	public void bid() 
+	public void syncBidOrders() 
 	{
-		turnOrder();
-		Powerplant chosenPlant = null;
-		Player initialBidder;
-		Player bidWinner;
-		int bid = 0;
-		boolean isBidding = false;
-		ArrayList<Boolean> bidding = new ArrayList<Boolean>(); //true = bidding, false = passing
-		ArrayList<Boolean> hasBidOrPassed = new ArrayList<Boolean>(); //true = bidded or passed, false = didn't do anything yet
-		ArrayList<Player> order = new ArrayList<Player>();
-		ArrayList<Powerplant> availablePlants = plantMarket.getPlantsAvailable();
-		try
+		if(bidOrderC.size() != bidOrder.size()) 
 		{
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(System.in));
-		
-		for(int i = 0; i < playerCount; i++) 
+		for(int i = 0; i < bidOrder.size(); i++) 
 		{
-			hasBidOrPassed.set(i, false);
-			order.set(i, players.get(i));
-		}
-		
-		while(!allTrue(hasBidOrPassed)) 
-		{
-			String ans;
-			for(int i = 0; i < order.size(); i++) 
+			if(!bidOrder.get(i).colour.equals(bidOrderC.get(i))) 
 			{
-				displayPlants(availablePlants);
-//				System.out.println("Player #"+i+", would you like to bid or pass? You have $"+order.get(i).getMoney());
-				ans = reader.readLine();
-				//set the isBidding boolean
-				if(ans.equals("bid")) {
-					isBidding = true;
-					bidding.set(i, true);
-				}
-				else 
-				{
-					hasBidOrPassed.set(i, true);
-					bidding.set(i, false);
-					order.remove(order.get(i));	
-				}
-					
-				if(isBidding) 
-				{
-//				System.out.println("Which plant? (Enter cost of plant for text based)");	
-				//set the chosenPlant variable
-				ans = reader.readLine();
-				int ansp = Integer.parseInt(ans);
-				boolean validNum = false;
-				for(Powerplant pp : availablePlants)
-					if(ansp == pp.getName())
-						validNum = true;
-				if(!validNum) 
-				{
-//					System.out.println("Invalid plant, skipping player");
-					continue;
-				}
-				chosenPlant = availablePlants.get(ansp);
-				
-//				System.out.println("How much are you bidding?");
-				//set the bid price
-				bid = Integer.parseInt(reader.readLine());
-					if(bid > order.get(i).getMoney())
-					{
-//						System.out.println("Insufficient funds, passing player");
-						continue;
-					}
-				initialBidder = order.get(i);
-				bidWinner = bidSM(order, initialBidder, bid, chosenPlant);
-//				System.out.println(bidWinner+" has won the bid and gained powerplant " + chosenPlant.getName());
-				
-				bidding.set(order.indexOf(bidWinner), true);
-				hasBidOrPassed.set(order.indexOf(bidWinner), true);
-				availablePlants.remove(chosenPlant);
-				order.remove(bidWinner);
-				bidWinner.money -= theBid;
-
-				//not done 
-				}
-				else 
-				{
-					bidding.set(i, false);
-					hasBidOrPassed.set(i, true);
-					
-				}
+				bidOrderC.remove(i);
+				return;
 			}
-		}	
 		}
-		catch (IOException e)
-		{
-				
+		bidOrderC.remove(bidOrderC.size()-1);
 		}
-	
 	}
 	public void playerPassedBidPhase() 
 	{
 		//remove the player from bidOrder ArrayList
+		bidOrder.remove(currentPlayer);
+		syncBidOrders();
+		
 		nextPlayer();
 	}
 	public void bidPhaseEnded() 
 	{
-		
+		bidOrder.clear();
+		bidOrderC.clear();
 		bidOrder.addAll(players);
+		for(Player p : players)
+			bidOrderC.add(p.colour);
 	}
 	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sub-method 
 	{

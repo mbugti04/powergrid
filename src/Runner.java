@@ -10,7 +10,7 @@ public class Runner
 	public static void bidTest()
 	{
 		GameState e = new GameState();
-		e.bid();
+//		e.bid(); bid needs a parameter now (bid(Powerplant plantChosen))
 	}
 	public static void runGame()
 	{
