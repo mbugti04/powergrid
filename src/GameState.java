@@ -12,7 +12,7 @@ public class GameState
 	
 	public int theBid = 0;
 	public int currentPlayer = 0;
-	public int turnPhase = 0; // 0=buy power plants. 1=buy resources. 2=building. beaurocracy doesnt have a turn order.
+	public int turnPhase = 0; // 0=buy power plants. 1=buy resources. 2=building. 3=powering. 4=bureaucracy.
 	
 	public PowerplantMarket plantMarket = new PowerplantMarket();
 	public ResourceMarket resourceMarket = new ResourceMarket();
@@ -232,6 +232,13 @@ public class GameState
 	
 	// -------------------------------------------------------
 	
+	public int nextTurnPhase()
+	{
+		turnPhase+= 1;
+		if (turnPhase == 4)
+			turnPhase = 0;
+		return turnPhase;
+	}
 	/* adds or removes a region inside the list of regions
 	 * that will be playable in-game
 	 */

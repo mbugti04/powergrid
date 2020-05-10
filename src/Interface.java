@@ -49,7 +49,8 @@ public class Interface extends JPanel implements MouseListener
 	initial = true,
 	regionSelect = false,
 	ingame = false,
-	bidding = false;
+	bidding = false,
+	buyresource = false;;
 	
 	// gamestate things
 	GameState state = new GameState();
@@ -83,6 +84,7 @@ public class Interface extends JPanel implements MouseListener
 		mainMenuSetup();
 		regionSelectSetup();
 		biddingSetup();
+		buyresourceSetup();
 	}
 	
 	private void imageSetup()
@@ -161,13 +163,16 @@ public class Interface extends JPanel implements MouseListener
 		buttons.put("bidding", temp);
 	}
 	
-	private void resourceSetup()
+	private void buyresourceSetup()
 	{
+		int rw = 120, rh = 120;
 		ArrayList<Button> temp = new ArrayList<Button>();
-		temp.add(new Button("BID", 625, 825, Button.normalw, Button.normalh, new Color(0, 200, 0)));
-		temp.add(new Button("PASS", 1050, 825, Button.normalw, Button.normalh, new Color(200, 0, 0)));
+		temp.add(new Button("oil", 10, 175, rw, rh, false));
+		temp.add(new Button("coal", 140, 175, rw, rh, false));
+		temp.add(new Button("uranium", 10, 305, rw, rh, false));
+		temp.add(new Button("trash", 140, 305, rw, rh, false));
 		
-		buttons.put("bidding", temp);
+		buttons.put("buyresource", temp);
 	}
 	// ----------------------------------------------------------------------------------------------------
 	
@@ -204,7 +209,7 @@ public class Interface extends JPanel implements MouseListener
 			drawTurnOrder(g2);
 			drawBidding(g2);
 		}
-		if (ingame)
+		if (buyresource)
 		{
 			drawMap(g2);
 			drawCityConnections(g2);
@@ -212,10 +217,24 @@ public class Interface extends JPanel implements MouseListener
 			{
 				drawCity(g2, c);
 			}
-			drawBidding(g2);
 			drawCurrentStep(g2);
 			drawTurnOrder(g2);
+			drawMarket(g2);
+			drawOwnPlants(g2);
+			drawPhase(g2);			
 		}
+//		if (ingame)
+//		{
+//			drawMap(g2);
+//			drawCityConnections(g2);
+//			for (City c: cities)
+//			{
+//				drawCity(g2, c);
+//			}
+//			drawBidding(g2);
+//			drawCurrentStep(g2);
+//			drawTurnOrder(g2);
+//		}
 	}
 	
 	// draws start button, quit button, and background
@@ -342,7 +361,7 @@ public class Interface extends JPanel implements MouseListener
 		
 		g2.setColor(new Color(0, 0, 0));
 		Rectangle title = new Rectangle(edges, edges, width - edges * 2, edges / 2);
-		drawCentredString(g2, "Bidding", title, bigfont);
+		drawCentredString(g2, "Phase 1: Bidding", title, bigfont);
 		
 		for (Button b: buttons.get("bidding"))
 			b.draw(g2);
@@ -376,11 +395,57 @@ public class Interface extends JPanel implements MouseListener
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
 		for (int i = 0; i < 8; i++)
 		{
-			int xcoord = 615 + 10 * (i % 4) + 150 * (i % 4);
-			int ycoord = 280 + 10 * (i / 4) + 150 * (i / 4);
+			int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
+			int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
 			g2.drawImage(plantimg.get(allPlants.get(i).getName() + ".png"), xcoord, ycoord, 150, 150, null);
 		}
 		
+		// bid info
+		drawCentredString(g2, "Current Player: Player " + current.colour, new Rectangle(625, 575, 635, 50), titlefont);
+		
+	}
+	
+	public void drawMarket(Graphics2D g2)
+	{
+		for (Button b: buttons.get("buyresource"))
+			b.draw(g2);
+	}
+	
+	public void drawOwnPlants(Graphics2D g2)
+	{
+		Player current = state.players.get(state.currentPlayer);
+		int posx = 25, posy = 580;
+		int numpow = current.ownedPlants.size();
+		g2.setColor(new Color(100, 100, 100));
+		for (int i = 0; i < 3; i++)
+		{
+			if (numpow-- > 0)
+			{
+				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), posx, posy + 10 * i + 150 * i, 150, 150, null);
+			}
+			g2.fillRect(posx, posy + 10 * i + 150 * i, 150, 150);
+		}
+		
+		g2.setColor(Color.white);
+		Rectangle temp = new Rectangle(10, 450, 245, 120);
+//		temp.add(255, 570);
+		drawCentredString(g2, "Your Power Plants", temp, titlefont);
+		temp = new Rectangle(10, 520, 245, 60);
+		drawCentredString(g2, "Current Money: " + current.money, temp, subtitlefont);
+	}
+	
+	public void drawPhase(Graphics2D g2)
+	{
+		g2.setColor(Color.white);
+		String statement = "";
+		if (state.turnPhase == 1) // buying resources
+			statement = "Buying Resources";
+		if (state.turnPhase == 2) // buying cities
+			statement = "Buying Cities";
+		if (state.turnPhase == 3) // powering
+			statement = "Powering Cities";
+		drawCentredString(g2, "Phase " + (state.turnPhase + 1) + ": " + statement, new Rectangle(0, 0, 1920, 130), bigfont);
+		drawCentredString(g2, "Player " + state.players.get(state.currentPlayer).colour + " turn", new Rectangle(0, 40, 1920, 130), titlefont);
 	}
 	
 	public void drawCentredString(Graphics2D g2, String text, Rectangle rect, Font font)
@@ -454,7 +519,10 @@ public class Interface extends JPanel implements MouseListener
 							
 							regionSelect = false;
 //							ingame = true;
-							bidding = true;
+//							bidding = true;
+							buyresource = true; // TODO change this: temporary testing
+							state.nextTurnPhase(); // TODO also temporary
+							System.out.println("turnphase: " + state.turnPhase);
 							
 							System.out.println("active regions: " + state.getActiveRegions());
 
@@ -486,6 +554,10 @@ public class Interface extends JPanel implements MouseListener
 					}
 				}
 			}
+		}
+		if (buyresource)
+		{
+			
 		}
 	}
 	

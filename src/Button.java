@@ -10,6 +10,7 @@ class Button
 	String name;
 	int x, y, w, h;
 	boolean on;
+	boolean showname = true;
 	
 	Button(String name, int x, int y, int w, int h)
 	{
@@ -25,6 +26,12 @@ class Button
 	{
 		this(name, x, y, w, h);
 		color = col;
+	}
+	
+	Button(String name, int x, int y, int w, int h, boolean showname)
+	{
+		this(name, x, y, w, h);
+		this.showname = showname;
 	}
 	
 	boolean press()
@@ -49,7 +56,8 @@ class Button
 			g2.setColor(color);
 		g2.fillRect(x, y, w, h);
 		g2.setColor(Color.WHITE);
-		g2.drawString(name, x + w / 10, y + h / 2);
+		if (showname)
+			g2.drawString(name, x + w / 10, y + h / 2);
 	}
 	
 	boolean inBounds(MouseEvent m)
