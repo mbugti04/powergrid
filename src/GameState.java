@@ -305,6 +305,7 @@ public class GameState
 			nextTurnPhase();
 			newBidPhase();
 			nextPlayer();
+			turnOrder();
 			return;
 		}
 		chosenPlant = null;
