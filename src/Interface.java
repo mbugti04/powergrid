@@ -97,6 +97,7 @@ public class Interface extends JPanel implements MouseListener
 		biddingSetup();
 		buyresourceSetup();
 		nextTurnSetup();
+		buyCitySetup();
 	}
 	
 	private void imageSetup()
