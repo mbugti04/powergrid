@@ -64,6 +64,7 @@ public class GameState
 		initialisePlayers();
 		initialiseTurnOrder();
 		initialisePlantMarket();
+		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
@@ -154,6 +155,11 @@ public class GameState
 		
 	}
 	
+	public void initialiseResourceMarket()
+	{
+		
+	}
+	
 	// -------------------------------------------------------
 	
 	/* adds or removes a region inside the list of regions
@@ -185,6 +191,13 @@ public class GameState
 		else if (this.turnPhase == 1 || this.turnPhase == 2)
 			Collections.sort(players, Collections.reverseOrder());
 	}
+	
+	public void bid2()
+	{
+		int initialbidder = 0;
+		
+	}
+	
 	public void bid() 
 	{
 		turnOrder();
@@ -364,7 +377,7 @@ public class GameState
 		}
 		else
 			plantMarket.getPlantsAvailable().remove(0);
-		//TODO I think you still have to add in the extra cards later
+		//TODO make sure that it removes the first card from the arraylist, or the last, based on stage
 	}
 	
 	public String whoWon()
