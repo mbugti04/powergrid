@@ -39,7 +39,6 @@ public class GameState
 		initialisePlayers();
 		initialiseTurnOrder();
 		initialisePlantMarket();
-		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
@@ -233,11 +232,6 @@ public class GameState
 			plantMarket.allPlants.addAll(plantMarket.allPlantsAL);
 		}
 		catch(IOException e) {}
-	}
-	
-	public void initialiseResourceMarket()
-	{
-		
 	}
 	
 	// -------------------------------------------------------
@@ -447,6 +441,7 @@ public class GameState
 		{
 			plantMarket.restock();
 		}
+		turnPhase = 0;
 	}
 	
 	public String whoWon()
