@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.AllPermission;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -221,11 +222,26 @@ public class GameState
 					
 				}
 //				System.out.println(name + ", " + resource + ", " + amount + ", " + power);
-				plantMarket.allPlants.add(new Powerplant(name, resource, amount, power));
+				plantMarket.allPlantsAL.add(new Powerplant(name, resource, amount, power));
 				
 				line = reader.readLine();
 			}
-			plantMarket.shuffle();
+			ArrayList<Powerplant> plants = new ArrayList<Powerplant>();
+			for(int i = 0; i < plantMarket.allPlantsAL.size(); i++) 
+			{
+				if(plantMarket.allPlantsAL.get(i).getName() >= 3 || plantMarket.allPlantsAL.get(i).getName() <= 10 || plantMarket.allPlantsAL.get(i).getName() == 13) 
+				{
+					plants.add(plantMarket.allPlantsAL.get(i));
+				}
+			}
+			
+			for(Powerplant i : plants)
+			plantMarket.plantsAvailable.add(i);
+			
+			plantMarket.allPlants.add(plantMarket.plantsAvailable.remove(plantMarket.plantsAvailable.size()-1));
+			Collections.shuffle(plantMarket.allPlantsAL);
+			plantMarket.allPlants.addAll(plantMarket.allPlantsAL);
+			//TODO add the step 3 card at the end of allPlants
 		}
 		catch(IOException e) {}
 	}
