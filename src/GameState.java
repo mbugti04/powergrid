@@ -31,15 +31,6 @@ public class GameState
 	{
 		while (!hasEnded)
 		{
-			if (initialSetup)
-			{
-				// select regions
-				
-				// determine initial player order which is random
-				
-				
-				// set up plant market, resource market
-			}
 			
 			this.turnOrder();
 			
@@ -152,7 +143,91 @@ public class GameState
 	
 	public void initialisePlantMarket()
 	{
-		
+		try
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream("/text/PowerPlantData.txt")));
+			String line = reader.readLine();
+			
+			String x = "";
+			int name = 0;
+			Resource resource = null;
+			int amount = 0;
+			int power = 0;
+			
+			int index = 0;
+			
+			while(!(line.equals("end"))) 
+			{
+				for(int i = 0; i < line.length(); i++) 
+				{
+					String nl;
+					if(Character.toString(line.charAt(1)).equals(" ")) 
+					{
+						index = 2;
+						name = Integer.parseInt(line.substring(0, 1));
+					}
+					else if (Character.toString(line.charAt(2)).equals(" ")) 
+					{
+						index = 3;
+						name = Integer.parseInt(line.substring(0, 2));
+					}
+					
+					if(Character.toString(line.charAt(index)).equals("c")) 
+					{
+						resource = Resource.coal;
+						index += 5;
+						amount = Integer.parseInt(Character.toString(line.charAt(index)));
+						index += 2;
+						power = Integer.parseInt(Character.toString(line.charAt(index)));
+					}
+					if(Character.toString(line.charAt(index)).equals("o")) 
+					{
+						resource = Resource.oil;
+						index += 4;
+						amount = Integer.parseInt(Character.toString(line.charAt(index)));
+						index += 2;
+						power = Integer.parseInt(Character.toString(line.charAt(index)));
+					}
+					if(Character.toString(line.charAt(index)).equals("h")) 
+					{
+						resource = Resource.hybrid;
+						index += 7;
+						amount = Integer.parseInt(Character.toString(line.charAt(index)));
+						index += 2;
+						power = Integer.parseInt(Character.toString(line.charAt(index)));
+					}
+					if(Character.toString(line.charAt(index)).equals("t")) 
+					{
+						resource = Resource.trash;
+						index += 6;
+						amount = Integer.parseInt(Character.toString(line.charAt(index)));
+						index += 2;
+						power = Integer.parseInt(Character.toString(line.charAt(index)));
+					}
+					if(Character.toString(line.charAt(index)).equals("u")) 
+					{
+						resource = Resource.uranium;
+						index += 10;
+						amount = 1;
+						power = Integer.parseInt(Character.toString(line.charAt(index)));
+					}
+					if(Character.toString(line.charAt(index)).equals("f")) 
+					{
+						resource = Resource.free;
+						index += 7;
+						amount = 0;
+						power = Integer.parseInt(Character.toString(line.charAt(index)));
+					}
+					
+				}
+				plantMarket.allPlants.add(new Powerplant(name, resource, amount, power));
+				
+				line = reader.readLine();
+			}
+			plantMarket.shuffle();
+		}
+		catch(IOException e) {}
 	}
 	
 	public void initialiseResourceMarket()
@@ -227,7 +302,7 @@ public class GameState
 			for(int i = 0; i < order.size(); i++) 
 			{
 				displayPlants(availablePlants);
-				System.out.println("Player #"+i+", would you like to bid or pass? You have $"+order.get(i).getMoney());
+//				System.out.println("Player #"+i+", would you like to bid or pass? You have $"+order.get(i).getMoney());
 				ans = reader.readLine();
 				//set the isBidding boolean
 				if(ans.equals("bid")) {
@@ -243,7 +318,7 @@ public class GameState
 					
 				if(isBidding) 
 				{
-				System.out.println("Which plant? (Enter cost of plant for text based)");	
+//				System.out.println("Which plant? (Enter cost of plant for text based)");	
 				//set the chosenPlant variable
 				ans = reader.readLine();
 				int ansp = Integer.parseInt(ans);
@@ -253,22 +328,22 @@ public class GameState
 						validNum = true;
 				if(!validNum) 
 				{
-					System.out.println("Invalid plant, skipping player");
+//					System.out.println("Invalid plant, skipping player");
 					continue;
 				}
 				chosenPlant = availablePlants.get(ansp);
 				
-				System.out.println("How much are you bidding?");
+//				System.out.println("How much are you bidding?");
 				//set the bid price
 				bid = Integer.parseInt(reader.readLine());
 					if(bid > order.get(i).getMoney())
 					{
-						System.out.println("Insufficient funds, passing player");
+//						System.out.println("Insufficient funds, passing player");
 						continue;
 					}
 				initialBidder = order.get(i);
 				bidWinner = bidSM(order, initialBidder, bid, chosenPlant);
-				System.out.println(bidWinner+" has won the bid and gained powerplant " + chosenPlant.getName());
+//				System.out.println(bidWinner+" has won the bid and gained powerplant " + chosenPlant.getName());
 				
 				bidding.set(order.indexOf(bidWinner), true);
 				hasBidOrPassed.set(order.indexOf(bidWinner), true);
