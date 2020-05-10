@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-public class GameState
+public class GameState2
 {
 	public static int step = 1;
 	public static int playerCount = 4;
@@ -18,11 +18,13 @@ public class GameState
 	public ResourceMarket resourceMarket = new ResourceMarket();
 	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
+	public ArrayList<Player> alreadyBid = new ArrayList<Player>();
+	public ArrayList<String> bidOrder;
 	
 	public boolean hasEnded = false;
 	public boolean initialSetup = true;
 	
-	public GameState()
+	public GameState2()
 	{
 		mainSetup();
 	}
@@ -113,6 +115,9 @@ public class GameState
 		{
 			players.add(new Player(colours.remove(0)));
 		}
+		bidOrder = new ArrayList<String>();
+		for(Player p : players)
+		bidOrder.add(p.colour);
 	}
 	
 	public void initialiseTurnOrder()
@@ -120,6 +125,7 @@ public class GameState
 		Collections.shuffle(players);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void initialisePlantMarket()
 	{
 		try
@@ -219,8 +225,8 @@ public class GameState
 			
 			plantMarket.allPlants.add(plantMarket.plantsAvailable.remove(plantMarket.plantsAvailable.size()-1));
 			Collections.shuffle(plantMarket.allPlantsAL);
+			plantMarket.allPlantsAL.add(new Powerplant("step3"));
 			plantMarket.allPlants.addAll(plantMarket.allPlantsAL);
-			//TODO add the step 3 card at the end of allPlants
 		}
 		catch(IOException e) {}
 	}
@@ -269,9 +275,45 @@ public class GameState
 			Collections.sort(players, Collections.reverseOrder());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void bid2()
 	{
-		int initialbidder = 0;
+		turnOrder();		
+		Collections.sort(plantMarket.plantsAvailable);
+		Powerplant chosenPlant = null;
+		Player bidWinner;
+		int bid = 0;
+		
+		try 
+		{
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(System.in));
+			
+			//TODO? prompt which plant the user would like to bid on
+			String choice = reader.readLine();
+			
+			//the user picks the pp, we use the index of the pp
+			chosenPlant = plantMarket.plantsAvailable.get(Integer.parseInt(choice));
+			
+			Player current;
+			for(Player p : players)
+				if(p.colour.equals(bidOrder.get(currentPlayer)))
+					current = p;
+			if(current.money < chosenPlant.getName()) //player doesnt have enough money to bid
+			{
+				chosenPlant = null;
+				//return; not sure what to do here
+			}
+			else 
+			{
+				bid = chosenPlant.getName();
+				bidWinner = bidSM(bidOrder, bidOrder.get(currentPlayer), bid, chosenPlant);
+				
+				
+			}
+			nextPlayer();
+		}
+		catch(IOException e) {}
 		
 	}
 	
@@ -370,9 +412,20 @@ public class GameState
 		}
 	
 	}
-	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sum-method 
+	public void playerPassedBidPhase() 
+	{
+		//remove the player from bidOrder ArrayList
+		nextPlayer();
+	}
+	public void bidPhaseEnded() 
+	{
+		
+		bidOrder.addAll(players);
+	}
+	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sub-method 
 	{
 		ArrayList<Player> theEverShrinkingListOfBidders = new ArrayList<Player>();
+		theEverShrinkingListOfBidders.addAll(order);
 		Player winner = null;
 		Player temp = order.get(0);
 		order.set(0, ib);
@@ -402,23 +455,23 @@ public class GameState
 			}
 			else
 			{
-				System.out.println("How much would you like to bid");
-				//set unconfirmedBid
-				unconfirmedBid = Integer.parseInt(reader.readLine());
+				
+				//set unconfirmedBid to be $1 higher than current bid
+				unconfirmedBid = bid + 1;
 				
 				if(theEverShrinkingListOfBidders.get(i).getMoney() < unconfirmedBid) 
 				{
-					System.out.println("Infsufficient funds, you are unable to bid on this plant");
+//					System.out.println("Infsufficient funds, you are unable to bid on this plant");
 					theEverShrinkingListOfBidders.remove(theEverShrinkingListOfBidders.get(i));
 					i++;
 					continue;
 				}
-				else if(unconfirmedBid <= bid)
-				{
-					System.out.println("Your bid has to be higher than the previous player's bid. You've been skipped.");
-					i++;
-					continue;
-				}
+//				else if(unconfirmedBid <= bid)
+//				{
+//					System.out.println("Your bid has to be higher than the previous player's bid. You've been skipped.");
+//					i++;
+//					continue;
+//				}
 				System.out.println("You bid $"+unconfirmedBid);
 				bid = unconfirmedBid;
 			}
@@ -426,6 +479,7 @@ public class GameState
 		}
 		theBid = bid;
 		winner = theEverShrinkingListOfBidders.get(0);
+		bidOrder.remove(winner.colour);
 		return winner;	
 	}
 	catch (IOException e) {}
@@ -615,6 +669,13 @@ public class GameState
 			System.out.println("Cost:" +i.getName()+". This plant requires "+i.getAmountToPower()+" "+i.getResourceType()+" to produce "+ i.getPowerProduced()+"power.");
 			else  System.out.println("Cost:" +i.getName()+". This plant produces "+ i.getPowerProduced()+" power without resources.");
 		}
+	}
+	
+	public void nextPlayer() 
+	{
+		if(currentPlayer != 3)
+			currentPlayer++;
+		else currentPlayer = 0;
 	}
 	
 	public boolean allTrue(ArrayList<Boolean> bool) {
