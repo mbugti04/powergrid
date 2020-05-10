@@ -2,8 +2,9 @@ import java.util.*;
 
 public class PowerplantMarket
 {
-	private ArrayList<Powerplant> plantsAvailable;
-	private Queue<Powerplant> allPlants;
+	
+	public ArrayList<Powerplant> plantsAvailable;
+	public Queue<Powerplant> allPlants;
 	
 	public PowerplantMarket()
 	{
