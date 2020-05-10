@@ -19,6 +19,7 @@ public class GameState
 	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
 	public ArrayList<Player> alreadyBid = new ArrayList<Player>();
+	
 	public ArrayList<Player> bidOrder;
 	public ArrayList<String> bidOrderC;
 	
@@ -120,7 +121,7 @@ public class GameState
 		bidOrder = new ArrayList<Player>();
 		bidOrderC = new ArrayList<String>();
 		for(Player p : players)
-		bidOrderC.add(p.colour);
+			bidOrderC.add(p.colour);
 	}
 	
 	public void initialiseTurnOrder()
@@ -281,14 +282,93 @@ public class GameState
 			Collections.sort(players, Collections.reverseOrder());
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void bid(Powerplant plantChosen)
+	// ------------------------------------------------ BID METHODS -------------------------------------------------
+	public Powerplant chosenPlant = null;
+	public int currentbid = 0;
+	public Player currentBidPlayer = null;
+	public ArrayList<Player> nonBidders = new ArrayList<Player>();
+	public boolean biddingend;
+
+	public void newBidPhase()
+	{
+		chosenPlant = null;
+		currentbid = 0;
+		currentBidPlayer = null;
+		nonBidders = new ArrayList<Player>();
+		
+	}
+	public void choosePlant(Powerplant chosenPlant)
+	{
+		this.chosenPlant = chosenPlant;
+	}
+	
+	public void bid()
+	{
+		turnOrder();
+		Collections.sort(plantMarket.plantsAvailable);
+		
+		
+		if (currentBidPlayer == null)
+		{
+			if(players.get(currentPlayer).money < chosenPlant.getName())
+			{
+				chosenPlant = null;
+			}
+			else 
+			{
+				currentbid = chosenPlant.getName();	
+				currentBidPlayer = players.get(currentPlayer);
+			}
+		}
+		else
+		{
+			if (players.get(currentPlayer).money > currentbid)
+			{
+				currentBidPlayer = players.get(currentPlayer);
+				currentbid = currentbid + 1;
+			}
+		}
+		
+		nextBidder();
+	}
+	
+	public void playerPassedBidPhase() 
+	{
+		nonBidders.add(players.get(currentPlayer));
+		nextBidder();
+	}
+	
+	public void nextBidder()
+	{
+		while (nonBidders.contains(players.get(currentPlayer)))
+		{
+			nextPlayer();
+		}
+		if (nonBidders.size() == playerCount - 1)
+		{
+			bidWinner();
+		}
+	}
+	
+	public void bidWinner()
+	{
+		getCurrentPlayer().addMoney(-currentbid);
+		getCurrentPlayer().addPowerPlant(chosenPlant);
+		newBidPhase();
+	}
+	
+	public Player getCurrentPlayer()
+	{
+		return players.get(currentPlayer);
+	}
+	
+	// -------------------------------------------------------------------
+	
+	/*public void bid()
 	{	
 		turnOrder();
-		syncBidOrders();		
+		syncBidOrders();
 		Collections.sort(plantMarket.plantsAvailable);
-		Powerplant chosenPlant = null;
-		int bid = 0;
 		
 //		try 
 //		{
@@ -299,21 +379,20 @@ public class GameState
 //			String choice = reader.readLine();
 //			
 //			//the user picks the pp, we use the index of the pp
-			chosenPlant = plantChosen;	
-			
-			if(bidOrder.get(currentPlayer).money < chosenPlant.getName()) //player doesnt have enough money to bid
-			{
-				chosenPlant = null;
-				//return; not sure what to do here
-			}
-			else 
-			{
-				bid = chosenPlant.getName();
-				bidWinner = bidSM(bidOrder, bidOrder.get(currentPlayer), bid, chosenPlant);
-				
-			}
-			syncBidOrders();
-			nextPlayer();
+		
+		if(bidOrder.get(currentPlayer).money < chosenPlant.getName()) //player doesnt have enough money to bid
+		{
+			chosenPlant = null;
+			//return; not sure what to do here
+		}
+		else 
+		{
+			currentbid = chosenPlant.getName();	
+			currentBidPlayer = players.get(currentPlayer);
+		}
+		
+		syncBidOrders();
+		nextPlayer();
 //		}
 //		catch(IOException e) {}
 		
@@ -333,6 +412,7 @@ public class GameState
 		bidOrderC.remove(bidOrderC.size()-1);
 		}
 	}
+	
 	public void playerPassedBidPhase() 
 	{
 		//remove the player from bidOrder ArrayList
@@ -342,7 +422,7 @@ public class GameState
 		nextPlayer();
 	}
 	
-	public void bidPhaseEnded() 
+	public void newBidPhase() 
 	{
 		bidOrder.clear();
 		bidOrderC.clear();
@@ -350,6 +430,7 @@ public class GameState
 		for(Player p : players)
 			bidOrderC.add(p.colour);
 	}
+	
 	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sub-method 
 	{
 		ArrayList<Player> theEverShrinkingListOfBidders = new ArrayList<Player>();
@@ -412,7 +493,7 @@ public class GameState
 	}
 	catch (IOException e) {}
 		return winner;
-	}
+	}*/
 	
 	public void updateStage()
 	{

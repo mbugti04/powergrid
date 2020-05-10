@@ -411,9 +411,15 @@ public class Interface extends JPanel implements MouseListener
 			int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
 			int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
 			g2.drawImage(plantimg.get(allPlants.get(i).getName() + ".png"), xcoord, ycoord, 150, 150, null);
+			if (state.chosenPlant != null && allPlants.get(i).getName() == state.chosenPlant.getName())
+			{
+				g2.setColor(new Color(0, 200, 10, 100));
+				g2.fillRect(xcoord, ycoord, 150, 150);
+			}
 		}
 		
 		// bid info
+		g2.setColor(Color.black);
 		drawCentredString(g2, "Current Player: Player " + current.colour, new Rectangle(625, 575, 635, 50), titlefont);
 		
 	}
@@ -564,10 +570,11 @@ public class Interface extends JPanel implements MouseListener
 							
 							regionSelect = false;
 //							ingame = true;
-//							bidding = true;
-							buyresource = true; // TODO change this: temporary testing
-							state.nextTurnPhase(); // TODO also temporary
-							nextTurn = true; // TODO also temp
+							bidding = true;
+							state.newBidPhase();
+//							buyresource = true; // TODO change this: temporary testing
+//							state.nextTurnPhase(); // TODO also temporary
+//							nextTurn = true; // TODO also temp
 							System.out.println("turnphase: " + state.turnPhase);
 							
 							System.out.println("active regions: " + state.getActiveRegions());
@@ -586,6 +593,17 @@ public class Interface extends JPanel implements MouseListener
 		}
 		if (bidding)
 		{
+			for (int i = 0; i < 4; i++)
+			{
+				int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
+				int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
+				Rectangle r = new Rectangle(xcoord, ycoord, 150, 150);
+				if (contains(r, m))
+				{
+//					System.out.println("selected plant " + state.plantMarket.plantsAvailable.get(i).getName());
+					state.choosePlant(state.plantMarket.plantsAvailable.get(i));
+				}
+			}
 			for (Button b: buttons.get("bidding"))
 			{
 				if (b.inBounds(m))
@@ -604,8 +622,8 @@ public class Interface extends JPanel implements MouseListener
 		if (buyresource)
 		{
 			Player current = state.players.get(state.currentPlayer);
-			if (current.ownedPlants.size() < 1)
-				current.addPowerPlant(state.plantMarket.plantsAvailable.get(0));
+//			if (current.ownedPlants.size() < 1)
+//				current.addPowerPlant(state.plantMarket.plantsAvailable.get(0));
 			for (Button b: buttons.get("buyresource"))
 			{
 				if (b.inBounds(m))
@@ -626,6 +644,11 @@ public class Interface extends JPanel implements MouseListener
 		{
 			
 		}
+	}
+	
+	public boolean contains(Rectangle r, MouseEvent m)
+	{
+		return r.contains(m.getPoint());
 	}
 	
 	public boolean areAdjacent(ArrayList<Region> r)
