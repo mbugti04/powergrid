@@ -278,10 +278,10 @@ public class Interface extends JPanel implements MouseListener
 			}
 			drawCurrentStep(g2);
 			drawTurnOrder(g2);
-			drawMarket(g2);
 			drawOwnPlants(g2);
 			drawPhase(g2);
 			
+			drawMarket(g2);
 			drawNextTurn(g2);
 		}
 		if (buycity)
@@ -297,8 +297,8 @@ public class Interface extends JPanel implements MouseListener
 //			drawMarket(g2);
 			drawOwnPlants(g2);
 			drawPhase(g2);
-			drawBuyCity(g2);
 			
+			drawBuyCity(g2);
 			drawNextTurn(g2);
 		}
 		if (powering)
@@ -313,6 +313,7 @@ public class Interface extends JPanel implements MouseListener
 			drawTurnOrder(g2);
 			drawOwnPlants(g2);
 			drawPhase(g2);
+			
 			drawPowering(g2);
 			drawNextTurn(g2);
 		}
