@@ -535,7 +535,7 @@ public class Interface extends JPanel implements MouseListener
 		{
 			if (numpow-- > 0)
 			{
-				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), 170, 400 + 10 * i + 150 * i, 150, 150, null);
+				g2.drawImage(plantimg.get(current.ownedPlants.get(i).getName() + ".png"), 170, 400 + 10 * i + 150 * i, 150, 150, null);
 			}
 			else
 			{
