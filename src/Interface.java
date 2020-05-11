@@ -531,6 +531,7 @@ public class Interface extends JPanel implements MouseListener
 		
 		// other plants
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
+		System.out.println(allPlants);
 		for (int i = 0; i < 8; i++)
 		{
 			int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
