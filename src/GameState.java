@@ -403,6 +403,8 @@ public class GameState
 	 */
 	public ArrayList<Integer> numCitiesPowered = new ArrayList<Integer>();
 	
+	public ArrayList<Resource> togglePlants = new ArrayList<Resource>();
+	
 	public void toggleCityToPower(City c)
 	{
 		/* check how many cities the player can power
@@ -412,6 +414,7 @@ public class GameState
 		 * to that arraylist. If City c is 
 		 * aleady in the arrayList, then remove it
 		 */
+		this.getCurrentPlayer().calcPowerableHouses();
 	}
 	
 	public void powerCities()
