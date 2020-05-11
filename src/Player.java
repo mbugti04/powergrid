@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 public class Player implements Comparable<Player>{
 
+	// push
 	public String colour;
 	public int money;
 	public int poweredHouses;
