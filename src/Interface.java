@@ -667,6 +667,9 @@ public class Interface extends JPanel implements MouseListener
 		Player current = state.players.get(state.currentPlayer);
 		int posx = 185, posy = 580;
 		int numpow = current.ownedPlants.size();
+		for (Powerplant p: current.ownedPlants)
+			System.out.print(p.getName() + " ");
+		System.out.println();
 		for (int i = 0; i < 3; i++)
 		{
 			if (numpow-- > 0)
@@ -675,12 +678,12 @@ public class Interface extends JPanel implements MouseListener
 				
 				if (p != null)
 				{
-					int owned = current.getResources().get(current.ownedPlants.get(i).getResourceType());
+					int owned = current.getResources().get(p.getResourceType());
 					int max = current.ownedPlants.get(i).getAmountToPower();
 					int result = owned / max;
 					String text = state.powerableHouses + "/" + result;
 					drawCentredString(g2, text,
-							new Rectangle(posx, 50 + posy + 10 * i + 10 * i, 30, 50), defaultfont);
+							new Rectangle(posx, 50 + posy + 150 * i + 10 * i, 30, 50), defaultfont);
 	//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
 	//				temp.add(new Button("+", posx, posy + 10 * i + 150 * i, 30, 50));
 	//				temp.add(new Button("-", posx, 100 + posy + 10 * i + 150 * i, 30, 50));
