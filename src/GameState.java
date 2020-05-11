@@ -37,7 +37,6 @@ public class GameState
 		initialisePlayers();
 		initialiseTurnOrder();
 		initialisePlantMarket();
-		initialiseResourceMarket();
 	}
 	
 	public void initialiseCities()
@@ -228,13 +227,8 @@ public class GameState
 		}
 		catch(IOException e) {}
 	}
-	
-	public void initialiseResourceMarket()
-	{
-		
-	}
-	
 	// -------------------------------------------------------
+	
 	
 	public int nextTurnPhase()
 	{
@@ -678,50 +672,91 @@ public class GameState
 		catch(IOException e) {}
 	}
 	
+	City selectedCity = null;
+	public void selectCity(City c)
+	{
+		selectedCity = c;
+	}
+	
 	public void buyCity(City cit)
 	{
-		ArrayList<Player> order = new ArrayList<Player>();
-		for(Player p : players)
-			order.add(p);
-		Collections.reverse(order);
-		City pickedCity = cit;
+		Player cur = getCurrentPlayer();
 		int cost = 0;
-		//TODO the actual proccess of picking the city
 		
-		for(Player i : order) 
+		if(cur.getCities().size() == 0) //if this is the player's first city
 		{
-			if(i.getCities().size() == 0) //if this is the player's first city
-				if(i.money < 10)
-					return; //no money
-				else 
-				{
-					i.money -= 10;
-					i.addCity(pickedCity);
-					i.ownedHouses++;
-					//money spent, city bought.
-					return;
-				}
-			else //if player has at least 1 city
+			// has money
+			if (cur.money >= 10)
 			{
-				for(City c : i.getCities()) 
+				cur.money -= 10;
+				cur.addCity(selectedCity);
+				cur.ownedHouses++;
+				//money spent, city bought.
+			}
+		}
+		else //if player has at least 1 city
+		{
+			for(City c : cur.getCities()) 
+			{
+				if(urbanArea.hasConnection(selectedCity, c) != -1) 
 				{
-					if(urbanArea.hasConnection(pickedCity, c) != -1) 
+					// has money
+					if(cur.money < selectedCity.nextCost())
 					{
-						if(i.money < pickedCity.nextCost())
-							return; //no money
-						cost += urbanArea.hasConnection(pickedCity, c);
-						cost += pickedCity.nextCost();
-						i.addCity(pickedCity);
-						i.ownedHouses++;
+						cost += urbanArea.hasConnection(selectedCity, c);
+						cost += selectedCity.nextCost();
+						cur.addCity(selectedCity);
+						cur.ownedHouses++;
 					}
 				}
-				//TODO calculate the shortest path from the closest of the player's cities to the city that the player picked
 			}
-			i.money -= cost;
+			//TODO calculate the shortest path from the closest of the player's cities to the city that the player picked
 		}
+		cur.money -= cost;
+		selectedCity = null;
 		
-		
-		//TODO finish the method
+//		ArrayList<Player> order = new ArrayList<Player>();
+//		for(Player p : players)
+//			order.add(p);
+//		Collections.reverse(order);
+//		City pickedCity = cit;
+//		int cost = 0;
+//		//TODO the actual proccess of picking the city
+//		
+//		for(Player i : order) 
+//		{
+//			if(i.getCities().size() == 0) //if this is the player's first city
+//				if(i.money < 10)
+//					return; //no money
+//				else 
+//				{
+//					i.money -= 10;
+//					i.addCity(pickedCity);
+//					i.ownedHouses++;
+//					//money spent, city bought.
+//					return;
+//				}
+//			else //if player has at least 1 city
+//			{
+//				for(City c : i.getCities()) 
+//				{
+//					if(urbanArea.hasConnection(pickedCity, c) != -1) 
+//					{
+//						if(i.money < pickedCity.nextCost())
+//							return; //no money
+//						cost += urbanArea.hasConnection(pickedCity, c);
+//						cost += pickedCity.nextCost();
+//						i.addCity(pickedCity);
+//						i.ownedHouses++;
+//					}
+//				}
+//				//TODO calculate the shortest path from the closest of the player's cities to the city that the player picked
+//			}
+//			i.money -= cost;
+//		}
+//		
+//		
+//		//TODO finish the method
 	}
 	
 	/* creates the cities
