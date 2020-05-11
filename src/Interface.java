@@ -502,10 +502,8 @@ public class Interface extends JPanel implements MouseListener
 		title = new Rectangle(edges, edges + 25, width - edges * 2, 50);
 		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		
-<<<<<<< HEAD
 		for (Button b: buttons.get("bidding"))  //For drawing the buttons in biddingSetup()
 			b.draw(g2);
-=======
 		for (Button b: buttons.get("bidding"))
 		{
 			if (b.name.equals("REPLACE"))
@@ -514,7 +512,6 @@ public class Interface extends JPanel implements MouseListener
 			else
 				b.draw(g2);
 		}
->>>>>>> branch 'master' of https://github.com/malgantual/powergrid.git
 		
 		// money
 		g2.setColor(Color.black);
