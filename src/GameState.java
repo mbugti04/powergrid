@@ -419,9 +419,13 @@ public class GameState
 	}
 	
 	// 
-	public void replacePowerplant(Powerplant toBeReplaced)
+	public boolean replacePowerplant(Powerplant toBeReplaced, Powerplant replacer)
 	{
-		
+		boolean completed = false;
+		if (players.get(currentPlayer).ownedPlants.remove(toBeReplaced))
+			completed = true;
+		players.get(currentPlayer).ownedPlants.add(replacer);
+		return completed;
 	}
 	
 	public void bidWinner()
