@@ -899,42 +899,33 @@ public class Interface extends JPanel implements MouseListener
 			int i = 0;
 			for (Button b: buttons.get("powering"))
 			{
-				Powerplant p = current.ownedPlants.get(i++ / 2);
-				
 				if (b.inBounds(m))
 				{
-					if (b.name.equals("+p" + p.getName()))
+					for (Powerplant p: current.ownedPlants)
 					{
-						state.togglePlants(p, state.powerableHouses + 1);
-						System.out.println("toggled + and is now " + state.powerableHouses);
-					}
-					if (b.name.equals("-p" + p.getName()))
-					{
-						state.togglePlants(p, state.powerableHouses - 1);
-						System.out.println("toggled - and is now " + state.powerableHouses);
-					}
-					if (b.name.equals("Power City"))
-					{
-						incomeText = state.powerCities();
-						
-						state.nextPlayer();
-						timesNextTurnWasPressed++;
-						if (timesNextTurnWasPressed >= state.playerCount)
+						if (b.name.equals("+p" + p.getName()))
 						{
-							timesNextTurnWasPressed = 0;
-							state.nextTurnPhase();
+							state.togglePlants(p, state.powerableHouses + 1);
+							System.out.println("toggled + and is now " + state.powerableHouses);
+						}
+						if (b.name.equals("-p" + p.getName()))
+						{
+							state.togglePlants(p, state.powerableHouses - 1);
+							System.out.println("toggled - and is now " + state.powerableHouses);
+						}
+						if (b.name.equals("Power City"))
+						{
+							incomeText = state.powerCities();
+							
+							state.nextPlayer();
+							timesNextTurnWasPressed++;
+							if (timesNextTurnWasPressed >= state.playerCount)
+							{
+								timesNextTurnWasPressed = 0;
+								state.nextTurnPhase();
+							}
 						}
 					}
-				}
-				if (b.inBounds(m) && b.name.equals("+"))
-				{
-					state.togglePlants(p, state.powerableHouses + 1);
-					System.out.println("toggled + and is now " + state.powerableHouses);
-				}
-				if (b.inBounds(m) && b.name.equals("-"))
-				{
-					state.togglePlants(p, state.powerableHouses - 1);
-					System.out.println("toggled - and is now " + state.powerableHouses);
 				}
 			}
 		}
