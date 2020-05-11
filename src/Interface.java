@@ -202,7 +202,7 @@ public class Interface extends JPanel implements MouseListener
 			int x = startx + (int)(c.getX() * mapx);
 			int y = starty + (int)(c.getY() * mapy);
 			
-            temp.add(new Button(c.getName(), x - cityScale / 2, y - cityScale / 2, cityScale, cityScale));
+            temp.add(new Button(c.getName(), x - cityScale / 2, y - cityScale / 2, cityScale, cityScale, new Color(0000)));
         }
 		buttons.put("buycity", temp);
 		temp.add(new Button("Buy City", 1645, 955, Button.normalw, Button.normalh));
@@ -561,6 +561,12 @@ public class Interface extends JPanel implements MouseListener
 	{
 		g2.setFont(font);
 		g2.drawString(text, p.x, p.y);
+	}
+	
+	public void drawBuyCity(Graphics2D g2)
+	{
+		for (Button b: buttons.get("Buy City"))
+			b.draw(g2);
 	}
 	// ----------------------------------------------------------------------------------------------------
 	
