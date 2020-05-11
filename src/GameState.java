@@ -417,6 +417,7 @@ public class GameState
 		
 	}
 	
+	// 
 	public void replacePowerplant(Powerplant toBeReplaced)
 	{
 		
