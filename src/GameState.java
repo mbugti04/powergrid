@@ -728,6 +728,8 @@ public class GameState
 	
 	public boolean buyCity(City cit)
 	{
+		if (cit.nextCost() == -1)
+			return false;
 		boolean success = false, canAdd = false;
 		Player cur = getCurrentPlayer();
 		int cost = 0;
@@ -752,7 +754,7 @@ public class GameState
 				if(urbanArea.hasConnection(selectedCity, c) != -1) 
 				{
 					// has money
-					if(cur.money >= selectedCity.nextCost())
+					if(cur.money >= selectedCity.nextCost() + urbanArea.hasConnection(selectedCity, c))
 					{
 						canAdd = true;
 						cost += urbanArea.hasConnection(selectedCity, c);
