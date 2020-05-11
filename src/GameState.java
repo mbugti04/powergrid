@@ -692,7 +692,7 @@ public class GameState
 				cur.money -= 10;
 				cur.addCity(selectedCity);
 				cur.ownedHouses++;
-				
+				selectedCity.incrementHouse();
 				success = true;
 				//money spent, city bought.
 			}
@@ -710,6 +710,8 @@ public class GameState
 						cost += urbanArea.hasConnection(selectedCity, c);
 						cost += selectedCity.nextCost();
 						cur.ownedHouses++;
+						
+						selectedCity.incrementHouse();
 						
 						success = true;
 					}

@@ -33,6 +33,11 @@ public class City
 		return -1;
 	}
 	
+	public void incrementHouse()
+	{
+		currentNumOfHouses++;
+	}
+	
 	public boolean isAvailable()
 	{
 		int step = GameState.step;

@@ -326,7 +326,16 @@ public class Interface extends JPanel implements MouseListener
 		g2.fill(rect);
 		g2.setColor(Color.white);
 		drawCentredString(g2, c.getName(), rect, cityfont);
+		
+		ArrayList<String> cols = new ArrayList<String>();
 		// houses built in the city
+		for (Player p: state.players)
+		{
+			if (p.ownedCities.contains(c))
+			{
+				cols.add(p.colour);
+			}
+		}
 	}
 	
 	public void drawCityConnections(Graphics2D g2)
