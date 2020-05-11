@@ -216,20 +216,23 @@ public class Interface extends JPanel implements MouseListener
 		ArrayList<Button> temp = new ArrayList<Button>();
 		temp.add(new Button("Power City", 1680, 950, Button.normalw, Button.normalh));
 		
-		Player current = state.players.get(state.currentPlayer);
-		int posx = 185, posy = 580;
-		int numpow = current.ownedPlants.size();
-		for (int i = 0; i < 3; i++)
+//		Player current = state.players.get(state.currentPlayer);
+		for (Player current: state.players)
 		{
-			if (numpow-- > 0)
+			int posx = 185, posy = 580;
+			int numpow = current.ownedPlants.size();
+			for (int i = 0; i < 3; i++)
 			{
-//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
-				temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
-				temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+				if (numpow-- > 0)
+				{
+	//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
+					temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
+					temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+				}
 			}
+			buttons.put("powering", temp);
+			System.out.println(buttons.get("powering"));
 		}
-		buttons.put("powering", temp);
-		System.out.println(buttons.get("powering"));
 		
 	}
 	// ----------------------------------------------------------------------------------------------------
@@ -661,8 +664,20 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawPowering(Graphics2D g2)
 	{
+		ArrayList<Powerplant> temp = state.getCurrentPlayer().ownedPlants;
+		ArrayList<String> names = new ArrayList<String>();
+		for (Powerplant p: temp)
+		{
+			names.add("+p" + p.getName());
+			names.add("-p" + p.getName());
+		}
+		names.add("Power City");
+		
 		for (Button b: buttons.get("powering"))
-			b.draw(g2);
+		{
+			if (names.contains(b.name))
+				b.draw(g2);
+		}
 		
 		int posx = 185, posy = 580;
 		int numpow = state.getCurrentPlayer().ownedPlants.size();
@@ -792,7 +807,6 @@ public class Interface extends JPanel implements MouseListener
 					}
 				}
 			}
-			poweringSetup();
 		}
 		if (buyresource)
 		{
@@ -817,6 +831,7 @@ public class Interface extends JPanel implements MouseListener
 					}
 				}
 			}
+			poweringSetup();
 		}
 		
 		if (buycity)
