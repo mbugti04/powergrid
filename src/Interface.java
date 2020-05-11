@@ -402,10 +402,14 @@ public class Interface extends JPanel implements MouseListener
 		
 		for (int i = 1; i <= 4; i++)
 		{
+			g2.setColor(new Color(255, 255, 255, 100));
+			if (state.permanentNonBidders.contains(state.players.get(i - 1)))
+				g2.setColor(new Color(200, 0, 0, 100));
 			Rectangle rect = new Rectangle(10 * i + starting.x + width * (i - 1), 10 + starting.y, width, height);
 			g2.fill(rect);
 			
 			g2.drawImage(images.get(state.getPlayerList().get(i - 1).colour + ".png"), 10 * i + starting.x + width * (i - 1), 10 + starting.y, null);
+			
 			
 			if (i - 1 == state.currentPlayer)
 			{
@@ -744,7 +748,7 @@ public class Interface extends JPanel implements MouseListener
 			}
 		}
 		
-		if (!regionSelect)
+		if (!regionSelect && !initial)
 		{
 			if (state.turnPhase == 0)
 			{
