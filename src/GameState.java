@@ -414,11 +414,29 @@ public class GameState
 	
 	public void togglePlants(Powerplant pp, int citiesToPower) 
 	{
+		if(pp.getResourceType().equals(Resource.free)) 
+		{
+			System.out.println("amt to power: " + pp.getAmountToPower());
+			System.out.println("citiestopower: " + citiesToPower);
+			System.out.println("ownedCities: " + getCurrentPlayer().ownedCities.size());
+			if(pp.getPowerProduced() * citiesToPower >= citiesToPower && citiesToPower >= 0 && getCurrentPlayer().ownedCities.size() >= citiesToPower) 
+			{
+				poweringPlant = pp;
+				powerableHouses = 0;
+				
+				// either increments or decrements depending on what the cities to power is
+				togglePlants.put(pp, citiesToPower);
+				
+				for (Powerplant p: togglePlants.keySet())
+				{
+					powerableHouses += togglePlants.get(p);
+				}
+			}
+		}
 		System.out.println("amt " + pp.getResourceType() + ": " + getCurrentPlayer().getResources().get(pp.getResourceType()));
 		System.out.println("amt to power: " + pp.getAmountToPower());
 		System.out.println("citiestopower: " + citiesToPower);
 		System.out.println("ownedCities: " + getCurrentPlayer().ownedCities.size());
-		
 		if(pp.getPowerProduced() * citiesToPower >= citiesToPower && citiesToPower >= 0 && getCurrentPlayer().ownedCities.size() >= citiesToPower) 
 		{
 			//if the player has enough resources to make the powerplant produce energy
@@ -455,6 +473,11 @@ public class GameState
 		for (Powerplant p: togglePlants.keySet())
 		{
 			Resource r = p.getResourceType();
+			if(r.equals(Resource.free)) 
+			{
+				continue;
+			}
+			
 			int currentAmountOfResources = getCurrentPlayer().getResources().get(r);
 			int amountToRemove = p.getAmountToPower() * togglePlants.get(p);
 			
@@ -479,7 +502,6 @@ public class GameState
 //		getCurrentPlayer().income();
 //		togglePlants.clear();
 	}
-
 	
 	public void resetCityPowering()
 	{
