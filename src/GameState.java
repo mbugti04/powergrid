@@ -501,11 +501,31 @@ public class GameState
 			{
 				continue;
 			}
-			
-			int currentAmountOfResources = getCurrentPlayer().getResources().get(r);
-			int amountToRemove = p.getAmountToPower() * togglePlants.get(p);
-			
-			getCurrentPlayer().getResources().put(r, currentAmountOfResources - amountToRemove);
+			else if (r.equals(Resource.hybrid))
+			{
+				ArrayList<Resource> resources = new ArrayList<Resource>();
+				for (int i = 0; i < getCurrentPlayer().getResources().get(Resource.oil); i++)
+					resources.add(Resource.oil);
+				for (int i = 0; i < getCurrentPlayer().getResources().get(Resource.coal); i++)
+					resources.add(Resource.coal);
+				
+				int amountToRemove = p.getAmountToPower() * togglePlants.get(p);
+				
+				for (Resource rem: resources)
+				{
+					getCurrentPlayer().getResources().put(rem, getCurrentPlayer().getResources().get(rem) - 1);
+					amountToRemove--;
+					if (amountToRemove <= 0)
+						continue;
+				}
+			}
+			else
+			{
+				int currentAmountOfResources = getCurrentPlayer().getResources().get(r);
+				int amountToRemove = p.getAmountToPower() * togglePlants.get(p);
+				
+				getCurrentPlayer().getResources().put(r, currentAmountOfResources - amountToRemove);
+			}
 		}
 		
 		getCurrentPlayer().poweredHouses += powerableHouses;
