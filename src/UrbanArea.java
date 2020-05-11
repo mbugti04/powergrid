@@ -106,6 +106,8 @@ public class UrbanArea
 
 	public int hasConnection(City a, City b)
 	{
+		if (a == null || b == null)
+			return -1;
 		if (cities.get(a).containsKey(b))
 			return cities.get(a).get(b);
 		return -1;

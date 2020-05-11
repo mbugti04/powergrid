@@ -240,6 +240,8 @@ public class Interface extends JPanel implements MouseListener
 			}
 			drawCurrentStep(g2);
 			drawTurnOrder(g2);
+			drawPhase(g2);
+			
 			drawBidding(g2);
 		}
 		if (buyresource)
@@ -322,10 +324,14 @@ public class Interface extends JPanel implements MouseListener
 		
 		// text box
 		g2.setColor(new Color(22, 26, 107));
+		if (state.selectedCity != null && state.selectedCity.equals(c))
+			g2.setColor(new Color(103, 108, 220));
 		Rectangle rect = new Rectangle(x - cityScale / 2, y + cityScale / 5, cityScale, cityScale / 3);
 		g2.fill(rect);
 		g2.setColor(Color.white);
-		drawCentredString(g2, c.getName(), rect, cityfont);
+		drawCentredString(g2, c.getName(), rect, cityfont);		
+		
+		// -- drawing the indicators --
 		
 		ArrayList<String> cols = new ArrayList<String>();
 		// houses built in the city
@@ -335,6 +341,27 @@ public class Interface extends JPanel implements MouseListener
 			{
 				cols.add(p.colour);
 			}
+		}
+		ArrayList<Color> colours = new ArrayList<Color>();
+		for (String colour: cols)
+		{
+			if (colour.equals("red"))
+				colours.add(new Color(223, 91, 91));
+			else if (colour.equals("yellow"))
+				colours.add(new Color(225, 178, 24));
+			else if (colour.equals("green"))
+				colours.add(new Color(115, 214, 117));
+			else if (colour.equals("blue"))
+				colours.add(new Color(117, 232, 226));
+		}
+		
+		x = x - (cityScale / 3);
+		int pos = 0;
+		for (Color colour: colours)
+		{
+			g2.setColor(colour);
+			Point indicator = new Point(x + (cityScale / 3) * pos++, y);
+			g2.fillRect(indicator.x, indicator.y, 5, 5);
 		}
 	}
 	
@@ -425,8 +452,11 @@ public class Interface extends JPanel implements MouseListener
 		g2.fillRect(edges, edges, width - edges * 2, 800);
 		
 		g2.setColor(new Color(0, 0, 0));
-		Rectangle title = new Rectangle(edges, edges, width - edges * 2, edges / 2);
-		drawCentredString(g2, "Phase 1: Bidding", title, bigfont);
+		Rectangle title = new Rectangle(edges, edges, width - edges * 2, 50);
+		drawCentredString(g2, "Select any power plant from the top four", title, subtitlefont);
+		
+		title = new Rectangle(edges, edges + 25, width - edges * 2, 50);
+		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		
 		for (Button b: buttons.get("bidding"))
 			b.draw(g2);
@@ -545,6 +575,8 @@ public class Interface extends JPanel implements MouseListener
 	{
 		g2.setColor(Color.white);
 		String statement = "";
+		if (state.turnPhase == 0)
+			statement = "Bidding";
 		if (state.turnPhase == 1) // buying resources
 			statement = "Buying Resources";
 		if (state.turnPhase == 2) // buying cities

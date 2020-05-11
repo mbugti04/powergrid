@@ -305,7 +305,11 @@ public class GameState
 		chosenPlant = null;
 		currentbid = 0;
 		currentBidPlayer = null;
+		currentPlayer = 0;
 		nonBidders = new ArrayList<Player>();
+		
+		while (nonBidders.contains(players.get(currentPlayer)) || permanentNonBidders.contains(players.get(currentPlayer)))
+			currentPlayer++;
 	}
 	public void choosePlant(Powerplant chosenPlant)
 	{
@@ -369,7 +373,6 @@ public class GameState
 		if ((nonBidders.size() + permanentNonBidders.size() == playerCount - 1 ) && chosenPlant != null && currentBidPlayer != null)
 		{
 			bidWinner();
-			nextPlayer();
 		}
 		
 		System.out.println(turnPhase);
