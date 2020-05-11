@@ -397,43 +397,48 @@ public class GameState
 	
 	// -------------------------------------------------------------------
 	
-	public ArrayList<City> selectedCities = new ArrayList<City>();
+	public HashMap<Powerplant, Integer> togglePlants = new HashMap<Powerplant, Integer>();
+	public int powerableHouses = 0;
+	public Powerplant powerPlant;
 	
-	/* this arraylist holds how many cities each person has power.
-	 * The player turns correspond with the index of the power cities.
-	 * For example: if the arraylist is equal to [0, 3, 2, 1],
-	 * then player 1 has powered 0, player 2 has powered 3, etc.
-	 */
-	public ArrayList<Integer> numCitiesPowered = new ArrayList<Integer>();
-	
-	public ArrayList<Resource> togglePlants = new ArrayList<Resource>();
-	
-	public void toggleCityToPower(City c)
+	public void togglePlants(Powerplant pp, int citiesToPower) 
 	{
-		/* check how many cities the player can power
-		 * at max and then if the size of the 
-		 * selected cities is less than or equal to
-		 * that number, then add City c
-		 * to that arraylist. If City c is 
-		 * aleady in the arrayList, then remove it
-		 */
-		this.getCurrentPlayer().calcPowerableHouses();
-	}
-	
-	public void togglePlant(Powerplant p)
-	{
-		/* toggles the power plant to use to power
-		 * the selected cities. make sure that selected power plants
-		 * actually have enough resources to power 
-		 */
+		if(pp.getPowerProduced() > citiesToPower) 
+		{
+			//if the player has enough resources to make the powerplant produce energy
+			if(getCurrentPlayer().getResources().get(pp.getResourceType()) > pp.getAmountToPower()) 
+			{ 
+			powerPlant = pp;
+			powerableHouses += citiesToPower;
+			//if togglePlants has already has pp toggled
+			if(togglePlants.containsKey(pp)) 
+			{
+				togglePlants.replace(pp, citiesToPower);
+			}
+			//if togglePlants doesnt already have pp toggled
+			else 
+			{
+				togglePlants.put(pp, citiesToPower);
+			}
+			}
+		}
+		else return;	
 	}
 	
 	public void powerCities()
 	{
-		/* removes resources from the player to power the cities,
-		 * and resets the selectedCities arraylist
-		 */
+		for(int i = 0; i < togglePlants.size(); i++) 
+		{		
+			getCurrentPlayer().getResources().replace
+			(powerPlant.getResourceType(),
+			getCurrentPlayer().getResources().get(
+			powerPlant.getResourceType()) - powerPlant.getAmountToPower() );
+		}
+		getCurrentPlayer().poweredHouses += powerableHouses;
+		getCurrentPlayer().income();
+		togglePlants.clear();
 	}
+
 	
 	public void resetCityPowering()
 	{

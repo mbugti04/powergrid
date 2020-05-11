@@ -6,7 +6,7 @@ public class Player implements Comparable<Player>{
 
 	public String colour;
 	public int money;
-	private int poweredHouses;
+	public int poweredHouses;
 	public int ownedHouses;
 	
 	public ArrayList<Powerplant> ownedPlants;
