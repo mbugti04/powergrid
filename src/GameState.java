@@ -394,6 +394,11 @@ public class GameState
 		
 	}
 	
+	public void replacePowerplant(Powerplant toBeReplaced)
+	{
+		
+	}
+	
 	public void bidWinner()
 	{
 		if(getCurrentPlayer().ownedPlants.size() == 3)

@@ -527,7 +527,10 @@ public class Interface extends JPanel implements MouseListener
 			{
 				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), 170, 400 + 10 * i + 150 * i, 150, 150, null);
 			}
-			g2.fillRect(170, 400 + 10 * i + 150 * i, 150, 150);
+			else
+			{
+				g2.fillRect(170, 400 + 10 * i + 150 * i, 150, 150);
+			}
 		}
 		
 		// other plants
