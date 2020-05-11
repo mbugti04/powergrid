@@ -899,7 +899,7 @@ public class Interface extends JPanel implements MouseListener
 			int i = 0;
 			for (Button b: buttons.get("powering"))
 			{
-				Powerplant p = current.ownedPlants.get(i / 2);
+				Powerplant p = current.ownedPlants.get(i++ / 2);
 				
 				if (b.inBounds(m))
 				{
