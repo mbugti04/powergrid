@@ -175,6 +175,7 @@ public class Interface extends JPanel implements MouseListener
 		ArrayList<Button> temp = new ArrayList<Button>();
 		temp.add(new Button("BID", 625, 825, Button.normalw, Button.normalh, new Color(0, 200, 0)));
 		temp.add(new Button("PASS", 1050, 825, Button.normalw, Button.normalh, new Color(200, 0, 0)));
+		temp.add(new Button("REPLACE", 838, 860, Button.normalw, Button.normalh));
 		
 		buttons.put("bidding", temp);
 	}
@@ -801,6 +802,16 @@ public class Interface extends JPanel implements MouseListener
 					if (b.name.equals("BID"))
 					{
 						state.bid();
+						if (state.replacing == true)
+						{
+							if(b.inBounds(m)) 
+							{
+								if (b.name.equals("REPLACE"))
+								{
+									state.bidWinner();
+								}
+							}
+						}
 					}
 					if (b.name.equals("PASS"))
 					{
