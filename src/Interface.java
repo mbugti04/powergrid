@@ -670,10 +670,15 @@ public class Interface extends JPanel implements MouseListener
 		int i = 0;
 		for (Powerplant p: state.getCurrentPlayer().ownedPlants)
 		{
-			System.out.println(state.getCurrentPlayer());
-			System.out.println(state.getCurrentPlayer().getResources());
-			System.out.println(p.getResourceType());
-			int owned = state.getCurrentPlayer().getResources().get(p.getResourceType());
+			int owned = 0;
+			if (p.getResourceType().equals(Resource.hybrid))
+			{
+				owned = state.getCurrentPlayer().getResources().get(Resource.coal) + state.getCurrentPlayer().getResources().get(Resource.oil);
+			}
+			else if (!p.getResourceType().equals(Resource.free))
+			{
+				owned = state.getCurrentPlayer().getResources().get(p.getResourceType());
+			}
 			int max = state.getCurrentPlayer().ownedPlants.get(i).getAmountToPower();
 			int result = owned / max;
 			String text = state.powerableHouses + "/" + Math.min(result, state.getCurrentPlayer().ownedCities.size());
