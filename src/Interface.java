@@ -223,8 +223,8 @@ public class Interface extends JPanel implements MouseListener
 			if (numpow-- > 0)
 			{
 //				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
-				temp.add(new Button("+", posx, posy + 10 * i + 150 * i, 25, 20));
-				temp.add(new Button("-", posx, 40 + posy + 10 * i + 150 * i, 25, 20));
+				temp.add(new Button("+", posx, posy + 10 * i + 150 * i, 30, 50));
+				temp.add(new Button("-", posx, 100 + posy + 10 * i + 150 * i, 30, 50));
 			}
 		}
 		buttons.put("powering", temp);
@@ -662,7 +662,32 @@ public class Interface extends JPanel implements MouseListener
 	public void drawPowering(Graphics2D g2)
 	{
 		for (Button b: buttons.get("powering"))
-			b.draw(g2);	
+			b.draw(g2);
+		
+		Player current = state.players.get(state.currentPlayer);
+		int posx = 185, posy = 580;
+		int numpow = current.ownedPlants.size();
+		for (int i = 0; i < 3; i++)
+		{
+			if (numpow-- > 0)
+			{
+				Powerplant p = current.ownedPlants.get(i);
+				
+				if (p != null)
+				{
+					int owned = current.getResources().get(current.ownedPlants.get(i).getResourceType());
+					int max = current.ownedPlants.get(i).getAmountToPower();
+					int result = owned / max;
+					String text = state.powerableHouses + "/" + result;
+					drawCentredString(g2, text,
+							new Rectangle(posx, 50 + posy + 10 * i + 10 * i, 30, 50), defaultfont);
+	//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
+	//				temp.add(new Button("+", posx, posy + 10 * i + 150 * i, 30, 50));
+	//				temp.add(new Button("-", posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+				}
+			}
+		}
+		
 	}
 	// ----------------------------------------------------------------------------------------------------
 	
@@ -835,9 +860,34 @@ public class Interface extends JPanel implements MouseListener
 		if(powering) 
 		{
 			Player current = state.players.get(state.currentPlayer);
+			int i = 0;
 			for (Button b: buttons.get("powering"))
 			{
+				Powerplant p = current.ownedPlants.get(i / 2);
 				
+				if (b.inBounds(m) && b.name.equals("+"))
+				{
+					state.togglePlants(p, state.powerableHouses + 1);
+					System.out.println("toggled + and is now " + state.powerableHouses);
+				}
+				if (b.inBounds(m) && b.name.equals("-"))
+				{
+					state.togglePlants(p, state.powerableHouses - 1);
+					System.out.println("toggled - and is now " + state.powerableHouses);
+				}
+			}
+			for (Button b: buttons.get("nextTurn"))
+			{
+				if (b.inBounds(m))
+				{
+					state.nextPlayer();
+					timesNextTurnWasPressed++;
+					if (timesNextTurnWasPressed >= state.playerCount)
+					{
+						timesNextTurnWasPressed = 0;
+						state.nextTurnPhase();
+					}
+				}
 			}
 		}
 		
