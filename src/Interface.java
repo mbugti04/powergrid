@@ -224,8 +224,8 @@ public class Interface extends JPanel implements MouseListener
 			if (numpow-- > 0)
 			{
 //				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
-				temp.add(new Button("+", posx, posy + 10 * i + 150 * i, 30, 50));
-				temp.add(new Button("-", posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+				temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
+				temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
 			}
 		}
 		buttons.put("powering", temp);
@@ -687,7 +687,7 @@ public class Interface extends JPanel implements MouseListener
 			i++;
 		}
 		
-		drawAString(g2, incomeText, new Point(1500, 50), defaultfont);
+		drawAString(g2, incomeText, new Point(1335, 60), bigfont);
 		
 	}
 	// ----------------------------------------------------------------------------------------------------
@@ -868,12 +868,12 @@ public class Interface extends JPanel implements MouseListener
 				
 				if (b.inBounds(m))
 				{
-					if (b.name.equals("+"))
+					if (b.name.equals("+p" + p.getName()))
 					{
 						state.togglePlants(p, state.powerableHouses + 1);
 						System.out.println("toggled + and is now " + state.powerableHouses);
 					}
-					if (b.name.equals("-"))
+					if (b.name.equals("-p" + p.getName()))
 					{
 						state.togglePlants(p, state.powerableHouses - 1);
 						System.out.println("toggled - and is now " + state.powerableHouses);
