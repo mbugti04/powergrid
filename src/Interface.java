@@ -502,7 +502,7 @@ public class Interface extends JPanel implements MouseListener
 		title = new Rectangle(edges, edges + 25, width - edges * 2, 50);
 		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		
-		for (Button b: buttons.get("bidding"))
+		for (Button b: buttons.get("bidding"))  //For drawing the buttons in biddingSetup()
 			b.draw(g2);
 		
 		// money
