@@ -239,13 +239,13 @@ public class GameState
 		return turnPhase;
 	}
 	
-//	public int nextPlayer()
-//	{
-//		currentPlayer++;
-//		if (currentPlayer > playerCount - 1)
-//			currentPlayer = 0;
-//		return currentPlayer;
-//	}
+	public int nextPlayer()
+	{
+		currentPlayer++;
+		if (currentPlayer > playerCount - 1)
+			currentPlayer = 0;
+		return currentPlayer;
+	}
 	/* adds or removes a region inside the list of regions
 	 * that will be playable in-game
 	 */
@@ -399,27 +399,31 @@ public class GameState
 	
 	public HashMap<Powerplant, Integer> togglePlants = new HashMap<Powerplant, Integer>();
 	public int powerableHouses = 0;
-	public Powerplant powerPlant;
+	public Powerplant powerPlant = null;
 	
 	public void togglePlants(Powerplant pp, int citiesToPower) 
 	{
-		if(pp.getPowerProduced() > citiesToPower) 
+		if(pp.getPowerProduced() >= citiesToPower) 
 		{
 			//if the player has enough resources to make the powerplant produce energy
 			if(getCurrentPlayer().getResources().get(pp.getResourceType()) > pp.getAmountToPower()) 
 			{ 
-			powerPlant = pp;
-			powerableHouses += citiesToPower;
-			//if togglePlants has already has pp toggled
-			if(togglePlants.containsKey(pp)) 
-			{
-				togglePlants.replace(pp, citiesToPower);
-			}
-			//if togglePlants doesnt already have pp toggled
-			else 
-			{
+				powerPlant = pp;
+				powerableHouses += citiesToPower;
+				
+				// either increments or decrements depending on what the cities to power is
 				togglePlants.put(pp, citiesToPower);
-			}
+	//			
+	//			//if togglePlants has already has pp toggled
+	//			if(togglePlants.containsKey(pp)) 
+	//			{
+	//				togglePlants.replace(pp, citiesToPower);
+	//			}
+	//			//if togglePlants doesnt already have pp toggled
+	//			else 
+	//			{
+	//				togglePlants.put(pp, citiesToPower);
+	//			}
 			}
 		}
 		else return;	
@@ -442,163 +446,13 @@ public class GameState
 	
 	public void resetCityPowering()
 	{
+		togglePlants = new HashMap<Powerplant, Integer>();
+		powerableHouses = 0;
+		powerPlant = null;
 		/* basically resets the arraylist of numCities
 		 * AT THE END OF BUREAUCRACY aka when the entire turn ends and we're back to bidding
 		 */
 	}
-	
-	/*public void bid()
-	{	
-		turnOrder();
-		syncBidOrders();
-		Collections.sort(plantMarket.plantsAvailable);
-		
-//		try 
-//		{
-//			BufferedReader reader = new BufferedReader(
-//					new InputStreamReader(System.in));
-//			
-//			//TODO? prompt which plant the user would like to bid on
-//			String choice = reader.readLine();
-//			
-//			//the user picks the pp, we use the index of the pp
-
-		
-		if(bidOrder.get(currentPlayer).money < chosenPlant.getName()) //player doesnt have enough money to bid
-		{
-			chosenPlant = null;
-			//return; not sure what to do here
-		}
-		else 
-		{
-			currentbid = chosenPlant.getName();	
-			currentBidPlayer = players.get(currentPlayer);
-		}
-		
-		syncBidOrders();
-		nextPlayer();
-
-			chosenPlant = plantChosen;	
-			
-			if(bidOrder.get(currentPlayer).money < chosenPlant.getName()) //player doesnt have enough money to bid
-			{
-				chosenPlant = null;
-				//return; not sure what to do here
-			}
-			else 
-			{
-				bid = chosenPlant.getName();
-				bidWinner = bidSM(bidOrder, bidOrder.get(currentPlayer), chosenPlant);
-				bidWinner.money -= bid;
-				bidWinner.ownedPlants.add(chosenPlant);
-			}
-			syncBidOrders();
-			nextPlayer();
-
-//		}
-//		catch(IOException e) {}
-		
-	}
-	public void syncBidOrders() 
-	{
-		if(bidOrderC.size() != bidOrder.size()) 
-		{
-		for(int i = 0; i < bidOrder.size(); i++) 
-		{
-			if(!bidOrder.get(i).colour.equals(bidOrderC.get(i))) 
-			{
-				bidOrderC.remove(i);
-				return;
-			}
-		}
-		bidOrderC.remove(bidOrderC.size()-1);
-		}
-	}
-	
-	public void playerPassedBidPhase() 
-	{
-		//remove the player from bidOrder ArrayList
-		bidOrder.remove(currentPlayer);
-		syncBidOrders();
-		
-		nextPlayer();
-	}
-	
-	public void newBidPhase() 
-	{
-		bidOrder.clear();
-		bidOrderC.clear();
-		bidOrder.addAll(players);
-		for(Player p : players)
-			bidOrderC.add(p.colour);
-	}
-
-	
-	public Player bidSM(ArrayList<Player> order, Player ib, int bid, Powerplant plant)// bid sub-method 
-
-	public Player bidSM(ArrayList<Player> order, Player ib, Powerplant plant)// bid sub-method 
-
-	{
-		ArrayList<Player> theEverShrinkingListOfBidders = new ArrayList<Player>();
-		theEverShrinkingListOfBidders.addAll(order);
-		Player winner = null;
-		Player temp = order.get(0);
-		order.set(0, ib);
-		order.set(order.indexOf(ib), temp);
-		
-		int unconfirmedBid = 0;
-		boolean response = false; //true = increasing bid, false = passing
-		try
-		{
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(System.in));
-		
-		int i = 1;
-		String ans;
-		while(theEverShrinkingListOfBidders.size() != 1) 
-		{
-			System.out.println("Player #"+i+", would you like to increase the bid of $"
-					+bid+"for powerplant "+plant.getName()+"?(type 'increase bid' or 'pass') You have $"+theEverShrinkingListOfBidders.get(i).getMoney());
-			//set response
-			ans = reader.readLine();
-			if(ans.equals("increase bid"))
-				response = true;
-			
-			if(!response) 
-			{
-				theEverShrinkingListOfBidders.remove(theEverShrinkingListOfBidders.get(i));
-			}
-			else
-			{
-				
-				//set unconfirmedBid to be $1 higher than current bid
-				unconfirmedBid = bid + 1;
-				
-				if(theEverShrinkingListOfBidders.get(i).getMoney() < unconfirmedBid) 
-				{
-//					System.out.println("Infsufficient funds, you are unable to bid on this plant");
-					theEverShrinkingListOfBidders.remove(theEverShrinkingListOfBidders.get(i));
-					i++;
-					continue;
-				}
-//				else if(unconfirmedBid <= bid)
-//				{
-//					System.out.println("Your bid has to be higher than the previous player's bid. You've been skipped.");
-//					i++;
-//					continue;
-//				}
-				System.out.println("You bid $"+unconfirmedBid);
-				bid = unconfirmedBid;
-			}
-			i++;
-		}
-		winner = theEverShrinkingListOfBidders.get(0);
-		bidOrder.remove(winner);
-		return winner;	
-	}
-	catch (IOException e) {}
-		return winner;
-	}*/
 	
 	public void updateStage()
 	{
@@ -839,13 +693,6 @@ public class GameState
 			System.out.println("Cost:" +i.getName()+". This plant requires "+i.getAmountToPower()+" "+i.getResourceType()+" to produce "+ i.getPowerProduced()+"power.");
 			else  System.out.println("Cost:" +i.getName()+". This plant produces "+ i.getPowerProduced()+" power without resources.");
 		}
-	}
-	
-	public void nextPlayer() 
-	{
-		if(currentPlayer != 3)
-			currentPlayer++;
-		else currentPlayer = 0;
 	}
 	
 	public boolean allTrue(ArrayList<Boolean> bool) {

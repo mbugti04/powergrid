@@ -610,6 +610,11 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawBuyCity(Graphics2D g2)
 	{
+//		Rectangle title = new Rectangle(edges, edges, width - edges * 2, 50);
+//		drawCentredString(g2, "Select any power plant from the top four", title, subtitlefont);
+//		
+//		title = new Rectangle(edges, edges + 25, width - edges * 2, 50);
+//		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		for (Button b: buttons.get("buycity"))
 			b.draw(g2);
 	}
