@@ -394,6 +394,39 @@ public class GameState
 	
 	// -------------------------------------------------------------------
 	
+	public ArrayList<City> selectedCities = new ArrayList<City>();
+	
+	/* this arraylist holds how many cities each person has power.
+	 * The player turns correspond with the index of the power cities.
+	 * For example: if the arraylist is equal to [0, 3, 2, 1],
+	 * then player 1 has powered 0, player 2 has powered 3, etc.
+	 */
+	public ArrayList<Integer> numCitiesPowered = new ArrayList<Integer>();
+	
+	public void toggleCityToPower(City c)
+	{
+		/* check how many cities the player can power
+		 * at max and then if the size of the 
+		 * selected cities is less than or equal to
+		 * that number, then add City c
+		 * to that arraylist. If City c is 
+		 * aleady in the arrayList, then remove it
+		 */
+	}
+	
+	public void powerCities()
+	{
+		/* removes resources from the player to power the cities,
+		 * and resets the selectedCities arraylist
+		 */
+	}
+	
+	public void resetCityPowering()
+	{
+		/* basically resets the arraylist of numCities
+		 */
+	}
+	
 	/*public void bid()
 	{	
 		turnOrder();
