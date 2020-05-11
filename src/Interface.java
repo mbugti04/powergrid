@@ -214,17 +214,21 @@ public class Interface extends JPanel implements MouseListener
 	{
 		ArrayList<Button> temp = new ArrayList<Button>();
 		temp.add(new Button("Power City", 1680, 820, Button.normalw, Button.normalh));
-		buttons.put("Power City", temp);
+		
 		Player current = state.players.get(state.currentPlayer);
-		int posx = 25, posy = 580;
+		int posx = 185, posy = 580;
 		int numpow = current.ownedPlants.size();
 		for (int i = 0; i < 3; i++)
 		{
 			if (numpow-- > 0)
 			{
-				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
+//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
+				temp.add(new Button("^", posx, posy + 10 * i + 150 * i, 25, 20));
+				temp.add(new Button("v", posx, 40 + posy + 10 * i + 150 * i, 25, 20));
 			}
 		}
+		buttons.put("powering", temp);
+		System.out.println(buttons.get("powering"));
 		
 	}
 	// ----------------------------------------------------------------------------------------------------
@@ -761,6 +765,7 @@ public class Interface extends JPanel implements MouseListener
 					}
 				}
 			}
+			poweringSetup();
 		}
 		if (buyresource)
 		{
@@ -839,18 +844,28 @@ public class Interface extends JPanel implements MouseListener
 				bidding = true;
 				buyresource = false;
 				buycity = false;
+				powering = false;
 			}
 			if (state.turnPhase == 1)
 			{
 				bidding = false;
 				buyresource = true;
 				buycity = false;
+				powering = false;
 			}
 			if (state.turnPhase == 2)
 			{
 				bidding = false;
 				buyresource = false;
 				buycity = true;
+				powering = false;
+			}
+			if (state.turnPhase == 3)
+			{
+				bidding = false;
+				buyresource = false;
+				buycity = false;
+				powering = true;
 			}
 		}
 	}
