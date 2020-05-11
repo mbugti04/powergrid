@@ -284,6 +284,8 @@ public class GameState
 	public ArrayList<Player> nonBidders = new ArrayList<Player>();
 	public ArrayList<Player> permanentNonBidders = new ArrayList<Player>();
 	public boolean biddingend;
+	public boolean replacing  = false;
+	public Powerplant toBeReplaced;
 
 	public int i = 0;
 	public void newBidPhase()
@@ -394,11 +396,24 @@ public class GameState
 	
 	public void bidWinner()
 	{
-		getCurrentPlayer().addMoney(-currentbid);
-		getCurrentPlayer().addPowerPlant(chosenPlant);
-		plantMarket.removePlant(chosenPlant);
-		permanentNonBidders.add(getCurrentPlayer());
-		refreshBidPhase();
+		if(getCurrentPlayer().ownedPlants.size() == 3)
+		{
+			replacing = true;
+			getCurrentPlayer().addMoney(-currentbid);
+			getCurrentPlayer().replacePowerplant(toBeReplaced, chosenPlant);
+			plantMarket.removePlant(chosenPlant);
+			permanentNonBidders.add(getCurrentPlayer());
+			refreshBidPhase();
+		}
+		else
+		{
+			replacing = false;
+			getCurrentPlayer().addMoney(-currentbid);
+			getCurrentPlayer().addPowerPlant(chosenPlant);
+			plantMarket.removePlant(chosenPlant);
+			permanentNonBidders.add(getCurrentPlayer());
+			refreshBidPhase();
+		}
 	}
 	
 	public Player getCurrentPlayer()
