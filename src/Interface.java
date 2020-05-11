@@ -703,12 +703,33 @@ public class Interface extends JPanel implements MouseListener
 			{
 				if(b.inBounds(m))
 				{
-					for (City c: state.urbanArea.cities.keySet())
+					if (!b.name.equals("Buy City"))
 					{
-						if(c.getName() == b.name)
+						for (City c: state.urbanArea.cities.keySet())
 						{
-							state.buyCity(c);
+							if(c.getName() == b.name)
+							{
+								state.selectCity(c);
+								System.out.println("Player " + current.colour + " selected " + c.getName());
+							}
 						}
+					}
+					if (b.name.equals("Buy City"))
+					{
+						System.out.println("Buying success: " + state.buyCity(state.selectedCity));
+					}
+				}
+			}
+			for (Button b: buttons.get("nextTurn"))
+			{
+				if (b.inBounds(m))
+				{
+					state.nextPlayer();
+					timesNextTurnWasPressed++;
+					if (timesNextTurnWasPressed >= state.playerCount)
+					{
+						timesNextTurnWasPressed = 0;
+						state.nextTurnPhase();
 					}
 				}
 			}

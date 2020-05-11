@@ -678,8 +678,9 @@ public class GameState
 		selectedCity = c;
 	}
 	
-	public void buyCity(City cit)
+	public boolean buyCity(City cit)
 	{
+		boolean success = false, canAdd = false;
 		Player cur = getCurrentPlayer();
 		int cost = 0;
 		
@@ -691,6 +692,8 @@ public class GameState
 				cur.money -= 10;
 				cur.addCity(selectedCity);
 				cur.ownedHouses++;
+				
+				success = true;
 				//money spent, city bought.
 			}
 		}
@@ -701,19 +704,27 @@ public class GameState
 				if(urbanArea.hasConnection(selectedCity, c) != -1) 
 				{
 					// has money
-					if(cur.money < selectedCity.nextCost())
+					if(cur.money >= selectedCity.nextCost())
 					{
+						canAdd = true;
 						cost += urbanArea.hasConnection(selectedCity, c);
 						cost += selectedCity.nextCost();
-						cur.addCity(selectedCity);
 						cur.ownedHouses++;
+						
+						success = true;
 					}
 				}
 			}
+			if (canAdd)
+			{
+				cur.addCity(selectedCity);
+			}
+			
 			//TODO calculate the shortest path from the closest of the player's cities to the city that the player picked
 		}
 		cur.money -= cost;
 		selectedCity = null;
+		return success;
 		
 //		ArrayList<Player> order = new ArrayList<Player>();
 //		for(Player p : players)
