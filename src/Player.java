@@ -286,4 +286,5 @@ public class Player implements Comparable<Player>{
 	public HashMap<Resource, Integer> getResources() {
 		return resourcesStored;
 	}
+	public String toString() {return "Player " + colour;}
 }

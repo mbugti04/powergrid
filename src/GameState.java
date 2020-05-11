@@ -132,7 +132,6 @@ public class GameState
 					new InputStreamReader(getClass().getResourceAsStream("/text/PowerPlantData.txt")));
 			String line = reader.readLine();
 			
-			String x = "";
 			int name = 0;
 			Resource resource = null;
 			int amount = 0;
@@ -143,7 +142,6 @@ public class GameState
 			{
 				for(int i = 0; i < line.length(); i++) 
 				{
-					String nl;
 					if(Character.toString(line.charAt(1)).equals(" ")) 
 					{
 						index = 2;
@@ -230,13 +228,33 @@ public class GameState
 	}
 	// -------------------------------------------------------
 	
-	
 	public int nextTurnPhase()
 	{
 		turnOrder(); // TODO is this needed
 		turnPhase+= 1;
-		if (turnPhase == 4)
-			turnPhase = 0;
+		if (turnPhase == 4) {
+			resourceMarket.restock();
+			
+			for(Player p : players) 
+			{
+				if(p.ownedCities.size() >= 7)
+				{
+					step = 2;
+				}
+			}
+			
+			if(step == 1 || step == 2)
+			{
+				plantMarket.getPlantsAvailable().remove(0);
+			}
+			else
+				plantMarket.getPlantsAvailable().remove(0);
+			if(plantMarket.getPlantsAvailable().size() < 8)
+			{
+				plantMarket.restock();
+			}
+			
+		}
 		return turnPhase;
 	}
 	
@@ -321,6 +339,7 @@ public class GameState
 		this.chosenPlant = chosenPlant;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void bid()
 	{
 		Collections.sort(plantMarket.plantsAvailable);
@@ -557,34 +576,24 @@ public class GameState
 		 */
 	}
 	
-	public void updateStage()
-	{
-
-		HashMap<Player, HashMap<Resource, Integer>> allPlayersResources = new HashMap<Player, HashMap<Resource, Integer>>();
-		
-		HashMap<Player, Integer> allPlayersHouses = new HashMap<Player, Integer>();;
-		
-		for(int x = 0; x < players.size(); x++) {
-			allPlayersResources.put(players.get(x), players.get(x).getResources());
-			players.get(x).calcPowerableHouses();
-			allPlayersHouses.put(players.get(x), players.get(x).ownedHouses);
-			players.get(x).income();
-			
-		}
-		resourceMarket.restock();
-		plantMarket.restock();
-		if(step == 1 || step == 2)
-		{
-			plantMarket.getPlantsAvailable().remove(plantMarket.getPlantsAvailable().size()-1);
-		}
-		else
-			plantMarket.getPlantsAvailable().remove(0);
-		//TODO make sure that it removes the first card from the arraylist, or the last, based on stage
-		if(plantMarket.getPlantsAvailable().size() < 8)
-		{
-			plantMarket.restock();
-		}
-	}
+//	public void updateStage()
+//	{
+//plantMarket.restock();
+//		
+//		resourceMarket.restock();
+//		
+//		if(step == 1 || step == 2)
+//		{
+//			plantMarket.getPlantsAvailable().remove(plantMarket.getPlantsAvailable().size()-1);
+//		}
+//		else
+//			plantMarket.getPlantsAvailable().remove(0);
+//		//TODO make sure that it removes the first card from the arraylist, or the last, based on stage
+//		if(plantMarket.getPlantsAvailable().size() < 8)
+//		{
+//			plantMarket.restock();
+//		}
+//	}
 	
 	public String whoWon()
 	{
