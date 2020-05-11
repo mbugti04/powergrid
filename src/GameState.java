@@ -414,10 +414,15 @@ public class GameState
 	
 	public void togglePlants(Powerplant pp, int citiesToPower) 
 	{
-		if(pp.getPowerProduced() >= citiesToPower && citiesToPower >= 0) 
+		System.out.println("amt " + pp.getResourceType() + ": " + getCurrentPlayer().getResources().get(pp.getResourceType()));
+		System.out.println("amt to power: " + pp.getAmountToPower());
+		System.out.println("citiestopower: " + citiesToPower);
+		System.out.println("ownedCities: " + getCurrentPlayer().ownedCities.size());
+		
+		if(pp.getPowerProduced() * citiesToPower >= citiesToPower && citiesToPower >= 0 && getCurrentPlayer().ownedCities.size() >= citiesToPower) 
 		{
 			//if the player has enough resources to make the powerplant produce energy
-			if(getCurrentPlayer().getResources().get(pp.getResourceType()) / pp.getAmountToPower() >= citiesToPower) 
+			if(getCurrentPlayer().getResources().get(pp.getResourceType()) - (pp.getAmountToPower() * citiesToPower) >= 0) 
 			{ 
 				poweringPlant = pp;
 				powerableHouses = citiesToPower;
