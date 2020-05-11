@@ -701,7 +701,7 @@ public class Interface extends JPanel implements MouseListener
 			Player current = state.players.get(state.currentPlayer);
 			for(Button b: buttons.get("buycity")) 
 			{
-				if(b.inBounds(m) && b.name != "Buy City")
+				if(b.inBounds(m))
 				{
 					for (City c: state.urbanArea.cities.keySet())
 					{
