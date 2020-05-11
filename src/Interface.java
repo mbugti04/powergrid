@@ -98,6 +98,7 @@ public class Interface extends JPanel implements MouseListener
 		buyresourceSetup();
 		nextTurnSetup();
 		buyCitySetup();
+		poweringSetup();
 	}
 	
 	private void imageSetup()
@@ -207,6 +208,24 @@ public class Interface extends JPanel implements MouseListener
 		temp.add(new Button("Buy City", 1680, 820, Button.normalw, Button.normalh));
 		buttons.put("buycity", temp);
 	}
+	
+	private void poweringSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("Power City", 1680, 820, Button.normalw, Button.normalh));
+		buttons.put("Power City", temp);
+		Player current = state.players.get(state.currentPlayer);
+		int posx = 25, posy = 580;
+		int numpow = current.ownedPlants.size();
+		for (int i = 0; i < 3; i++)
+		{
+			if (numpow-- > 0)
+			{
+				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
+			}
+		}
+		
+	}
 	// ----------------------------------------------------------------------------------------------------
 	
 	
@@ -275,6 +294,21 @@ public class Interface extends JPanel implements MouseListener
 			drawPhase(g2);
 			drawBuyCity(g2);
 			
+			drawNextTurn(g2);
+		}
+		if (powering)
+		{
+			drawMap(g2);
+			drawCityConnections(g2);
+			for (City c: state.urbanArea.cities.keySet())
+			{
+				drawCity(g2, c);
+			}
+			drawCurrentStep(g2);
+			drawTurnOrder(g2);
+			drawOwnPlants(g2);
+			drawPhase(g2);
+			drawPowering(g2);
 			drawNextTurn(g2);
 		}
 //		if (ingame)
@@ -557,10 +591,10 @@ public class Interface extends JPanel implements MouseListener
 		
 		g2.setColor(Color.white);
 		int g = 0, w = 200, h = 30;
-		drawAString(g2, "Resources Stored:", new Point(195, 925), titlefont);
+		drawAString(g2, "Resources Stored:", new Point(260, 925), titlefont);
 		for (Resource r: current.getResources().keySet())
 		{
-			drawAString(g2, r + ": " + current.getResources().get(r) + "/" + current.getSpace(r), new Point(195, 955 + h * g++), titlefont);
+			drawAString(g2, r + ": " + current.getResources().get(r) + "/" + current.getSpace(r), new Point(260, 955 + h * g++), titlefont);
 		}
 		
 		g2.setColor(Color.white);
@@ -617,6 +651,12 @@ public class Interface extends JPanel implements MouseListener
 //		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		for (Button b: buttons.get("buycity"))
 			b.draw(g2);
+	}
+	
+	public void drawPowering(Graphics2D g2)
+	{
+		for (Button b: buttons.get("powering"))
+			b.draw(g2);	
 	}
 	// ----------------------------------------------------------------------------------------------------
 	
@@ -783,6 +823,12 @@ public class Interface extends JPanel implements MouseListener
 					}
 				}
 			}
+		}
+		
+		if(powering) 
+		{
+			Player current = state.players.get(state.currentPlayer);
+			
 		}
 		
 		if (!regionSelect && !initial)
