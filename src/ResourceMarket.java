@@ -134,6 +134,7 @@ public class ResourceMarket
 	// sorry nartney I had to change the code
 	public void restock()
 	{
+		System.out.println(restockAmount);
 		// compensating for array index
 		int step = GameState.step - 1;
 		

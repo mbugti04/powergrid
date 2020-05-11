@@ -248,12 +248,13 @@ public class GameState
 				plantMarket.getPlantsAvailable().remove(0);
 			}
 			else
-				plantMarket.getPlantsAvailable().remove(0);
+				plantMarket.getPlantsAvailable().remove(plantMarket.getPlantsAvailable().size() - 1);
 			if(plantMarket.getPlantsAvailable().size() < 8)
 			{
 				plantMarket.restock();
 			}
 			
+			turnPhase = 0;			
 		}
 		return turnPhase;
 	}
