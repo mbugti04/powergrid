@@ -26,7 +26,7 @@ Chicago/yellow/0.615/0.365
 St. Louis/yellow/0.586/0.505
 Cincinnati/yellow/0.69/0.466
 Knoxville/yellow/0.695/0.596
-Norfolk/green/0.826/0.599
+Norfolk/green/0.846/0.599
 Raleigh/green/0.784/0.642
 Savannah/green/0.753/0.74
 Atlanta/green/0.697/0.699
@@ -37,9 +37,9 @@ Detroit/orange/0.7/0.312
 Pittsburgh/orange/0.773/0.406
 Buffalo/orange/0.8/0.296
 Washington/orange/0.823/0.48
-Philadelphia/orange/0.868/0.437
-New York/orange/0.889/0.373
-Boston/orange/0.927/0.294
+Philadelphia/orange/0.870/0.437
+New York/orange/0.889/0.333
+Boston/orange/0.937/0.244
 ----------connections----------
 Seattle/Portland/3
 Seattle/Boise/12
