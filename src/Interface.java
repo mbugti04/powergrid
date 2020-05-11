@@ -33,6 +33,7 @@ public class Interface extends JPanel implements MouseListener
 	
 	int timesNextTurnWasPressed = 0;
 	
+	String incomeText = "";
 	HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	HashMap<String, BufferedImage> plantimg = new HashMap<String, BufferedImage>(); // plant image
 	/* String tells the state that the buttons is used for
@@ -213,7 +214,7 @@ public class Interface extends JPanel implements MouseListener
 	private void poweringSetup()
 	{
 		ArrayList<Button> temp = new ArrayList<Button>();
-		temp.add(new Button("Power City", 1680, 820, Button.normalw, Button.normalh));
+		temp.add(new Button("Power City", 1680, 950, Button.normalw, Button.normalh));
 		
 		Player current = state.players.get(state.currentPlayer);
 		int posx = 185, posy = 580;
@@ -315,7 +316,6 @@ public class Interface extends JPanel implements MouseListener
 			drawPhase(g2);
 			
 			drawPowering(g2);
-			drawNextTurn(g2);
 		}
 //		if (ingame)
 //		{
@@ -664,29 +664,25 @@ public class Interface extends JPanel implements MouseListener
 		for (Button b: buttons.get("powering"))
 			b.draw(g2);
 		
-		Player current = state.players.get(state.currentPlayer);
 		int posx = 185, posy = 580;
-		int numpow = current.ownedPlants.size();
-		for (int i = 0; i < 3; i++)
+		int numpow = state.getCurrentPlayer().ownedPlants.size();
+		
+		int i = 0;
+		for (Powerplant p: state.getCurrentPlayer().ownedPlants)
 		{
-			if (numpow-- > 0)
-			{
-				Powerplant p = current.ownedPlants.get(i);
-				
-				if (p != null)
-				{
-					int owned = current.getResources().get(p.getResourceType());
-					int max = current.ownedPlants.get(i).getAmountToPower();
-					int result = owned / max;
-					String text = state.powerableHouses + "/" + result;
-					drawCentredString(g2, text,
-							new Rectangle(posx, 50 + posy + 150 * i + 10 * i, 30, 50), defaultfont);
-	//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
-	//				temp.add(new Button("+", posx, posy + 10 * i + 150 * i, 30, 50));
-	//				temp.add(new Button("-", posx, 100 + posy + 10 * i + 150 * i, 30, 50));
-				}
-			}
+			System.out.println(state.getCurrentPlayer());
+			System.out.println(state.getCurrentPlayer().getResources());
+			System.out.println(p.getResourceType());
+			int owned = state.getCurrentPlayer().getResources().get(p.getResourceType());
+			int max = state.getCurrentPlayer().ownedPlants.get(i).getAmountToPower();
+			int result = owned / max;
+			String text = state.powerableHouses + "/" + Math.min(result, state.getCurrentPlayer().ownedCities.size());
+			drawCentredString(g2, text,
+					new Rectangle(posx, 50 + posy + 150 * i + 10 * i, 30, 50), defaultfont);
+			i++;
 		}
+		
+		drawAString(g2, incomeText, new Point(1500, 50), defaultfont);
 		
 	}
 	// ----------------------------------------------------------------------------------------------------
@@ -865,6 +861,31 @@ public class Interface extends JPanel implements MouseListener
 			{
 				Powerplant p = current.ownedPlants.get(i / 2);
 				
+				if (b.inBounds(m))
+				{
+					if (b.name.equals("+"))
+					{
+						state.togglePlants(p, state.powerableHouses + 1);
+						System.out.println("toggled + and is now " + state.powerableHouses);
+					}
+					if (b.name.equals("-"))
+					{
+						state.togglePlants(p, state.powerableHouses - 1);
+						System.out.println("toggled - and is now " + state.powerableHouses);
+					}
+					if (b.name.equals("Power City"))
+					{
+						incomeText = state.powerCities();
+						
+						state.nextPlayer();
+						timesNextTurnWasPressed++;
+						if (timesNextTurnWasPressed >= state.playerCount)
+						{
+							timesNextTurnWasPressed = 0;
+							state.nextTurnPhase();
+						}
+					}
+				}
 				if (b.inBounds(m) && b.name.equals("+"))
 				{
 					state.togglePlants(p, state.powerableHouses + 1);
@@ -874,19 +895,6 @@ public class Interface extends JPanel implements MouseListener
 				{
 					state.togglePlants(p, state.powerableHouses - 1);
 					System.out.println("toggled - and is now " + state.powerableHouses);
-				}
-			}
-			for (Button b: buttons.get("nextTurn"))
-			{
-				if (b.inBounds(m))
-				{
-					state.nextPlayer();
-					timesNextTurnWasPressed++;
-					if (timesNextTurnWasPressed >= state.playerCount)
-					{
-						timesNextTurnWasPressed = 0;
-						state.nextTurnPhase();
-					}
 				}
 			}
 		}
@@ -934,6 +942,8 @@ public class Interface extends JPanel implements MouseListener
 		if (r.contains(Region.purple) && r.contains(Region.blue) && r.contains(Region.orange) && r.contains(Region.green))
 			return false;
 		if (r.contains(Region.yellow) && r.contains(Region.blue) && r.contains(Region.orange) && r.contains(Region.green))
+			return false;
+		if (r.contains(Region.purple) && r.contains(Region.blue) && r.contains(Region.orange) && r.contains(Region.red))
 			return false;
 		return true;
 	}
