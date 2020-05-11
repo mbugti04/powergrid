@@ -805,16 +805,6 @@ public class Interface extends JPanel implements MouseListener
 					if (b.name.equals("BID"))
 					{
 						state.bid();
-						if (state.replacing == true)
-						{
-							if(b.inBounds(m)) 
-							{
-								if (b.name.equals("REPLACE"))
-								{
-									state.bidWinner();
-								}
-							}
-						}
 					}
 					if (b.name.equals("PASS"))
 					{

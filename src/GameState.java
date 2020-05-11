@@ -320,9 +320,13 @@ public class GameState
 		currentBidPlayer = null;
 		currentPlayer = 0;
 		nonBidders = new ArrayList<Player>();
-		
-		while (nonBidders.contains(players.get(currentPlayer)) || permanentNonBidders.contains(players.get(currentPlayer)))
-			currentPlayer++;
+		if(!replacing) 
+		{
+			while (nonBidders.contains(players.get(currentPlayer)) || permanentNonBidders.contains(players.get(currentPlayer)))
+			{
+				currentPlayer++;
+			}
+		}
 	}
 	public void choosePlant(Powerplant chosenPlant)
 	{
