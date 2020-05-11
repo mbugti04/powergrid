@@ -223,8 +223,8 @@ public class Interface extends JPanel implements MouseListener
 			if (numpow-- > 0)
 			{
 //				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
-				temp.add(new Button("^", posx, posy + 10 * i + 150 * i, 25, 20));
-				temp.add(new Button("v", posx, 40 + posy + 10 * i + 150 * i, 25, 20));
+				temp.add(new Button("+", posx, posy + 10 * i + 150 * i, 25, 20));
+				temp.add(new Button("-", posx, 40 + posy + 10 * i + 150 * i, 25, 20));
 			}
 		}
 		buttons.put("powering", temp);
@@ -834,7 +834,10 @@ public class Interface extends JPanel implements MouseListener
 		if(powering) 
 		{
 			Player current = state.players.get(state.currentPlayer);
-			
+			for (Button b: buttons.get("powering"))
+			{
+				
+			}
 		}
 		
 		if (!regionSelect && !initial)

@@ -21,6 +21,7 @@ public class GameState
 	
 	public boolean hasEnded = false;
 	public boolean initialSetup = true;
+	public boolean firstTimePicking = true;
 	
 	
 //	public Powerplant chosenPlant = null;
@@ -284,8 +285,12 @@ public class GameState
 	public ArrayList<Player> permanentNonBidders = new ArrayList<Player>();
 	public boolean biddingend;
 
+	public int i = 0;
 	public void newBidPhase()
 	{
+		i++;
+		if (i >= 2)
+			firstTimePicking = false;
 		chosenPlant = null;
 		currentbid = 0;
 		currentBidPlayer = null;
@@ -349,10 +354,16 @@ public class GameState
 	
 	public void playerPassedBidPhase() 
 	{
-		if (currentBidPlayer == null)
+		if (currentBidPlayer == null && firstTimePicking == false)
+		{
 			permanentNonBidders.add(players.get(currentPlayer));
-		nonBidders.add(players.get(currentPlayer));
-		nextBidder();
+			nextBidder();
+		}
+		if (firstTimePicking == false || currentBidPlayer != null)
+		{
+			nonBidders.add(players.get(currentPlayer));
+			nextBidder();
+		}
 	}
 	
 	public void nextBidder()
@@ -361,7 +372,7 @@ public class GameState
 		{
 			nextTurnPhase();
 			newBidPhase();
-			nextPlayer();
+			currentPlayer = 0;
 			return;
 		}
 		do
