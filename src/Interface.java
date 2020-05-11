@@ -56,7 +56,8 @@ public class Interface extends JPanel implements MouseListener
 	bidding = false,
 	buyresource = false,
 	buycity = false,
-	nextTurn = false;
+	nextTurn = false,
+	powering = false;
 	
 	// gamestate things
 	GameState state = new GameState();
