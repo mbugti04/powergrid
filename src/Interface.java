@@ -503,7 +503,13 @@ public class Interface extends JPanel implements MouseListener
 		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		
 		for (Button b: buttons.get("bidding"))
-			b.draw(g2);
+		{
+			if (b.name.equals("REPLACE"))
+				if (state.replacing)
+					b.draw(g2);
+			else
+				b.draw(g2);
+		}
 		
 		// money
 		g2.setColor(Color.black);
