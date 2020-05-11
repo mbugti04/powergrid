@@ -202,10 +202,9 @@ public class Interface extends JPanel implements MouseListener
 			int x = startx + (int)(c.getX() * mapx);
 			int y = starty + (int)(c.getY() * mapy);
 			
-            temp.add(new Button(c.getName(), x - cityScale / 2, y - cityScale / 2, cityScale, cityScale, new Color(0000)));
+            temp.add(new Button(c.getName(), x - cityScale / 2, y - cityScale / 2, cityScale, cityScale, false, new Color(0, 0, 0, 0)));
         }
-		buttons.put("buycity", temp);
-		temp.add(new Button("Buy City", 1645, 955, Button.normalw, Button.normalh));
+		temp.add(new Button("Buy City", 1680, 820, Button.normalw, Button.normalh));
 		buttons.put("buycity", temp);
 	}
 	// ----------------------------------------------------------------------------------------------------
@@ -272,6 +271,7 @@ public class Interface extends JPanel implements MouseListener
 //			drawMarket(g2);
 			drawOwnPlants(g2);
 			drawPhase(g2);
+			drawBuyCity(g2);
 			
 			drawNextTurn(g2);
 		}
@@ -565,7 +565,7 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawBuyCity(Graphics2D g2)
 	{
-		for (Button b: buttons.get("Buy City"))
+		for (Button b: buttons.get("buycity"))
 			b.draw(g2);
 	}
 	// ----------------------------------------------------------------------------------------------------
@@ -624,12 +624,10 @@ public class Interface extends JPanel implements MouseListener
 							state.removeRegions();
 							
 							regionSelect = false;
-//							ingame = true;
 							bidding = true;
 							state.newBidPhase();
-//							buyresource = true; // TODO change this: temporary testing
-//							state.nextTurnPhase(); // TODO also temporary
-//							nextTurn = true; // TODO also temp
+							
+							buyCitySetup(); // needed for reset
 							System.out.println("turnphase: " + state.turnPhase);
 							
 							System.out.println("active regions: " + state.getActiveRegions());

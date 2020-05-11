@@ -34,6 +34,12 @@ class Button
 		this.showname = showname;
 	}
 	
+	Button(String name, int x, int y, int w, int h, boolean showname, Color col)
+	{
+		this(name, x, y, w, h, col);
+		this.showname = showname;
+	}
+	
 	boolean press()
 	{
 		on = !on;
