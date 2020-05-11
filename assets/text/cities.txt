@@ -39,7 +39,7 @@ Buffalo/orange/0.8/0.296
 Washington/orange/0.823/0.48
 Philadelphia/orange/0.870/0.437
 New York/orange/0.889/0.333
-Boston/orange/0.937/0.244
+Boston/orange/0.937/0.245
 ----------connections----------
 Seattle/Portland/3
 Seattle/Boise/12
