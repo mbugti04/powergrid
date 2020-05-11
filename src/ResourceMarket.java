@@ -34,10 +34,19 @@ public class ResourceMarket
 	public boolean purchase(Player p, Resource r)
 	{
 		int resourcePrice = getPrice(r);
-		if (p.addResourceToStorage(r, 1) && p.addMoney(-resourcePrice) && currentStock.get(r) > 0)
+
+		if (currentStock.get(r) > 0)
+
 		{
-			this.removeFromCurrentStock(r, 1);
-			return true;
+			if (p.money - resourcePrice > 0)
+			{
+				if (p.addResourceToStorage(r, 1))
+				{
+					p.addMoney(-resourcePrice);
+					this.removeFromCurrentStock(r, 1);
+					return true;
+				}
+			}
 		}
 		return false;
 	}

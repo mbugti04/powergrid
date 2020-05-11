@@ -175,6 +175,7 @@ public class Interface extends JPanel implements MouseListener
 		ArrayList<Button> temp = new ArrayList<Button>();
 		temp.add(new Button("BID", 625, 825, Button.normalw, Button.normalh, new Color(0, 200, 0)));
 		temp.add(new Button("PASS", 1050, 825, Button.normalw, Button.normalh, new Color(200, 0, 0)));
+		temp.add(new Button("REPLACE", 838, 860, Button.normalw, Button.normalh));
 		
 		buttons.put("bidding", temp);
 	}
@@ -526,11 +527,15 @@ public class Interface extends JPanel implements MouseListener
 			{
 				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), 170, 400 + 10 * i + 150 * i, 150, 150, null);
 			}
-			g2.fillRect(170, 400 + 10 * i + 150 * i, 150, 150);
+			else
+			{
+				g2.fillRect(170, 400 + 10 * i + 150 * i, 150, 150);
+			}
 		}
 		
 		// other plants
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
+		System.out.println(allPlants);
 		for (int i = 0; i < 8; i++)
 		{
 			int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);

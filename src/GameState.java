@@ -302,6 +302,8 @@ public class GameState
 	public ArrayList<Player> nonBidders = new ArrayList<Player>();
 	public ArrayList<Player> permanentNonBidders = new ArrayList<Player>();
 	public boolean biddingend;
+	public boolean replacing  = false;
+	public Powerplant toBeReplaced;
 
 	public int i = 0;
 	public void newBidPhase()
@@ -315,14 +317,20 @@ public class GameState
 		nonBidders = new ArrayList<Player>();
 		permanentNonBidders = new ArrayList<Player>();
 	}
+	
+	public void turnEnd()
+	{
+		nextTurnPhase();
+		newBidPhase();
+		nextPlayer();
+		turnOrder();
+		return;
+	}
 	public void refreshBidPhase()
 	{
 		if (permanentNonBidders.size() == playerCount)
 		{
-			nextTurnPhase();
-			newBidPhase();
-			nextPlayer();
-			turnOrder();
+			turnEnd();
 			return;
 		}
 		chosenPlant = null;
@@ -330,9 +338,13 @@ public class GameState
 		currentBidPlayer = null;
 		currentPlayer = 0;
 		nonBidders = new ArrayList<Player>();
-		
-		while (nonBidders.contains(players.get(currentPlayer)) || permanentNonBidders.contains(players.get(currentPlayer)))
-			currentPlayer++;
+		if(!replacing) 
+		{
+			while (nonBidders.contains(players.get(currentPlayer)) || permanentNonBidders.contains(players.get(currentPlayer)))
+			{
+				currentPlayer++;
+			}
+		}
 	}
 	public void choosePlant(Powerplant chosenPlant)
 	{
@@ -348,11 +360,7 @@ public class GameState
 		{
 			if (currentBidPlayer == null)
 			{
-				if(players.get(currentPlayer).money < chosenPlant.getName())
-				{
-					chosenPlant = null;
-				}
-				else 
+				if(players.get(currentPlayer).money > chosenPlant.getName())
 				{
 					currentbid = chosenPlant.getName();	
 					currentBidPlayer = players.get(currentPlayer);
@@ -373,12 +381,12 @@ public class GameState
 	
 	public void playerPassedBidPhase() 
 	{
-		if (currentBidPlayer == null && firstTimePicking == false)
+		if (firstTimePicking == false && currentBidPlayer == null)
 		{
 			permanentNonBidders.add(players.get(currentPlayer));
 			nextBidder();
 		}
-		if (firstTimePicking == false || currentBidPlayer != null)
+		else if (firstTimePicking == false && currentBidPlayer != null || firstTimePicking == true && currentBidPlayer != null)
 		{
 			nonBidders.add(players.get(currentPlayer));
 			nextBidder();
@@ -389,9 +397,7 @@ public class GameState
 	{
 		if (permanentNonBidders.size() == playerCount)
 		{
-			nextTurnPhase();
-			newBidPhase();
-			currentPlayer = 0;
+			turnEnd();
 			return;
 		}
 		do
@@ -411,13 +417,31 @@ public class GameState
 		
 	}
 	
+	public void replacePowerplant(Powerplant toBeReplaced)
+	{
+		
+	}
+	
 	public void bidWinner()
 	{
-		getCurrentPlayer().addMoney(-currentbid);
-		getCurrentPlayer().addPowerPlant(chosenPlant);
-		plantMarket.removePlant(chosenPlant);
-		permanentNonBidders.add(getCurrentPlayer());
-		refreshBidPhase();
+		if(getCurrentPlayer().ownedPlants.size() == 3)
+		{
+			replacing = true;
+			getCurrentPlayer().addMoney(-currentbid);
+			getCurrentPlayer().replacePowerplant(toBeReplaced, chosenPlant);
+			plantMarket.removePlant(chosenPlant);
+			permanentNonBidders.add(getCurrentPlayer());
+			refreshBidPhase();
+		}
+		else
+		{
+			replacing = false;
+			getCurrentPlayer().addMoney(-currentbid);
+			getCurrentPlayer().addPowerPlant(chosenPlant);
+			plantMarket.removePlant(chosenPlant);
+			permanentNonBidders.add(getCurrentPlayer());
+			refreshBidPhase();
+		}
 	}
 	
 	public Player getCurrentPlayer()

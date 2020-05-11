@@ -52,6 +52,11 @@ public class Powerplant implements Comparable
 			return pNum1 - pNum2;
 		}
 	};
+	
+	public String toString()
+	{
+		return name + "";
+	}
 
 	@Override
 	public int compareTo(Object other)

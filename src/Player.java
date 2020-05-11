@@ -10,6 +10,8 @@ public class Player implements Comparable<Player>{
 	public int poweredHouses;
 	public int ownedHouses;
 	
+	
+	
 	public ArrayList<Powerplant> ownedPlants;
 	public ArrayList<City> ownedCities;
 	
