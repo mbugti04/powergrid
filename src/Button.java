@@ -70,4 +70,5 @@ class Button
 	{
 		return m.getX() >= x && m.getY() >= y && m.getX() <= x + w && m.getY() <= y + h;
 	}
+	public String toString() { return name;}
 }
