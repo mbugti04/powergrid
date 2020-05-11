@@ -187,31 +187,32 @@ public class Player implements Comparable<Player>{
 		}
 		return false;
 	}
-	public void income() {
-	int income = 0;
-	int increment = 11;
-	if(poweredHouses == 0) {
-		money += 10;
-		return;
-	}
-	if(poweredHouses == 1) {
-		money+= 22;
-		return;
-	}
-	if(poweredHouses == 2) {
-		money+=33;
-		return;
-	}
-	income = 22;
-	if(poweredHouses > 2)
-	for(int numHouse = 3; numHouse <= poweredHouses; numHouse+=2) {
-		income += increment*2;
-		increment--;
-	}
-	if(poweredHouses % 2 == 0 && poweredHouses > 2) {
-		income += increment;
-	}
-	money += income;
+	public int income() {
+	    int income = 0;
+	    int increment = 11;
+	    if(poweredHouses == 0) {
+	        money += 10;
+	        return 10;
+	    }
+	    if(poweredHouses == 1) {
+	        money += 22;
+	        return 22;
+	    }
+	    if(poweredHouses == 2) {
+	        money+=33;
+	        return 33;
+	    }
+	    income = 22;
+	    if(poweredHouses > 2)
+	    for(int numHouse = 3; numHouse <= poweredHouses; numHouse+=2) {
+	        income += increment*2;
+	        increment--;
+	    }
+	    if(poweredHouses % 2 == 0 && poweredHouses > 2) {
+	        income += increment;
+	    }
+	    money += income;
+	    return income;
 	}
 
 	public int getMoney() {

@@ -425,10 +425,15 @@ public class GameState
 			if(getCurrentPlayer().getResources().get(pp.getResourceType()) - (pp.getAmountToPower() * citiesToPower) >= 0) 
 			{ 
 				poweringPlant = pp;
-				powerableHouses = citiesToPower;
+				powerableHouses = 0;
 				
 				// either increments or decrements depending on what the cities to power is
 				togglePlants.put(pp, citiesToPower);
+				
+				for (Powerplant p: togglePlants.keySet())
+				{
+					powerableHouses += togglePlants.get(p);
+				}
 	//			
 	//			//if togglePlants has already has pp toggled
 	//			if(togglePlants.containsKey(pp)) 
@@ -445,18 +450,34 @@ public class GameState
 		else return;	
 	}
 	
-	public void powerCities()
+	public String powerCities()
 	{
-		for(int i = 0; i < togglePlants.size(); i++) 
-		{		
-			getCurrentPlayer().getResources().replace
-			(poweringPlant.getResourceType(),
-			getCurrentPlayer().getResources().get(
-			poweringPlant.getResourceType()) - poweringPlant.getAmountToPower() );
+		for (Powerplant p: togglePlants.keySet())
+		{
+			Resource r = p.getResourceType();
+			int currentAmountOfResources = getCurrentPlayer().getResources().get(r);
+			int amountToRemove = p.getAmountToPower() * togglePlants.get(p);
+			
+			getCurrentPlayer().getResources().put(r, currentAmountOfResources - amountToRemove);
 		}
+		
 		getCurrentPlayer().poweredHouses += powerableHouses;
-		getCurrentPlayer().income();
-		togglePlants.clear();
+		String income = "" + getCurrentPlayer().income();
+
+		resetCityPowering();
+		
+		return "Player " + getCurrentPlayer().colour + " income: " + income;
+		
+//		for(int i = 0; i < togglePlants.size(); i++) 
+//		{		
+//			getCurrentPlayer().getResources().replace
+//			(poweringPlant.getResourceType(),
+//			getCurrentPlayer().getResources().get(
+//			poweringPlant.getResourceType()) - poweringPlant.getAmountToPower() );
+//		}
+//		getCurrentPlayer().poweredHouses += powerableHouses;
+//		getCurrentPlayer().income();
+//		togglePlants.clear();
 	}
 
 	

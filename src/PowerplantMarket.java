@@ -42,11 +42,12 @@ public class PowerplantMarket
 		Collections.sort(plantsAvailable, Powerplant.powerNum);
 	}
 	
-	public void removePlant(Powerplant p)
+	public boolean removePlant(Powerplant p)
 	{
-		plantsAvailable.remove(p);
+		boolean success = plantsAvailable.remove(p);
 		restock();
 		sort();
+		return success;
 	}
 	
 	public void bid(boolean raise , Powerplant auction)

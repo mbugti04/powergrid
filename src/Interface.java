@@ -667,9 +667,6 @@ public class Interface extends JPanel implements MouseListener
 		Player current = state.players.get(state.currentPlayer);
 		int posx = 185, posy = 580;
 		int numpow = current.ownedPlants.size();
-		for (Powerplant p: current.ownedPlants)
-			System.out.print(p.getName() + " ");
-		System.out.println();
 		for (int i = 0; i < 3; i++)
 		{
 			if (numpow-- > 0)
@@ -935,6 +932,8 @@ public class Interface extends JPanel implements MouseListener
 	public boolean areAdjacent(ArrayList<Region> r)
 	{
 		if (r.contains(Region.purple) && r.contains(Region.blue) && r.contains(Region.orange) && r.contains(Region.green))
+			return false;
+		if (r.contains(Region.yellow) && r.contains(Region.blue) && r.contains(Region.orange) && r.contains(Region.green))
 			return false;
 		return true;
 	}
