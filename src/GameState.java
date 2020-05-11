@@ -433,6 +433,7 @@ public class GameState
 				}
 			}
 		}
+		
 		System.out.println("amt " + pp.getResourceType() + ": " + getCurrentPlayer().getResources().get(pp.getResourceType()));
 		System.out.println("amt to power: " + pp.getAmountToPower());
 		System.out.println("citiestopower: " + citiesToPower);
