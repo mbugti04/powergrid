@@ -399,7 +399,7 @@ public class GameState
 	
 	public HashMap<Powerplant, Integer> togglePlants = new HashMap<Powerplant, Integer>();
 	public int powerableHouses = 0;
-	public Powerplant powerPlant = null;
+	public Powerplant poweringPlant = null;
 	
 	public void togglePlants(Powerplant pp, int citiesToPower) 
 	{
@@ -408,7 +408,7 @@ public class GameState
 			//if the player has enough resources to make the powerplant produce energy
 			if(getCurrentPlayer().getResources().get(pp.getResourceType()) > pp.getAmountToPower()) 
 			{ 
-				powerPlant = pp;
+				poweringPlant = pp;
 				powerableHouses += citiesToPower;
 				
 				// either increments or decrements depending on what the cities to power is
@@ -434,9 +434,9 @@ public class GameState
 		for(int i = 0; i < togglePlants.size(); i++) 
 		{		
 			getCurrentPlayer().getResources().replace
-			(powerPlant.getResourceType(),
+			(poweringPlant.getResourceType(),
 			getCurrentPlayer().getResources().get(
-			powerPlant.getResourceType()) - powerPlant.getAmountToPower() );
+			poweringPlant.getResourceType()) - poweringPlant.getAmountToPower() );
 		}
 		getCurrentPlayer().poweredHouses += powerableHouses;
 		getCurrentPlayer().income();
@@ -448,7 +448,7 @@ public class GameState
 	{
 		togglePlants = new HashMap<Powerplant, Integer>();
 		powerableHouses = 0;
-		powerPlant = null;
+		poweringPlant = null;
 		/* basically resets the arraylist of numCities
 		 * AT THE END OF BUREAUCRACY aka when the entire turn ends and we're back to bidding
 		 */
