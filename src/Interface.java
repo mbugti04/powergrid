@@ -175,7 +175,7 @@ public class Interface extends JPanel implements MouseListener
 		ArrayList<Button> temp = new ArrayList<Button>();
 		temp.add(new Button("BID", 625, 825, Button.normalw, Button.normalh, new Color(0, 200, 0)));
 		temp.add(new Button("PASS", 1050, 825, Button.normalw, Button.normalh, new Color(200, 0, 0)));
-		temp.add(new Button("REPLACE", 838, 860, Button.normalw, Button.normalh));
+		temp.add(new Button("REPLACE", 838, 825, Button.normalw, Button.normalh));
 		
 		buttons.put("bidding", temp);
 	}
@@ -507,8 +507,10 @@ public class Interface extends JPanel implements MouseListener
 		for (Button b: buttons.get("bidding"))
 		{
 			if (b.name.equals("REPLACE"))
+			{
 				if (state.replacing)
 					b.draw(g2);
+			}
 			else
 				b.draw(g2);
 		}
@@ -698,7 +700,7 @@ public class Interface extends JPanel implements MouseListener
 		int i = 0;
 		for (Powerplant p: state.getCurrentPlayer().ownedPlants)
 		{
-			int owned = 0;
+			int owned = 0; // amount of owned resources
 			if (p.getResourceType().equals(Resource.hybrid))
 			{
 				owned = state.getCurrentPlayer().getResources().get(Resource.coal) + state.getCurrentPlayer().getResources().get(Resource.oil);
@@ -707,8 +709,13 @@ public class Interface extends JPanel implements MouseListener
 			{
 				owned = state.getCurrentPlayer().getResources().get(p.getResourceType());
 			}
+			
 			int max = state.getCurrentPlayer().ownedPlants.get(i).getAmountToPower();
-			int result = owned / max;
+			// max needed to power
+			
+			int result = 1;
+			if (!p.getResourceType().equals(Resource.free))
+				result = Math.min(owned / max, 1);
 			String text = state.powerableHouses + "/" + Math.min(result, state.getCurrentPlayer().ownedCities.size());
 			drawCentredString(g2, text,
 					new Rectangle(posx, 50 + posy + 150 * i + 10 * i, 30, 50), defaultfont);

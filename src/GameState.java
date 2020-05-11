@@ -459,6 +459,8 @@ public class GameState
 	
 	public void togglePlants(Powerplant pp, int citiesToPower) 
 	{
+		if (citiesToPower > 1)
+			return;
 		// debugging
 		System.out.println("amt to power: " + pp.getAmountToPower());
 		System.out.println("citiestopower: " + citiesToPower);
