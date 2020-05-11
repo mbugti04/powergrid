@@ -417,6 +417,14 @@ public class GameState
 		this.getCurrentPlayer().calcPowerableHouses();
 	}
 	
+	public void togglePlant(Powerplant p)
+	{
+		/* toggles the power plant to use to power
+		 * the selected cities. make sure that selected power plants
+		 * actually have enough resources to power 
+		 */
+	}
+	
 	public void powerCities()
 	{
 		/* removes resources from the player to power the cities,
@@ -427,6 +435,7 @@ public class GameState
 	public void resetCityPowering()
 	{
 		/* basically resets the arraylist of numCities
+		 * AT THE END OF BUREAUCRACY aka when the entire turn ends and we're back to bidding
 		 */
 	}
 	
