@@ -58,7 +58,8 @@ public class Interface extends JPanel implements MouseListener
 	buyresource = false,
 	buycity = false,
 	nextTurn = false,
-	powering = false;
+	powering = false,
+	winScreen = false;
 	
 	// gamestate things
 	GameState state = new GameState();
@@ -101,6 +102,7 @@ public class Interface extends JPanel implements MouseListener
 		nextTurnSetup();
 		buyCitySetup();
 		poweringSetup();
+		winScreenSetup();
 	}
 	
 	private void imageSetup()
@@ -236,6 +238,14 @@ public class Interface extends JPanel implements MouseListener
 		}
 		
 	}
+	
+	private void winScreenSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("EXIT", width / 2 - Button.normalw, height / 2 + Button.normalh, Button.normalw, Button.normalh));
+		
+		buttons.put("winScreen", temp);
+	}
 	// ----------------------------------------------------------------------------------------------------
 	
 	
@@ -321,6 +331,10 @@ public class Interface extends JPanel implements MouseListener
 			
 			drawPowering(g2);
 		}
+		if (winScreen)
+		{
+			drawWinScreen(g2);
+		}
 //		if (ingame)
 //		{
 //			drawMap(g2);
@@ -343,6 +357,14 @@ public class Interface extends JPanel implements MouseListener
 			b.draw(g2);
 	}
 	
+	public void drawWinScreen(Graphics2D g2)
+	{
+		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
+		for (Button b: buttons.get("winScreen"))
+		{
+			b.draw(g2);
+		}
+	}
 	public void drawRegionSelect(Graphics2D g2)
 	{
 		drawMap(g2);
@@ -502,17 +524,20 @@ public class Interface extends JPanel implements MouseListener
 		title = new Rectangle(edges, edges + 25, width - edges * 2, 50);
 		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		
-		for (Button b: buttons.get("bidding"))  //For drawing the buttons in biddingSetup()
-			b.draw(g2);
+//		for (Button b: buttons.get("bidding"))  //For drawing the buttons in biddingSetup()
+//			b.draw(g2);
 		for (Button b: buttons.get("bidding"))
 		{
+			System.out.println(b.name);
 			if (b.name.equals("REPLACE"))
 			{
 				if (state.replacing)
 					b.draw(g2);
 			}
 			else
+			{
 				b.draw(g2);
+			}
 		}
 		
 		// money
@@ -535,7 +560,7 @@ public class Interface extends JPanel implements MouseListener
 		{
 			if (numpow-- > 0)
 			{
-				g2.drawImage(plantimg.get(current.ownedPlants.get(0)), 170, 400 + 10 * i + 150 * i, 150, 150, null);
+				g2.drawImage(plantimg.get(current.ownedPlants.get(i).getName() + ".png"), 170, 400 + 10 * i + 150 * i, 150, 150, null);
 			}
 			else
 			{
@@ -545,8 +570,11 @@ public class Interface extends JPanel implements MouseListener
 		
 		// other plants
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
-		System.out.println(allPlants);
-		for (int i = 0; i < 8; i++)
+//		System.out.println(allPlants);
+		int maxIterations = 8;
+		if (state.step == 3)
+			maxIterations = 6;
+		for (int i = 0; i < maxIterations; i++)
 		{
 			int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
 			int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
@@ -802,7 +830,11 @@ public class Interface extends JPanel implements MouseListener
 		if (bidding)
 		{
 			if (state.currentBidPlayer == null)
-				for (int i = 0; i < 4; i++)
+			{
+				int maxIterations = 4;
+				if (state.step == 3)
+					maxIterations = 6;
+				for (int i = 0; i < maxIterations; i++)
 				{
 					int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
 					int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
@@ -813,6 +845,7 @@ public class Interface extends JPanel implements MouseListener
 						state.choosePlant(state.plantMarket.plantsAvailable.get(i));
 					}
 				}
+			}
 			for (Button b: buttons.get("bidding"))
 			{
 				if (b.inBounds(m))
@@ -821,9 +854,13 @@ public class Interface extends JPanel implements MouseListener
 					{
 						state.bid();
 					}
-					if (b.name.equals("PASS"))
+					else if (b.name.equals("PASS"))
 					{
 						state.playerPassedBidPhase();
+					}
+					else if (state.replacing && b.name.equals("REPLACE") && state.toBeReplaced != null)
+					{
+						
 					}
 				}
 			}
@@ -926,6 +963,18 @@ public class Interface extends JPanel implements MouseListener
 							}
 						}
 					}
+				}
+			}
+		}
+		
+		if (winScreen)
+		{
+			for (Button b: buttons.get("winScreen"))
+			{
+				if (b.isPressed() && b.name.equals("EXIT"))
+				{
+					System.out.println("game has ended");
+					System.exit(0);
 				}
 			}
 		}
