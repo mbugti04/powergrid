@@ -374,7 +374,7 @@ public class Interface extends JPanel implements MouseListener
 		{
 			g2.setColor(Color.black);
 			int g = 0, w = 200, h = 30;
-			drawAString(g2, "Cities Owned: " + p.ownedCities.size(), new Point(260 + inc, 625), titlefont);
+			drawAString(g2, "Cities Owned: " + p.ownedCities.size(), new Point(160 + inc, 1000), titlefont);
 		
 			g2.setColor(Color.black);
 			Rectangle temp = new Rectangle(10+inc, 350, 245, 120);
@@ -382,6 +382,7 @@ public class Interface extends JPanel implements MouseListener
 			drawCentredString(g2, p.colour+"'s Power Plants", temp, titlefont);
 			temp = new Rectangle(10+200, 420, 245, 60);
 			drawAString(g2, "Current Money: " + p.money, new Point(260 + inc, 500), titlefont);
+			drawAString(g2, "Cities Powerable: " + p.poweredHouses, new Point(130 + inc, 1050), titlefont);
 			int numpow = p.ownedPlants.size();
 	        g2.setColor(new Color(100, 100, 100));
 	        for (int i = 0; i < 3; i++)
