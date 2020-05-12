@@ -232,7 +232,6 @@ public class GameState
 	
 	public int nextTurnPhase()
 	{
-		
 		turnOrder(); // TODO is this needed
 		turnPhase+= 1;
 		if (turnPhase == 4) {

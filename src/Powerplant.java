@@ -59,7 +59,6 @@ public class Powerplant implements Comparable
 		return name + "";
 		return "step 3";
 	}
-
 	@Override
 	public int compareTo(Object other)
 	{
