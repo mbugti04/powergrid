@@ -19,7 +19,7 @@ public class GameState
 	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
 	
-	public boolean hasEnded = true; //TESTING PURPOSES **************************************************************************************
+	public boolean hasEnded = false; //TESTING PURPOSES **************************************************************************************
 	public boolean initialSetup = true;
 	public boolean firstTimePicking = true;
 	
