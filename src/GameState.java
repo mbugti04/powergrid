@@ -651,6 +651,7 @@ public class GameState
 		 * including their powered houses,
 		 * money, and cities owned at the end.
 		 */
+	
 		String result = "";
 		
 		int winner;
