@@ -58,7 +58,8 @@ public class Interface extends JPanel implements MouseListener
 	buyresource = false,
 	buycity = false,
 	nextTurn = false,
-	powering = false;
+	powering = false,
+	winScreen = false;
 	
 	// gamestate things
 	GameState state = new GameState();
@@ -101,6 +102,7 @@ public class Interface extends JPanel implements MouseListener
 		nextTurnSetup();
 		buyCitySetup();
 		poweringSetup();
+		winScreenSetup();
 	}
 	
 	private void imageSetup()
@@ -236,6 +238,14 @@ public class Interface extends JPanel implements MouseListener
 		}
 		
 	}
+	
+	private void winScreenSetup()
+	{
+		ArrayList<Button> temp = new ArrayList<Button>();
+		temp.add(new Button("EXIT", width / 2 - Button.normalw, height / 2 + Button.normalh, Button.normalw, Button.normalh));
+		
+		buttons.put("winScreen", temp);
+	}
 	// ----------------------------------------------------------------------------------------------------
 	
 	
@@ -321,6 +331,10 @@ public class Interface extends JPanel implements MouseListener
 			
 			drawPowering(g2);
 		}
+		if (winScreen)
+		{
+			drawWinScreen(g2);
+		}
 //		if (ingame)
 //		{
 //			drawMap(g2);
@@ -343,6 +357,14 @@ public class Interface extends JPanel implements MouseListener
 			b.draw(g2);
 	}
 	
+	public void drawWinScreen(Graphics2D g2)
+	{
+		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
+		for (Button b: buttons.get("winScreen"))
+		{
+			b.draw(g2);
+		}
+	}
 	public void drawRegionSelect(Graphics2D g2)
 	{
 		drawMap(g2);
@@ -932,6 +954,18 @@ public class Interface extends JPanel implements MouseListener
 							}
 						}
 					}
+				}
+			}
+		}
+		
+		if (winScreen)
+		{
+			for (Button b: buttons.get("winScreen"))
+			{
+				if (b.isPressed() && b.name.equals("EXIT"))
+				{
+					System.out.println("game has ended");
+					System.exit(0);
 				}
 			}
 		}
