@@ -19,7 +19,7 @@ public class GameState
 	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
 	
-	public boolean hasEnded = false;
+	public boolean hasEnded = true; //TESTING PURPOSES **************************************************************************************
 	public boolean initialSetup = true;
 	public boolean firstTimePicking = true;
 	
@@ -116,7 +116,6 @@ public class GameState
 		{
 			players.add(new Player(colours.remove(0)));
 		}
-		players.get(0).ownedHouses = 16; // HARD CODED FOR TESTING PURPOSES ******************************************************************
 	}
 	
 	public void initialiseTurnOrder()

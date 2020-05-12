@@ -241,7 +241,7 @@ public class Interface extends JPanel implements MouseListener
 	private void winScreenSetup()
 	{
 		ArrayList<Button> temp = new ArrayList<Button>();
-		temp.add(new Button("EXIT", width / 2 - Button.normalw, height / 2 + Button.normalh, Button.normalw, Button.normalh));
+		temp.add(new Button("EXIT", 1680, 950, Button.normalw, Button.normalh));
 		
 		buttons.put("winScreen", temp);
 	}
@@ -1005,7 +1005,7 @@ public class Interface extends JPanel implements MouseListener
 			winScreen = true;
 			for (Button b: buttons.get("winScreen"))
 			{
-				if (b.isPressed() && b.name.equals("EXIT"))
+				if (b.inBounds(m) && b.name.equals("EXIT"))
 				{
 					System.out.println("game has ended");
 					System.exit(0);
