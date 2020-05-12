@@ -549,7 +549,10 @@ public class Interface extends JPanel implements MouseListener
 		// other plants
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
 //		System.out.println(allPlants);
-		for (int i = 0; i < 8; i++)
+		int maxIterations = 8;
+		if (state.step == 3)
+			maxIterations = 6;
+		for (int i = 0; i < maxIterations; i++)
 		{
 			int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
 			int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
@@ -806,7 +809,10 @@ public class Interface extends JPanel implements MouseListener
 		{
 			if (state.currentBidPlayer == null)
 			{
-				for (int i = 0; i < 4; i++)
+				int maxIterations = 4;
+				if (state.step == 3)
+					maxIterations = 6;
+				for (int i = 0; i < maxIterations; i++)
 				{
 					int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
 					int ycoord = 250 + 10 * (i / 4) + 150 * (i / 4);
@@ -826,11 +832,14 @@ public class Interface extends JPanel implements MouseListener
 					{
 						state.bid();
 					}
-					if (b.name.equals("PASS"))
+					else if (b.name.equals("PASS"))
 					{
 						state.playerPassedBidPhase();
 					}
-//					if (b.name.equals("REPLACE") && state.toBeReplaced != null)
+					else if (state.replacing && b.name.equals("REPLACE") && state.toBeReplaced != null)
+					{
+						
+					}
 				}
 			}
 		}

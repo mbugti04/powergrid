@@ -434,10 +434,10 @@ public class GameState
 		{
 			replacing = true;
 			getCurrentPlayer().addMoney(-currentbid);
-			getCurrentPlayer().replacePowerplant(toBeReplaced, chosenPlant);
+//			getCurrentPlayer().replacePowerplant(toBeReplaced, chosenPlant);
 			plantMarket.removePlant(chosenPlant);
 			permanentNonBidders.add(getCurrentPlayer());
-			refreshBidPhase();
+//			refreshBidPhase();
 		}
 		else
 		{
