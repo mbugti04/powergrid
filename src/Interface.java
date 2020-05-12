@@ -243,7 +243,8 @@ public class Interface extends JPanel implements MouseListener
 	private void winScreenSetup()
 	{
 		ArrayList<Button> temp = new ArrayList<Button>();
-		temp.add(new Button("EXIT", width / 2 - Button.normalw, height / 2 + Button.normalh, Button.normalw, Button.normalh));
+		temp.add(new Button("EXIT", 1680, 950, Button.normalw, Button.normalh));
+		
 		
 		buttons.put("winScreen", temp);
 	}
@@ -360,12 +361,32 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawWinScreen(Graphics2D g2)
 	{
+		int inc = 0;
 		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
 		for (Button b: buttons.get("winScreen"))
 		{
 			b.draw(g2);
 		}
-		drawCentredString(g2, "RESULTS", new Rectangle(0, 0, width, height / 8), titlefont);
+		drawCentredString(g2, "RESULTS" , new Rectangle(0, 0, width, height / 8), titlefont);
+		for (Player p: state.players)
+		{
+			g2.setColor(Color.white);
+			int g = 0, w = 200, h = 30;
+			drawAString(g2, "Cities Owned:", new Point(260 + inc, 625), titlefont);
+			for (City r: p.ownedCities)
+			{
+				drawAString(g2, r.getName(), new Point(260 + inc, 855 + h * g++), subtitlefont);
+			}
+		
+			g2.setColor(Color.white);
+			Rectangle temp = new Rectangle(10+inc, 350, 245, 120);
+//			temp.add(255, 570);
+			drawCentredString(g2, p.colour+"'s Power Plants", temp, titlefont);
+			temp = new Rectangle(10+200, 420, 245, 60);
+			drawAString(g2, "Current Money", new Point(260 + inc, 500), titlefont);
+			inc+=400;
+		}
+		
 		
 	}
 	public void drawRegionSelect(Graphics2D g2)
@@ -1014,7 +1035,7 @@ public class Interface extends JPanel implements MouseListener
 			winScreen = true;
 			for (Button b: buttons.get("winScreen"))
 			{
-				if (b.isPressed() && b.name.equals("EXIT"))
+				if (b.inBounds(m) && b.name.equals("EXIT"))
 				{
 					System.out.println("game has ended");
 					System.exit(0);
