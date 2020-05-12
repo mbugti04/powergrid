@@ -611,14 +611,22 @@ public class Interface extends JPanel implements MouseListener
 		g2.setColor(Color.black);
 		drawCentredString(g2, "Current Player: Player " + current.colour, new Rectangle(625, 575, 635, 50), titlefont);
 		
-		if (state.currentbid == 0 || state.chosenPlant == null || state.currentBidPlayer == null)
-			drawCentredString(g2, "No Bid Currently", new Rectangle(625, 615, 635, 50), titlefont);
+		if (!state.replacing)
+		{
+			if (state.currentbid == 0 || state.chosenPlant == null || state.currentBidPlayer == null)
+				drawCentredString(g2, "No Bid Currently", new Rectangle(625, 615, 635, 50), titlefont);
+			else
+			{
+				drawCentredString(g2, "Player " + state.currentBidPlayer.colour + " has bid $" + state.currentbid + " on plant " + state.chosenPlant.getName(),
+						new Rectangle(625, 615, 635, 50), titlefont);
+				drawCentredString(g2, "Bid $" + (state.currentbid + 1) + " on plant " + state.chosenPlant.getName() + "?",
+						new Rectangle(625, 655, 635, 50), titlefont);
+			}
+		}
 		else
 		{
-			drawCentredString(g2, "Player " + state.currentBidPlayer.colour + " has bid $" + state.currentbid + " on plant " + state.chosenPlant.getName(),
-					new Rectangle(625, 615, 635, 50), titlefont);
-			drawCentredString(g2, "Bid $" + (state.currentbid + 1) + " on plant " + state.chosenPlant.getName() + "?",
-					new Rectangle(625, 655, 635, 50), titlefont);
+			drawCentredString(g2, "Select a power plant on the left to replace your current plant", new Rectangle(625, 615, 635, 50), subtitlefont);
+			drawCentredString(g2, "Then press replace to replace the old plant with the new one", new Rectangle(625, 655, 635, 50), subtitlefont);
 		}
 		
 		if (state.replacing)
@@ -914,6 +922,7 @@ public class Interface extends JPanel implements MouseListener
 					else if (state.replacing && b.name.equals("REPLACE") && state.toBeReplaced != null)
 					{
 						state.replacePowerplant(state.toBeReplaced, state.chosenPlant);
+						state.replacing = false;
 						state.refreshBidPhase();
 					}
 				}
