@@ -229,8 +229,10 @@ public class Interface extends JPanel implements MouseListener
 				if (numpow-- > 0)
 				{
 	//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
-					temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
-					temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+					
+//					temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
+//					temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+					temp.add(new Button("Power with p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 100, 35));
 				}
 			}
 			buttons.put("powering", temp);
@@ -736,8 +738,7 @@ public class Interface extends JPanel implements MouseListener
 		ArrayList<String> names = new ArrayList<String>();
 		for (Powerplant p: temp)
 		{
-			names.add("+p" + p.getName());
-			names.add("-p" + p.getName());
+			names.add("Power with p" + p.getName());
 		}
 		names.add("Power City");
 		
@@ -982,15 +983,14 @@ public class Interface extends JPanel implements MouseListener
 				{
 					for (Powerplant p: current.ownedPlants)
 					{
-						if (b.name.equals("+p" + p.getName()))
+						if (b.name.equals("Power with p" + p.getName()))
 						{
-							state.togglePlants(p, state.powerableHouses + 1);
+							b.press();
+							if (b.isPressed())
+								state.togglePlants(p, state.powerableHouses + 1);
+							else
+								state.togglePlants(p, state.powerableHouses - 1);
 							System.out.println("toggled + and is now " + state.powerableHouses);
-						}
-						if (b.name.equals("-p" + p.getName()))
-						{
-							state.togglePlants(p, state.powerableHouses - 1);
-							System.out.println("toggled - and is now " + state.powerableHouses);
 						}
 						if (b.name.equals("Power City"))
 						{
