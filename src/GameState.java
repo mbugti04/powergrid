@@ -19,7 +19,7 @@ public class GameState
 	public UrbanArea urbanArea = new UrbanArea();
 	public ArrayList<Player> players;
 	
-	public boolean hasEnded = false;
+	public boolean hasEnded = true; //TESTING PURPOSES **************************************************************************************
 	public boolean initialSetup = true;
 	public boolean firstTimePicking = true;
 	
@@ -116,7 +116,6 @@ public class GameState
 		{
 			players.add(new Player(colours.remove(0)));
 		}
-		players.get(0).ownedHouses = 16; // HARD CODED FOR TESTING PURPOSES ******************************************************************
 	}
 	
 	public void initialiseTurnOrder()
@@ -643,7 +642,7 @@ public class GameState
 //		}
 //	}
 	
-	public String whoWon()
+	public Player whoWon()
 	{
 		/* result stores and returns the result
 		 * at the end. It either returns 'tie'
@@ -663,6 +662,7 @@ public class GameState
 			moneys[i] = players.get(i).getMoney();
 			numCities[i] = players.get(i).getCities().size();
 		}
+		
 		winner = getMax(powerableHouses);
 		if(winner == -1) {
 			winner = getMax(moneys);
@@ -672,9 +672,10 @@ public class GameState
 //					System.out.println("It's a tie!");
 					result = "tie";
 				}
-				else
+				else {
 //					System.out.println("The winner is Player #" + players.get(getIndex(numCities, winner))+"!");
 					result = "" + getIndex(numCities, winner);
+				}
 			}
 			else 
 //				System.out.println("The winner is Player #" + players.get(getIndex(moneys, winner))+"!");
@@ -687,7 +688,7 @@ public class GameState
 		result += "\n" + getResults(powerableHouses, moneys, numCities);
 		hasEnded = true;
 		
-		return result;
+		return players.get(winner);
 	}
 	
 	/* returns the results formatted as such:

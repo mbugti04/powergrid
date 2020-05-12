@@ -229,8 +229,10 @@ public class Interface extends JPanel implements MouseListener
 				if (numpow-- > 0)
 				{
 	//				temp.add(new Button( "" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 150, 150, new Color(0,0,0,0)));
-					temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
-					temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+					
+//					temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
+//					temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
+					temp.add(new Button("Power with p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 100, 35));
 				}
 			}
 			buttons.put("powering", temp);
@@ -241,7 +243,8 @@ public class Interface extends JPanel implements MouseListener
 	private void winScreenSetup()
 	{
 		ArrayList<Button> temp = new ArrayList<Button>();
-		temp.add(new Button("EXIT", width / 2 - Button.normalw, height / 2 + Button.normalh, Button.normalw, Button.normalh));
+		temp.add(new Button("EXIT", 1680, 950, Button.normalw, Button.normalh));
+		
 		
 		buttons.put("winScreen", temp);
 	}
@@ -358,12 +361,47 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawWinScreen(Graphics2D g2)
 	{
+		int inc = 10;
 		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
 		for (Button b: buttons.get("winScreen"))
 		{
 			b.draw(g2);
 		}
-		drawCentredString(g2, "RESULTS", new Rectangle(0, 0, width, height / 8), titlefont);
+		drawCentredString(g2, "RESULTS" , new Rectangle(0, 0, width, height / 8), titlefont);
+		drawCentredString(g2, "WINNER: "  , new Rectangle(0, 0, width, height / 8), titlefont);
+		
+		for (Player p: state.players)
+		{
+			g2.setColor(Color.black);
+			int g = 0, w = 200, h = 30;
+			drawAString(g2, "Cities Owned:", new Point(260 + inc, 625), titlefont);
+			for (City r: p.ownedCities)
+			{
+				drawAString(g2, r.getName(), new Point(260 + inc, 855 + h * g++), subtitlefont);
+			}
+		
+			g2.setColor(Color.black);
+			Rectangle temp = new Rectangle(10+inc, 350, 245, 120);
+//			temp.add(255, 570);
+			drawCentredString(g2, p.colour+"'s Power Plants", temp, titlefont);
+			temp = new Rectangle(10+200, 420, 245, 60);
+			drawAString(g2, "Current Money", new Point(260 + inc, 500), titlefont);
+			int numpow = p.ownedPlants.size();
+	        g2.setColor(new Color(100, 100, 100));
+	        for (int i = 0; i < 3; i++)
+	        {
+	            if (numpow-- > 0)
+	            {
+	                g2.drawImage(plantimg.get(p.ownedPlants.get(i).getName() + ".png"), 60+inc, (400 + 10 * i + 150 * i) + 100, 150, 150, null);
+	            }
+	            else
+	            {
+	                g2.fillRect(60+inc, (400 + 10 * i + 150 * i)+100, 150, 150);
+	            }
+	        }
+	        inc+=400;
+		}
+		
 		
 	}
 	public void drawRegionSelect(Graphics2D g2)
@@ -736,8 +774,7 @@ public class Interface extends JPanel implements MouseListener
 		ArrayList<String> names = new ArrayList<String>();
 		for (Powerplant p: temp)
 		{
-			names.add("+p" + p.getName());
-			names.add("-p" + p.getName());
+			names.add("Power with p" + p.getName());
 		}
 		names.add("Power City");
 		
@@ -982,15 +1019,14 @@ public class Interface extends JPanel implements MouseListener
 				{
 					for (Powerplant p: current.ownedPlants)
 					{
-						if (b.name.equals("+p" + p.getName()))
+						if (b.name.equals("Power with p" + p.getName()))
 						{
-							state.togglePlants(p, state.powerableHouses + 1);
+							b.press();
+							if (b.isPressed())
+								state.togglePlants(p, state.powerableHouses + 1);
+							else
+								state.togglePlants(p, state.powerableHouses - 1);
 							System.out.println("toggled + and is now " + state.powerableHouses);
-						}
-						if (b.name.equals("-p" + p.getName()))
-						{
-							state.togglePlants(p, state.powerableHouses - 1);
-							System.out.println("toggled - and is now " + state.powerableHouses);
 						}
 						if (b.name.equals("Power City"))
 						{
@@ -1014,7 +1050,7 @@ public class Interface extends JPanel implements MouseListener
 			winScreen = true;
 			for (Button b: buttons.get("winScreen"))
 			{
-				if (b.isPressed() && b.name.equals("EXIT"))
+				if (b.inBounds(m) && b.name.equals("EXIT"))
 				{
 					System.out.println("game has ended");
 					System.exit(0);
