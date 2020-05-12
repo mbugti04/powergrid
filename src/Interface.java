@@ -232,7 +232,7 @@ public class Interface extends JPanel implements MouseListener
 					
 //					temp.add(new Button("+p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 30, 50));
 //					temp.add(new Button("-p" + current.ownedPlants.get(i).getName(), posx, 100 + posy + 10 * i + 150 * i, 30, 50));
-					temp.add(new Button("Power with p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 100, 35));
+					temp.add(new Button("Power with p" + current.ownedPlants.get(i).getName(), posx, posy + 10 * i + 150 * i, 120, 35));
 				}
 			}
 			buttons.put("powering", temp);
@@ -669,6 +669,11 @@ public class Interface extends JPanel implements MouseListener
 			drawCentredString(g2, "Cost: " + costs.get(i), new Rectangle(10 + (i % 2) * w + 10 * (i % 2), 190 + (i / 2) * w + 10 * (i / 2), w, w / 3), defaultfont);
 			drawCentredString(g2, "Remaining: " + counts.get(i), new Rectangle(10 + (i % 2) * w + 10 * (i % 2), 250 + (i / 2) * w + 10 * (i / 2), w, w / 3), defaultfont);
 		}
+		
+		Rectangle rawr = new Rectangle(0, 990, width, 80);
+		drawCentredString(g2, "Click the resources on the left in order to buy on of that resource",
+				rawr, titlefont);
+		
 	}
 	
 	public void drawOwnPlants(Graphics2D g2)
@@ -751,6 +756,10 @@ public class Interface extends JPanel implements MouseListener
 //		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		for (Button b: buttons.get("buycity"))
 			b.draw(g2);
+		
+		Rectangle rawr = new Rectangle(0, 990, width, 80);
+		drawCentredString(g2, "Click on a city that is adjacent and click \"Buy City\" to buy it",
+				rawr, titlefont);
 	}
 	
 	public void drawPowering(Graphics2D g2)
@@ -775,6 +784,11 @@ public class Interface extends JPanel implements MouseListener
 		int i = 0;
 		for (Powerplant p: state.getCurrentPlayer().ownedPlants)
 		{
+//			int result = 0, max = 0;;
+//			if (state.togglePlants.get(p) == 1)
+//				result = 1;
+//			max = Math.min(arg0, arg1)
+			
 			int owned = 0; // amount of owned resources
 			if (p.getResourceType().equals(Resource.hybrid))
 			{
@@ -791,7 +805,8 @@ public class Interface extends JPanel implements MouseListener
 			int result = 1;
 			if (!p.getResourceType().equals(Resource.free))
 				result = Math.min(owned / max, 1);
-			String text = state.powerableHouses + "/" + Math.min(result, state.getCurrentPlayer().ownedCities.size());
+			
+			String text = state.togglePlants.get(p) + "/" + Math.min(result, state.getCurrentPlayer().ownedCities.size());
 			drawCentredString(g2, text,
 					new Rectangle(posx, 50 + posy + 150 * i + 10 * i, 30, 50), defaultfont);
 			i++;
@@ -799,6 +814,14 @@ public class Interface extends JPanel implements MouseListener
 		
 		drawAString(g2, incomeText, new Point(1335, 60), bigfont);
 		
+		
+		Rectangle rawr = new Rectangle(0, 985, width, 55);
+		drawCentredString(g2, "Click on the power plant button to use that power plant", 
+				rawr, titlefont);
+		
+		rawr = new Rectangle(0, 1030, width, 55);
+		drawCentredString(g2, "to power as many cities as it can power (assuming you have the resources)", 
+				rawr, titlefont);
 	}
 	// ----------------------------------------------------------------------------------------------------
 	
