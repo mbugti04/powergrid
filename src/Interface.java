@@ -234,7 +234,6 @@ public class Interface extends JPanel implements MouseListener
 				}
 			}
 			buttons.put("powering", temp);
-			System.out.println(buttons.get("powering"));
 		}
 		
 	}
@@ -528,7 +527,6 @@ public class Interface extends JPanel implements MouseListener
 //			b.draw(g2);
 		for (Button b: buttons.get("bidding"))
 		{
-			System.out.println(b.name);
 			if (b.name.equals("REPLACE"))
 			{
 				if (state.replacing)
@@ -600,6 +598,23 @@ public class Interface extends JPanel implements MouseListener
 					new Rectangle(625, 655, 635, 50), titlefont);
 		}
 		
+		if (state.replacing)
+		{
+			if (state.toBeReplaced != null)
+			{
+				numpow = current.ownedPlants.size();
+				g2.setColor(new Color(0, 200, 10, 100));
+				for (int i = 0; i < 3; i++)
+				{
+					
+					if (numpow-- > 0 && current.ownedPlants.get(i).equals(state.toBeReplaced))
+					{
+						g2.fillRect(170, 400 + 10 * i + 150 * i, 150, 150);
+//						System.out.println("yup it does work at plant " + state.getCurrentPlayer().ownedPlants.get(i));
+					}
+				}
+			}
+		}
 	}
 	
 	public void drawMarket(Graphics2D g2)
@@ -846,6 +861,21 @@ public class Interface extends JPanel implements MouseListener
 					}
 				}
 			}
+			if (state.replacing)
+			{
+				int numpow = state.getCurrentPlayer().ownedPlants.size();
+				for (int i = 0; i < 3; i++)
+				{
+					if (numpow-- > 0)
+					{
+						int xcoord = 170;
+						int ycoord = 400 + 10 * i + 150 * i;
+						Rectangle r = new Rectangle(xcoord, ycoord, 150, 150);
+						if (contains(r, m))
+							state.toBeReplaced = state.getCurrentPlayer().ownedPlants.get(i);
+					}
+				}
+			}
 			for (Button b: buttons.get("bidding"))
 			{
 				if (b.inBounds(m))
@@ -860,7 +890,8 @@ public class Interface extends JPanel implements MouseListener
 					}
 					else if (state.replacing && b.name.equals("REPLACE") && state.toBeReplaced != null)
 					{
-						
+						state.replacePowerplant(state.toBeReplaced, state.chosenPlant);
+						state.refreshBidPhase();
 					}
 				}
 			}
