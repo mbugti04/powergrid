@@ -116,6 +116,7 @@ public class GameState
 		{
 			players.add(new Player(colours.remove(0)));
 		}
+		players.get(0).ownedHouses = 16; // HARD CODED FOR TESTING PURPOSES ******************************************************************
 	}
 	
 	public void initialiseTurnOrder()
@@ -232,14 +233,16 @@ public class GameState
 	
 	public int nextTurnPhase()
 	{
+		for(int i = 0; i < players.size(); i++) 
+		{
+			if(players.get(i).ownedCities.size() >= 17 || players.get(i).ownedHouses >= 17)
+				hasEnded = true;
+		}
+		
 		turnOrder(); // TODO is this needed
 		turnPhase+= 1;
 		if (turnPhase == 4) {
-			for(int i = 0; i < players.size(); i++) 
-			{
-				if(players.get(i).ownedCities.size() >= 17)
-					hasEnded = true;
-			}
+			
 			
 			if(plantMarket.plantsAvailable.contains(plantMarket.allPlantsAL.get(plantMarket.allPlantsAL.size()-1))) 
 			{

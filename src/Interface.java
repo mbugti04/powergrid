@@ -330,7 +330,7 @@ public class Interface extends JPanel implements MouseListener
 			
 			drawPowering(g2);
 		}
-		if (winScreen)
+		if (state.hasEnded == true)
 		{
 			drawWinScreen(g2);
 		}
@@ -363,6 +363,8 @@ public class Interface extends JPanel implements MouseListener
 		{
 			b.draw(g2);
 		}
+		drawCentredString(g2, "RESULTS", new Rectangle(0, 0, width, height / 8), titlefont);
+		
 	}
 	public void drawRegionSelect(Graphics2D g2)
 	{
@@ -1007,8 +1009,9 @@ public class Interface extends JPanel implements MouseListener
 			}
 		}
 		
-		if (winScreen)
+		if (state.hasEnded == true)
 		{
+			winScreen = true;
 			for (Button b: buttons.get("winScreen"))
 			{
 				if (b.isPressed() && b.name.equals("EXIT"))
