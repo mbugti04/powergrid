@@ -116,6 +116,7 @@ public class GameState
 		{
 			players.add(new Player(colours.remove(0)));
 		}
+		players.get(0).ownedHouses = 16; // HARD CODED FOR TESTING PURPOSES ******************************************************************
 	}
 	
 	public void initialiseTurnOrder()
