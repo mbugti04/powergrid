@@ -502,17 +502,20 @@ public class Interface extends JPanel implements MouseListener
 		title = new Rectangle(edges, edges + 25, width - edges * 2, 50);
 		drawCentredString(g2, "Make sure that you have enough money to continue", title, subtitlefont);
 		
-		for (Button b: buttons.get("bidding"))  //For drawing the buttons in biddingSetup()
-			b.draw(g2);
+//		for (Button b: buttons.get("bidding"))  //For drawing the buttons in biddingSetup()
+//			b.draw(g2);
 		for (Button b: buttons.get("bidding"))
 		{
+			System.out.println(b.name);
 			if (b.name.equals("REPLACE"))
 			{
 				if (state.replacing)
 					b.draw(g2);
 			}
 			else
+			{
 				b.draw(g2);
+			}
 		}
 		
 		// money
@@ -545,7 +548,7 @@ public class Interface extends JPanel implements MouseListener
 		
 		// other plants
 		ArrayList<Powerplant> allPlants = state.plantMarket.plantsAvailable;
-		System.out.println(allPlants);
+//		System.out.println(allPlants);
 		for (int i = 0; i < 8; i++)
 		{
 			int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
@@ -802,6 +805,7 @@ public class Interface extends JPanel implements MouseListener
 		if (bidding)
 		{
 			if (state.currentBidPlayer == null)
+			{
 				for (int i = 0; i < 4; i++)
 				{
 					int xcoord = 625 + 10 * (i % 4) + 150 * (i % 4);
@@ -813,6 +817,7 @@ public class Interface extends JPanel implements MouseListener
 						state.choosePlant(state.plantMarket.plantsAvailable.get(i));
 					}
 				}
+			}
 			for (Button b: buttons.get("bidding"))
 			{
 				if (b.inBounds(m))
@@ -825,6 +830,7 @@ public class Interface extends JPanel implements MouseListener
 					{
 						state.playerPassedBidPhase();
 					}
+//					if (b.name.equals("REPLACE") && state.toBeReplaced != null)
 				}
 			}
 		}

@@ -422,9 +422,9 @@ public class GameState
 	public boolean replacePowerplant(Powerplant toBeReplaced, Powerplant replacer)
 	{
 		boolean completed = false;
-		if (players.get(currentPlayer).ownedPlants.remove(toBeReplaced))
+		if (getCurrentPlayer().ownedPlants.remove(toBeReplaced))
 			completed = true;
-		players.get(currentPlayer).ownedPlants.add(replacer);
+		getCurrentPlayer().ownedPlants.add(replacer);
 		return completed;
 	}
 	
