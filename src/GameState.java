@@ -339,7 +339,7 @@ public class GameState
 		nextTurnPhase();
 		newBidPhase();
 		nextPlayer();
-		turnOrder();
+//		turnOrder();
 		return;
 	}
 	public void refreshBidPhase()

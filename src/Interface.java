@@ -522,7 +522,7 @@ public class Interface extends JPanel implements MouseListener
 		g2.setStroke(new BasicStroke(1));
 		
 		drawCentredString(g2, "Turn Order", new Rectangle(10, 10, 290, 40), subtitlefont);
-		drawCentredString(g2, "Click on player for more info", new Rectangle(10, 40, 290, 20), defaultfont);
+//		drawCentredString(g2, "Click on player for more info", new Rectangle(10, 40, 290, 20), defaultfont);
 		Point starting = new Point(10, 65);
 		int width = 60, height = 60;
 		
