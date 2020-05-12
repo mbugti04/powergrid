@@ -361,16 +361,18 @@ public class Interface extends JPanel implements MouseListener
 	
 	public void drawWinScreen(Graphics2D g2)
 	{
-		int inc = 0;
+		int inc = 10;
 		g2.drawImage(images.get("mainMenu.png"), 0, 0, null);
 		for (Button b: buttons.get("winScreen"))
 		{
 			b.draw(g2);
 		}
 		drawCentredString(g2, "RESULTS" , new Rectangle(0, 0, width, height / 8), titlefont);
+		drawCentredString(g2, "WINNER: "  , new Rectangle(0, 0, width, height / 8), titlefont);
+		
 		for (Player p: state.players)
 		{
-			g2.setColor(Color.white);
+			g2.setColor(Color.black);
 			int g = 0, w = 200, h = 30;
 			drawAString(g2, "Cities Owned:", new Point(260 + inc, 625), titlefont);
 			for (City r: p.ownedCities)
@@ -378,13 +380,26 @@ public class Interface extends JPanel implements MouseListener
 				drawAString(g2, r.getName(), new Point(260 + inc, 855 + h * g++), subtitlefont);
 			}
 		
-			g2.setColor(Color.white);
+			g2.setColor(Color.black);
 			Rectangle temp = new Rectangle(10+inc, 350, 245, 120);
 //			temp.add(255, 570);
 			drawCentredString(g2, p.colour+"'s Power Plants", temp, titlefont);
 			temp = new Rectangle(10+200, 420, 245, 60);
 			drawAString(g2, "Current Money", new Point(260 + inc, 500), titlefont);
-			inc+=400;
+			int numpow = p.ownedPlants.size();
+	        g2.setColor(new Color(100, 100, 100));
+	        for (int i = 0; i < 3; i++)
+	        {
+	            if (numpow-- > 0)
+	            {
+	                g2.drawImage(plantimg.get(p.ownedPlants.get(i).getName() + ".png"), 60+inc, (400 + 10 * i + 150 * i) + 100, 150, 150, null);
+	            }
+	            else
+	            {
+	                g2.fillRect(60+inc, (400 + 10 * i + 150 * i)+100, 150, 150);
+	            }
+	        }
+	        inc+=400;
 		}
 		
 		
