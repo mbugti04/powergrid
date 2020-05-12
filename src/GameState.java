@@ -223,6 +223,8 @@ public class GameState
 			Collections.shuffle(plantMarket.allPlantsAL);
 			plantMarket.allPlantsAL.add(new Powerplant("step3"));
 			plantMarket.allPlants.addAll(plantMarket.allPlantsAL);
+			
+			
 		}
 		catch(IOException e) {}
 	}
@@ -230,9 +232,21 @@ public class GameState
 	
 	public int nextTurnPhase()
 	{
+		
 		turnOrder(); // TODO is this needed
 		turnPhase+= 1;
 		if (turnPhase == 4) {
+			for(int i = 0; i < players.size(); i++) 
+			{
+				if(players.get(i).ownedCities.size() >= 17)
+					hasEnded = true;
+			}
+			
+			if(plantMarket.plantsAvailable.contains(plantMarket.allPlantsAL.get(plantMarket.allPlantsAL.size()-1))) 
+			{
+				step = 3;
+				
+			}
 			resourceMarket.restock();
 			
 			for(Player p : players) 

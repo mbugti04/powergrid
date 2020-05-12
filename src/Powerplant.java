@@ -55,7 +55,9 @@ public class Powerplant implements Comparable
 	
 	public String toString()
 	{
+		if(!isStep3)
 		return name + "";
+		return "step 3";
 	}
 
 	@Override
