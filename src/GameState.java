@@ -662,6 +662,7 @@ public class GameState
 			moneys[i] = players.get(i).getMoney();
 			numCities[i] = players.get(i).getCities().size();
 		}
+		
 		winner = getMax(powerableHouses);
 		if(winner == -1) {
 			winner = getMax(moneys);
