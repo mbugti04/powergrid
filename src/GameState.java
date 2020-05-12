@@ -642,7 +642,7 @@ public class GameState
 //		}
 //	}
 	
-	public String whoWon()
+	public Player whoWon()
 	{
 		/* result stores and returns the result
 		 * at the end. It either returns 'tie'
@@ -651,6 +651,7 @@ public class GameState
 		 * including their powered houses,
 		 * money, and cities owned at the end.
 		 */
+	
 		String result = "";
 		
 		int winner;
@@ -662,6 +663,7 @@ public class GameState
 			moneys[i] = players.get(i).getMoney();
 			numCities[i] = players.get(i).getCities().size();
 		}
+		
 		winner = getMax(powerableHouses);
 		if(winner == -1) {
 			winner = getMax(moneys);
@@ -671,9 +673,10 @@ public class GameState
 //					System.out.println("It's a tie!");
 					result = "tie";
 				}
-				else
+				else {
 //					System.out.println("The winner is Player #" + players.get(getIndex(numCities, winner))+"!");
 					result = "" + getIndex(numCities, winner);
+				}
 			}
 			else 
 //				System.out.println("The winner is Player #" + players.get(getIndex(moneys, winner))+"!");
@@ -686,7 +689,7 @@ public class GameState
 		result += "\n" + getResults(powerableHouses, moneys, numCities);
 		hasEnded = true;
 		
-		return result;
+		return players.get(winner);
 	}
 	
 	/* returns the results formatted as such:

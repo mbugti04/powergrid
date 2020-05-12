@@ -42,14 +42,26 @@ public class Player implements Comparable<Player>{
 		int uraniumSpace = 0;
 		for(int i = 0; i < ownedPlants.size(); i++)
 		{
-			if(ownedPlants.get(i).getResourceType() == Resource.coal || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+			if(ownedPlants.get(i).getResourceType() == Resource.coal )
 				coalSpace += ownedPlants.get(i).storageCapacity();
-			if(ownedPlants.get(i).getResourceType() == Resource.oil || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+			if(ownedPlants.get(i).getResourceType() == Resource.oil)
 				oilSpace += ownedPlants.get(i).storageCapacity();
 			if(ownedPlants.get(i).getResourceType() == Resource.trash)
 				trashSpace += ownedPlants.get(i).storageCapacity();	
 			if(ownedPlants.get(i).getResourceType() == Resource.uranium)
 				uraniumSpace += ownedPlants.get(i).storageCapacity();	
+			
+			if(ownedPlants.get(i).getResourceType() == Resource.hybrid) {
+				if(resourcesStored.get(Resource.oil)<=ownedPlants.get(i).getAmountToPower()*2)
+				coalSpace += ownedPlants.get(i).storageCapacity()-resourcesStored.get(Resource.oil);
+				else
+					coalSpace += ownedPlants.get(i).storageCapacity()-ownedPlants.get(i).getAmountToPower()*2;
+				
+				if(resourcesStored.get(Resource.coal)<=ownedPlants.get(i).getAmountToPower()*2)
+					oilSpace += ownedPlants.get(i).storageCapacity()-resourcesStored.get(Resource.coal);
+					else
+						oilSpace += ownedPlants.get(i).storageCapacity()-ownedPlants.get(i).getAmountToPower()*2;
+			}
 		}
 		
 		System.out.println(String.format("coal:%d, oil:%d, trash:%d, uranium:%d", coalSpace, oilSpace, trashSpace, uraniumSpace));
@@ -81,15 +93,27 @@ public class Player implements Comparable<Player>{
 		int uraniumSpace = 0;
 		for(int i = 0; i < ownedPlants.size(); i++)
 		{
-			if(ownedPlants.get(i).getResourceType() == Resource.coal || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+			if(ownedPlants.get(i).getResourceType() == Resource.coal )
 				coalSpace += ownedPlants.get(i).storageCapacity();
-			if(ownedPlants.get(i).getResourceType() == Resource.oil || ownedPlants.get(i).getResourceType() == Resource.hybrid)
+			if(ownedPlants.get(i).getResourceType() == Resource.oil)
 				oilSpace += ownedPlants.get(i).storageCapacity();
 			if(ownedPlants.get(i).getResourceType() == Resource.trash)
 				trashSpace += ownedPlants.get(i).storageCapacity();	
 			if(ownedPlants.get(i).getResourceType() == Resource.uranium)
 				uraniumSpace += ownedPlants.get(i).storageCapacity();	
+			
+			if(ownedPlants.get(i).getResourceType() == Resource.hybrid) {
+				if(resourcesStored.get(Resource.oil)<=ownedPlants.get(i).getAmountToPower()*2)
+				coalSpace += ownedPlants.get(i).storageCapacity()-resourcesStored.get(Resource.oil);
+				else
+					coalSpace += ownedPlants.get(i).storageCapacity()-ownedPlants.get(i).getAmountToPower()*2;
+				
+				if(resourcesStored.get(Resource.coal)<=ownedPlants.get(i).getAmountToPower()*2)
+					oilSpace += ownedPlants.get(i).storageCapacity()-resourcesStored.get(Resource.coal);
+					else
+						oilSpace += ownedPlants.get(i).storageCapacity()-ownedPlants.get(i).getAmountToPower()*2;
 		}
+	}
 		
 		if (r.equals(Resource.coal))
 			return coalSpace;
