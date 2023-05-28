@@ -11,7 +11,7 @@ public class Runner {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				JFrame frame = new JFrame("Simple Panel");
+				JFrame frame = new JFrame("Power Grid");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 				Interface panel = new Interface();
